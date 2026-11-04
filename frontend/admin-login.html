@@ -1,0 +1,593 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Admin Login | Shree Photo Studio</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-family: Arial, sans-serif;
+
+      background: #f5f7fb;
+      color: #111827;
+
+      padding: 20px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+
+      background: white;
+
+      padding: 35px;
+
+      border-radius: 16px;
+
+      border: 1px solid #e5e7eb;
+
+      box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.08);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .logo-image-container {
+      width: 90px;
+      height: 90px;
+
+      margin: 0 auto 15px;
+
+      border-radius: 14px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      overflow: hidden;
+
+      background: #f3f4f6;
+
+      border: 1px solid #e5e7eb;
+    }
+
+    .logo-image {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+
+      display: none;
+    }
+
+    .default-logo {
+      font-size: 42px;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .logo p {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 14px;
+
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+
+      padding: 12px 14px;
+
+      border: 1px solid #d1d5db;
+
+      border-radius: 8px;
+
+      font-size: 15px;
+
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: #111827;
+    }
+
+    .login-btn {
+      width: 100%;
+
+      border: none;
+
+      background: #111827;
+
+      color: white;
+
+      padding: 13px;
+
+      border-radius: 8px;
+
+      cursor: pointer;
+
+      font-size: 15px;
+
+      font-weight: 600;
+
+      margin-top: 5px;
+    }
+
+    .login-btn:hover {
+      opacity: 0.9;
+    }
+
+    .login-btn:disabled {
+      opacity: 0.6;
+
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 15px;
+
+      padding: 10px;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+
+      display: none;
+
+      text-align: center;
+    }
+
+    .message.error {
+      display: block;
+
+      background: #fee2e2;
+
+      color: #b91c1c;
+    }
+
+    .message.success {
+      display: block;
+
+      background: #dcfce7;
+
+      color: #166534;
+    }
+
+    .forgot-password {
+      display: block;
+
+      text-align: center;
+
+      margin-top: 18px;
+
+      color: #2563eb;
+
+      text-decoration: none;
+
+      font-size: 14px;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .back-link {
+      display: block;
+
+      text-align: center;
+
+      margin-top: 20px;
+
+      color: #6b7280;
+
+      text-decoration: none;
+
+      font-size: 13px;
+    }
+
+    .back-link:hover {
+      color: #111827;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-card">
+
+    <div class="logo">
+
+      <div class="logo-image-container">
+
+        <div
+          class="default-logo"
+          id="defaultLogo"
+        >
+          📸
+        </div>
+
+        <img
+          id="logoImage"
+          class="logo-image"
+          alt="Shree Photo Studio Logo"
+        />
+
+      </div>
+
+      <h1>
+        Shree Photo Studio
+      </h1>
+
+      <p>
+        Admin Dashboard Login
+      </p>
+
+    </div>
+
+    <form id="loginForm">
+
+      <div class="form-group">
+
+        <label for="username">
+          Username
+        </label>
+
+        <input
+          type="text"
+          id="username"
+          placeholder="Enter username"
+          autocomplete="username"
+          required
+        />
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter password"
+          autocomplete="current-password"
+          required
+        />
+
+      </div>
+
+      <button
+        type="submit"
+        class="login-btn"
+        id="loginBtn"
+      >
+        Login
+      </button>
+
+    </form>
+
+    <div
+      class="message"
+      id="message"
+    ></div>
+
+    <a
+      href="#"
+      class="forgot-password"
+      id="forgotPassword"
+    >
+      Forgot Password?
+    </a>
+
+    <a
+      href="index.html"
+      class="back-link"
+    >
+      ← Back to Website
+    </a>
+
+  </div>
+
+  <script>
+
+    /* =========================
+       LOAD LATEST LOGO
+    ========================== */
+
+    async function loadLogo() {
+
+      const logoImage =
+        document.getElementById("logoImage");
+
+      const defaultLogo =
+        document.getElementById("defaultLogo");
+
+      try {
+
+        const response =
+          await fetch(
+            "http://localhost:5000/api/admin/logo"
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          data.success &&
+          data.logo
+        ) {
+
+          logoImage.src = data.logo;
+
+          logoImage.onload = function () {
+
+            logoImage.style.display = "block";
+
+            defaultLogo.style.display = "none";
+
+          };
+
+          logoImage.onerror = function () {
+
+            logoImage.style.display = "none";
+
+            defaultLogo.style.display = "block";
+
+          };
+
+        } else {
+
+          logoImage.style.display = "none";
+
+          defaultLogo.style.display = "block";
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Logo loading failed:",
+          error
+        );
+
+        logoImage.style.display = "none";
+
+        defaultLogo.style.display = "block";
+      }
+
+    }
+
+
+    /* =========================
+       LOGIN ELEMENTS
+    ========================= */
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const usernameInput =
+      document.getElementById("username");
+
+    const passwordInput =
+      document.getElementById("password");
+
+    const loginBtn =
+      document.getElementById("loginBtn");
+
+    const message =
+      document.getElementById("message");
+
+    const forgotPassword =
+      document.getElementById("forgotPassword");
+
+
+    /* =========================
+       MESSAGE
+    ========================= */
+
+    function showMessage(text, type) {
+
+      message.textContent = text;
+
+      message.className =
+        "message " + type;
+
+    }
+
+
+    /* =========================
+       LOGIN
+    ========================= */
+
+    loginForm.addEventListener(
+      "submit",
+      async function (event) {
+
+        event.preventDefault();
+
+        const username =
+          usernameInput.value.trim();
+
+        const password =
+          passwordInput.value;
+
+        if (!username || !password) {
+
+          showMessage(
+            "Please enter username and password.",
+            "error"
+          );
+
+          return;
+        }
+
+        loginBtn.disabled = true;
+
+        loginBtn.textContent =
+          "Logging in...";
+
+        try {
+
+          const response =
+            await fetch(
+              "http://localhost:5000/api/admin/login",
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json",
+                },
+
+                body: JSON.stringify({
+                  username: username,
+                  password: password,
+                }),
+              }
+            );
+
+          const data =
+            await response.json();
+
+          if (
+            !response.ok ||
+            !data.success
+          ) {
+
+            throw new Error(
+              data.message ||
+              "Login failed"
+            );
+
+          }
+
+          /*
+            IMPORTANT:
+            Save JWT token in browser.
+          */
+
+          localStorage.setItem(
+            "adminToken",
+            data.token
+          );
+
+          /*
+            Save admin information too.
+          */
+
+          localStorage.setItem(
+            "adminUser",
+            JSON.stringify(data.admin)
+          );
+
+          showMessage(
+            "Login successful! Opening dashboard...",
+            "success"
+          );
+
+          setTimeout(
+            function () {
+
+              window.location.href =
+                "admin.html";
+
+            },
+            700
+          );
+
+        } catch (error) {
+
+          console.error(
+            "Login error:",
+            error
+          );
+
+          showMessage(
+            error.message ||
+            "Unable to login.",
+            "error"
+          );
+
+        } finally {
+
+          loginBtn.disabled = false;
+
+          loginBtn.textContent =
+            "Login";
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       FORGOT PASSWORD
+    ========================= */
+
+    forgotPassword.addEventListener(
+      "click",
+      function (event) {
+
+        event.preventDefault();
+
+        alert(
+          "Forgot Password feature will be added next."
+        );
+
+      }
+    );
+
+
+    /* =========================
+       INITIALIZE
+    ========================= */
+
+    loadLogo();
+
+  </script>
+
+</body>
+
+</html>
+```

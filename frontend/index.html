@@ -1,0 +1,2886 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    श्री फोटो स्टुडिओ | ब्रह्मपुरी
+  </title>
+
+  <meta
+    name="description"
+    content="श्री फोटो स्टुडिओ | ब्रह्मपुरी — Wedding Photography, Photo Frames, Albums, Customized Gifts आणि फोटो सेवा."
+  />
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      color: #222;
+      background: #fff;
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .container {
+      width: min(
+        1180px,
+        calc(100% - 40px)
+      );
+
+      margin: auto;
+    }
+
+
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      background:
+        rgba(15, 23, 42, 0.96);
+
+      color: white;
+
+      box-shadow:
+        0 4px 20px
+        rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-inner {
+      min-height: 75px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 25px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .brand img {
+      width: 50px;
+      height: 50px;
+
+      object-fit: contain;
+
+      border-radius: 8px;
+      background: white;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0.9;
+      transition: 0.2s;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+      color: #fbbf24;
+    }
+
+    .nav-btn {
+      background: #f59e0b;
+      color: #111827;
+
+      padding: 10px 16px;
+
+      border-radius: 8px;
+      font-weight: 800 !important;
+    }
+
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+
+      min-height: 680px;
+
+      display: flex;
+      align-items: center;
+
+      position: relative;
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.82),
+          rgba(0, 0, 0, 0.30)
+        ),
+        url("assets/images/hero.jpg")
+        center / cover
+        no-repeat;
+
+      color: white;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      padding: 90px 0;
+    }
+
+    .hero-tag {
+      display: inline-block;
+
+      padding: 7px 14px;
+
+      border-radius: 30px;
+
+      background:
+        rgba(245, 158, 11, 0.18);
+
+      border:
+        1px solid
+        rgba(245, 158, 11, 0.6);
+
+      color: #fbbf24;
+
+      font-weight: 700;
+
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size:
+        clamp(40px, 6vw, 72px);
+
+      line-height: 1.08;
+
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      color: #fbbf24;
+    }
+
+    .hero p {
+      font-size: 18px;
+      max-width: 620px;
+
+      color: #e5e7eb;
+
+      margin-bottom: 30px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 13px 20px;
+
+      border-radius: 9px;
+
+      font-weight: 800;
+
+      border: none;
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .btn-primary {
+      background: #f59e0b;
+      color: #111827;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #111827;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+
+    /* =========================
+       TRUST
+    ========================= */
+
+    .trust-strip {
+      background: #111827;
+      color: white;
+    }
+
+    .trust-grid {
+
+      display: grid;
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 15px;
+
+      padding: 20px 0;
+    }
+
+    .trust-item {
+      text-align: center;
+    }
+
+    .trust-item strong {
+      display: block;
+      font-size: 19px;
+    }
+
+    .trust-item span {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+
+    /* =========================
+       SECTIONS
+    ========================= */
+
+    .section {
+      padding: 90px 0;
+    }
+
+    .section-heading {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 50px;
+    }
+
+    .section-heading span {
+      color: #d97706;
+      font-weight: 800;
+    }
+
+    .section-heading h2 {
+      font-size:
+        clamp(30px, 4vw, 44px);
+
+      margin: 8px 0 14px;
+
+      color: #111827;
+    }
+
+    .section-heading p {
+      color: #6b7280;
+    }
+
+
+    /* =========================
+       SERVICES
+    ========================= */
+
+    .services-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 22px;
+    }
+
+    .service-card {
+
+      padding: 30px;
+
+      border:
+        1px solid #e5e7eb;
+
+      border-radius: 15px;
+
+      background: white;
+
+      box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.05);
+
+      transition: 0.25s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+
+      box-shadow:
+        0 15px 35px
+        rgba(0, 0, 0, 0.10);
+    }
+
+    .service-icon {
+      width: 55px;
+      height: 55px;
+
+      display: grid;
+      place-items: center;
+
+      background: #fff7ed;
+      color: #d97706;
+
+      border-radius: 12px;
+
+      font-size: 25px;
+
+      margin-bottom: 18px;
+    }
+
+    .service-card h3 {
+      margin-bottom: 8px;
+    }
+
+    .service-card p {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+
+    /* =========================
+       GALLERY
+    ========================= */
+
+    .filters {
+
+      display: flex;
+      justify-content: center;
+
+      gap: 10px;
+
+      flex-wrap: wrap;
+
+      margin-bottom: 30px;
+    }
+
+    .filter-btn {
+
+      padding: 9px 15px;
+
+      border:
+        1px solid #d1d5db;
+
+      background: white;
+
+      border-radius: 30px;
+
+      cursor: pointer;
+
+      font-weight: 600;
+    }
+
+    .filter-btn.active {
+
+      background: #111827;
+      color: white;
+
+      border-color:
+        #111827;
+    }
+
+    .gallery-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 16px;
+    }
+
+    .gallery-item {
+
+      position: relative;
+
+      overflow: hidden;
+
+      border-radius: 13px;
+
+      aspect-ratio: 1 / 1;
+
+      background: #f3f4f6;
+
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      transition:
+        transform 0.4s;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.06);
+    }
+
+    .gallery-overlay {
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      padding: 35px 14px 14px;
+
+      background:
+        linear-gradient(
+          transparent,
+          rgba(0, 0, 0, 0.8)
+        );
+
+      color: white;
+    }
+
+    .gallery-overlay h3 {
+      font-size: 15px;
+    }
+
+    .gallery-overlay p {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+
+    /* =========================
+       FEATURE
+    ========================= */
+
+    .feature {
+
+      background: #f8fafc;
+    }
+
+    .feature-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 55px;
+
+      align-items: center;
+    }
+
+    .feature-image {
+
+      min-height: 500px;
+
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      background:
+        #e5e7eb;
+    }
+
+    .feature-image img {
+
+      width: 100%;
+      height: 100%;
+
+      min-height: 500px;
+
+      object-fit: cover;
+    }
+
+    .feature-content span {
+      color: #d97706;
+      font-weight: 800;
+    }
+
+    .feature-content h2 {
+
+      font-size:
+        clamp(30px, 4vw, 45px);
+
+      line-height: 1.15;
+
+      margin: 10px 0 18px;
+    }
+
+    .feature-content > p {
+      color: #6b7280;
+      margin-bottom: 25px;
+    }
+
+    .feature-list {
+
+      display: grid;
+      gap: 15px;
+    }
+
+    .feature-list div {
+
+      display: flex;
+      gap: 12px;
+
+      align-items: flex-start;
+    }
+
+    .check {
+
+      width: 28px;
+      height: 28px;
+
+      min-width: 28px;
+
+      display: grid;
+      place-items: center;
+
+      background: #fef3c7;
+      color: #92400e;
+
+      border-radius: 50%;
+
+      font-weight: 900;
+    }
+
+
+    /* =========================
+       PACKAGES
+    ========================= */
+
+    .packages {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 22px;
+    }
+
+    .package {
+
+      border:
+        1px solid #e5e7eb;
+
+      border-radius: 15px;
+
+      padding: 30px;
+
+      background: white;
+
+      text-align: center;
+    }
+
+    .package.featured {
+
+      border:
+        2px solid #f59e0b;
+
+      transform: translateY(-8px);
+    }
+
+    .package h3 {
+      margin-bottom: 10px;
+    }
+
+    .price {
+
+      font-size: 35px;
+      font-weight: 900;
+
+      color: #111827;
+
+      margin-bottom: 15px;
+    }
+
+    .package ul {
+
+      list-style: none;
+
+      color: #6b7280;
+
+      display: grid;
+
+      gap: 8px;
+
+      margin-bottom: 25px;
+    }
+
+
+    /* =========================
+       ABOUT
+    ========================= */
+
+    .about {
+
+      background:
+        linear-gradient(
+          135deg,
+          #111827,
+          #1f2937
+        );
+
+      color: white;
+    }
+
+    .about-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        1.1fr 0.9fr;
+
+      gap: 50px;
+
+      align-items: center;
+    }
+
+    .about h2 {
+
+      font-size:
+        clamp(30px, 4vw, 45px);
+
+      line-height: 1.15;
+
+      margin: 10px 0 18px;
+    }
+
+    .about p {
+      color: #d1d5db;
+      margin-bottom: 18px;
+    }
+
+    .about-image {
+
+      min-height: 400px;
+
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      background: #374151;
+    }
+
+    .about-image img {
+
+      width: 100%;
+      height: 100%;
+
+      min-height: 400px;
+
+      object-fit: cover;
+    }
+
+
+    /* =========================
+       CONTACT
+    ========================= */
+
+    .contact-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        0.8fr 1.2fr;
+
+      gap: 40px;
+    }
+
+    .contact-card {
+
+      background: #111827;
+      color: white;
+
+      border-radius: 18px;
+
+      padding: 35px;
+    }
+
+    .contact-card h3 {
+      font-size: 27px;
+      margin-bottom: 15px;
+    }
+
+    .contact-info {
+
+      display: grid;
+
+      gap: 18px;
+
+      margin-top: 25px;
+    }
+
+    .contact-info div {
+      display: flex;
+      gap: 12px;
+    }
+
+    .contact-form {
+
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 15px;
+    }
+
+    .contact-form .full {
+      grid-column: 1 / -1;
+    }
+
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+
+      width: 100%;
+
+      padding: 13px;
+
+      border:
+        1px solid #d1d5db;
+
+      border-radius: 8px;
+
+      outline: none;
+    }
+
+    .contact-form textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+
+      background: #030712;
+
+      color: white;
+
+      padding: 45px 0 25px;
+    }
+
+    .footer-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr 1fr;
+
+      gap: 30px;
+
+      padding-bottom: 30px;
+
+      border-bottom:
+        1px solid #374151;
+    }
+
+    footer h3 {
+      margin-bottom: 12px;
+    }
+
+    footer p,
+    footer a {
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .footer-bottom {
+
+      text-align: center;
+
+      padding-top: 22px;
+
+      color: #9ca3af;
+
+      font-size: 13px;
+    }
+
+    .developer-credit {
+      margin-top: 8px;
+      color: #fbbf24;
+    }
+
+
+    /* =========================
+       FLOATING BUTTONS
+    ========================= */
+
+    .floating {
+
+      position: fixed;
+
+      right: 18px;
+      bottom: 18px;
+
+      display: grid;
+
+      gap: 10px;
+
+      z-index: 900;
+    }
+
+    .floating a {
+
+      width: 52px;
+      height: 52px;
+
+      border-radius: 50%;
+
+      display: grid;
+      place-items: center;
+
+      color: white;
+
+      font-size: 20px;
+
+      box-shadow:
+        0 5px 20px
+        rgba(0, 0, 0, 0.2);
+    }
+
+    .whatsapp {
+      background: #16a34a;
+    }
+
+    .call {
+      background: #2563eb;
+    }
+
+
+    /* =========================
+       LIGHTBOX
+    ========================= */
+
+    .lightbox {
+
+      position: fixed;
+
+      inset: 0;
+
+      background:
+        rgba(0, 0, 0, 0.92);
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      z-index: 2000;
+
+      padding: 20px;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox img {
+
+      max-width: 90vw;
+      max-height: 85vh;
+
+      object-fit: contain;
+
+      border-radius: 8px;
+    }
+
+    .lightbox-close,
+    .lightbox-prev,
+    .lightbox-next {
+
+      position: absolute;
+
+      border: none;
+
+      background:
+        rgba(255, 255, 255, 0.15);
+
+      color: white;
+
+      cursor: pointer;
+
+      width: 45px;
+      height: 45px;
+
+      border-radius: 50%;
+
+      font-size: 22px;
+    }
+
+    .lightbox-close {
+      right: 25px;
+      top: 25px;
+    }
+
+    .lightbox-prev {
+      left: 25px;
+    }
+
+    .lightbox-next {
+      right: 25px;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 950px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .services-grid {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+      .gallery-grid {
+        grid-template-columns:
+          repeat(3, 1fr);
+      }
+
+      .feature-grid,
+      .about-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .packages {
+        grid-template-columns:
+          1fr;
+      }
+
+      .package.featured {
+        transform: none;
+      }
+
+      .footer-grid {
+        grid-template-columns:
+          1fr 1fr;
+      }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+      .container {
+        width:
+          calc(100% - 30px);
+      }
+
+      .hero {
+        min-height: 600px;
+      }
+
+      .hero-content {
+        padding: 70px 0;
+      }
+
+      .trust-grid {
+        grid-template-columns:
+          1fr 1fr;
+      }
+
+      .services-grid,
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-form {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-form .full {
+        grid-column: auto;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-image,
+      .feature-image img,
+      .about-image,
+      .about-image img {
+        min-height: 320px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =========================
+       NAVBAR
+  ========================= -->
+
+  <header class="navbar">
+
+    <div class="container nav-inner">
+
+      <a
+        href="#home"
+        class="brand"
+      >
+
+        <img
+          id="websiteLogo"
+          src="assets/images/logo.png"
+          alt="Shree Photo Studio Logo"
+        />
+
+        <span>
+          श्री फोटो स्टुडिओ
+        </span>
+
+      </a>
+
+
+      <nav class="nav-links">
+
+        <a href="#home">
+          Home
+        </a>
+
+        <a href="#services">
+          Services
+        </a>
+
+        <a href="#gallery">
+          Gallery
+        </a>
+
+        <a href="#about">
+          About
+        </a>
+
+        <a href="#contact">
+          Contact
+        </a>
+
+        <a
+          href="#contact"
+          class="nav-btn"
+        >
+          Enquiry
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       HERO
+  ========================= -->
+
+  <section
+    id="home"
+    class="hero"
+  >
+
+    <div class="container">
+
+      <div class="hero-content">
+
+        <div class="hero-tag">
+          📸 ब्रह्मपुरी मधील विश्वासू फोटो स्टुडिओ
+        </div>
+
+        <h1>
+          तुमच्या खास क्षणांना
+          <span>कायमस्वरूपी</span>
+          जतन करा.
+        </h1>
+
+        <p>
+          Wedding Photography, Photo Frames,
+          Albums, Customized Gifts, Family Photoshoot
+          आणि इतर दर्जेदार फोटो सेवा.
+        </p>
+
+        <div class="hero-buttons">
+
+          <a
+            href="#contact"
+            class="btn btn-primary"
+          >
+            Enquiry करा
+          </a>
+
+          <a
+            href="tel:8010823556"
+            class="btn btn-secondary"
+          >
+            📞 Call करा
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       TRUST
+  ========================= -->
+
+  <section class="trust-strip">
+
+    <div class="container trust-grid">
+
+      <div class="trust-item">
+        <strong>
+          📸 Quality
+        </strong>
+        <span>
+          Professional Work
+        </span>
+      </div>
+
+      <div class="trust-item">
+        <strong>
+          ❤️ Memories
+        </strong>
+        <span>
+          Special Moments
+        </span>
+      </div>
+
+      <div class="trust-item">
+        <strong>
+          🎁 Customized
+        </strong>
+        <span>
+          Personalized Gifts
+        </span>
+      </div>
+
+      <div class="trust-item">
+        <strong>
+          📍 Brahmapuri
+        </strong>
+        <span>
+          Local Service
+        </span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       SERVICES
+  ========================= -->
+
+  <section
+    id="services"
+    class="section"
+  >
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span>
+          आमच्या सेवा
+        </span>
+
+        <h2>
+          तुमच्यासाठी फोटोच्या
+          सर्व आवश्यक सेवा
+        </h2>
+
+        <p>
+          तुमच्या प्रत्येक खास क्षणासाठी
+          professional आणि customized photography
+          solutions.
+        </p>
+
+      </div>
+
+
+      <div
+        id="servicesGrid"
+        class="services-grid"
+      >
+
+        <div class="service-card">
+
+          <div class="service-icon">
+            💍
+          </div>
+
+          <h3>
+            Wedding Photography
+          </h3>
+
+          <p>
+            लग्नातील खास क्षण सुंदरपणे
+            capture आणि preserve करा.
+          </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+          <div class="service-icon">
+            🖼️
+          </div>
+
+          <h3>
+            Photo Frames
+          </h3>
+
+          <p>
+            तुमच्या आवडत्या आठवणींसाठी
+            सुंदर custom photo frames.
+          </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+          <div class="service-icon">
+            📚
+          </div>
+
+          <h3>
+            Photo Albums
+          </h3>
+
+          <p>
+            खास moments साठी premium
+            photo albums आणि collections.
+          </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+          <div class="service-icon">
+            🎁
+          </div>
+
+          <h3>
+            Customized Gifts
+          </h3>
+
+          <p>
+            आपल्या प्रिय व्यक्तींसाठी
+            personalized photo gifts.
+          </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+          <div class="service-icon">
+            👨‍👩‍👧‍👦
+          </div>
+
+          <h3>
+            Family Photoshoot
+          </h3>
+
+          <p>
+            Family मधील सुंदर आठवणी
+            professional photoshoot मध्ये जतन करा.
+          </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+          <div class="service-icon">
+            🪪
+          </div>
+
+          <h3>
+            Passport Photos
+          </h3>
+
+          <p>
+            Passport आणि ID साठी
+            योग्य फोटो सेवा.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       GALLERY
+  ========================= -->
+
+  <section
+    id="gallery"
+    class="section"
+    style="background:#f8fafc;"
+  >
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span>
+          आमची Gallery
+        </span>
+
+        <h2>
+          आमच्या कामाची झलक
+        </h2>
+
+        <p>
+          Admin panel मधून uploaded photos
+          इथे automatically दिसतील.
+        </p>
+
+      </div>
+
+
+      <div
+        id="galleryFilters"
+        class="filters"
+      ></div>
+
+
+      <div
+        id="publicGallery"
+        class="gallery-grid"
+      >
+
+        <p>
+          Gallery loading...
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FEATURE
+  ========================= -->
+
+  <section
+    class="section feature"
+  >
+
+    <div class="container feature-grid">
+
+      <div class="feature-image">
+
+        <img
+          id="featureImage"
+          src="assets/images/studio.jpg"
+          alt="Shree Photo Studio"
+          onerror="
+            this.src='assets/images/hero.jpg';
+          "
+        />
+
+      </div>
+
+
+      <div class="feature-content">
+
+        <span>
+          WHY CHOOSE US
+        </span>
+
+        <h2>
+          तुमच्या आठवणींसाठी
+          आम्ही का?
+        </h2>
+
+        <p>
+          प्रत्येक फोटो हा एक moment असतो.
+          त्या moment ला सुंदर आणि
+          long-lasting memory बनवणे हे आमचे ध्येय आहे.
+        </p>
+
+
+        <div class="feature-list">
+
+          <div>
+
+            <div class="check">
+              ✓
+            </div>
+
+            <div>
+              <strong>
+                Professional Quality
+              </strong>
+
+              <p>
+                प्रत्येक कामामध्ये quality आणि
+                finishing वर लक्ष.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <div class="check">
+              ✓
+            </div>
+
+            <div>
+              <strong>
+                Customized Solutions
+              </strong>
+
+              <p>
+                तुमच्या गरजेनुसार personalized
+                photo products.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <div class="check">
+              ✓
+            </div>
+
+            <div>
+              <strong>
+                Local & Trusted
+              </strong>
+
+              <p>
+                ब्रह्मपुरीमध्ये सोयीस्कर आणि
+                विश्वासू photo service.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       PACKAGES
+  ========================= -->
+
+  <section class="section">
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span>
+          PACKAGES
+        </span>
+
+        <h2>
+          तुमच्या गरजेनुसार Packages
+        </h2>
+
+        <p>
+          योग्य package निवडा किंवा
+          custom requirement साठी enquiry करा.
+        </p>
+
+      </div>
+
+
+      <div class="packages">
+
+        <div class="package">
+
+          <h3>
+            Basic
+          </h3>
+
+          <div class="price">
+            Custom
+          </div>
+
+          <ul>
+            <li>📸 Photography</li>
+            <li>🖼️ Photo Selection</li>
+            <li>💾 Digital Photos</li>
+          </ul>
+
+          <a
+            href="#contact"
+            class="btn btn-secondary"
+            style="border:1px solid #d1d5db;"
+          >
+            Enquiry
+          </a>
+
+        </div>
+
+
+        <div class="package featured">
+
+          <h3>
+            Premium
+          </h3>
+
+          <div class="price">
+            Custom
+          </div>
+
+          <ul>
+            <li>📸 Professional Photography</li>
+            <li>📚 Premium Album</li>
+            <li>🖼️ Photo Frames</li>
+            <li>💾 Digital Photos</li>
+          </ul>
+
+          <a
+            href="#contact"
+            class="btn btn-primary"
+          >
+            Enquiry
+          </a>
+
+        </div>
+
+
+        <div class="package">
+
+          <h3>
+            Customized
+          </h3>
+
+          <div class="price">
+            Custom
+          </div>
+
+          <ul>
+            <li>🎁 Customized Gifts</li>
+            <li>🖼️ Custom Frames</li>
+            <li>📸 Photoshoot</li>
+            <li>❤️ Personalized Work</li>
+          </ul>
+
+          <a
+            href="#contact"
+            class="btn btn-secondary"
+            style="border:1px solid #d1d5db;"
+          >
+            Enquiry
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       ABOUT
+  ========================= -->
+
+  <section
+    id="about"
+    class="section about"
+  >
+
+    <div class="container about-grid">
+
+      <div>
+
+        <span
+          style="
+            color:#fbbf24;
+            font-weight:800;
+          "
+        >
+          ABOUT US
+        </span>
+
+        <h2>
+          श्री फोटो स्टुडिओ
+        </h2>
+
+        <p>
+          ब्रह्मपुरीमध्ये photo आणि
+          customized photo services साठी
+          श्री फोटो स्टुडिओ.
+        </p>
+
+        <p>
+          Wedding Photography पासून
+          Photo Frames, Albums,
+          Customized Gifts, Family Photoshoot
+          आणि Passport Photos पर्यंत
+          विविध सेवा उपलब्ध आहेत.
+        </p>
+
+        <a
+          href="#contact"
+          class="btn btn-primary"
+        >
+          Contact करा
+        </a>
+
+      </div>
+
+
+      <div class="about-image">
+
+        <img
+          id="aboutImage"
+          src="assets/images/studio.jpg"
+          alt="Shree Photo Studio"
+          onerror="
+            this.src='assets/images/hero.jpg';
+          "
+        />
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       CONTACT
+  ========================= -->
+
+  <section
+    id="contact"
+    class="section"
+  >
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span>
+          CONTACT
+        </span>
+
+        <h2>
+          तुमची Enquiry पाठवा
+        </h2>
+
+        <p>
+          तुमच्या requirement बद्दल माहिती
+          पाठवा. आम्ही तुमच्याशी संपर्क करू.
+        </p>
+
+      </div>
+
+
+      <div class="contact-grid">
+
+
+        <div class="contact-card">
+
+          <h3>
+            श्री फोटो स्टुडिओ
+          </h3>
+
+          <p>
+            तुमच्या खास moments साठी
+            photography आणि photo services.
+          </p>
+
+
+          <div class="contact-info">
+
+            <div>
+              📍
+              <span>
+                ब्रह्मपुरी, महाराष्ट्र
+              </span>
+            </div>
+
+            <div>
+              📞
+              <a href="tel:8010823556">
+                8010823556
+              </a>
+            </div>
+
+            <div>
+              💬
+              <a
+                href="https://wa.me/918010823556"
+                target="_blank"
+              >
+                WhatsApp वर संपर्क करा
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <form
+          id="enquiryForm"
+          class="contact-form"
+        >
+
+          <input
+            type="text"
+            id="name"
+            placeholder="तुमचे नाव"
+            required
+          />
+
+          <input
+            type="tel"
+            id="mobile"
+            placeholder="मोबाईल नंबर"
+            required
+          />
+
+          <select
+            id="service"
+            required
+          >
+
+            <option value="">
+              Service निवडा
+            </option>
+
+          </select>
+
+
+          <input
+            type="date"
+            id="preferred_date"
+          />
+
+
+          <input
+            type="text"
+            id="requirement"
+            placeholder="Requirement"
+            class="full"
+          />
+
+
+          <textarea
+            id="message"
+            placeholder="तुमचा Message"
+            class="full"
+          ></textarea>
+
+
+          <button
+            type="submit"
+            class="btn btn-primary full"
+          >
+            Enquiry Submit करा
+          </button>
+
+
+          <div
+            id="formMessage"
+            class="full"
+            style="
+              display:none;
+              padding:12px;
+              border-radius:8px;
+              background:#dcfce7;
+              color:#166534;
+            "
+          ></div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
+  <footer>
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div>
+
+          <h3>
+            श्री फोटो स्टुडिओ
+          </h3>
+
+          <p>
+            तुमच्या खास क्षणांना
+            कायमस्वरूपी जतन करणाऱ्या
+            photo services.
+          </p>
+
+        </div>
+
+
+        <div>
+
+          <h3>
+            Quick Links
+          </h3>
+
+          <p>
+            <a href="#home">
+              Home
+            </a>
+          </p>
+
+          <p>
+            <a href="#services">
+              Services
+            </a>
+          </p>
+
+          <p>
+            <a href="#gallery">
+              Gallery
+            </a>
+          </p>
+
+          <p>
+            <a href="#contact">
+              Contact
+            </a>
+          </p>
+
+        </div>
+
+
+        <div>
+
+          <h3>
+            Contact
+          </h3>
+
+          <p>
+            📍 ब्रह्मपुरी, महाराष्ट्र
+          </p>
+
+          <p>
+            📞 8010823556
+          </p>
+
+          <p>
+            💬 WhatsApp Available
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="footer-bottom">
+
+        © 2026 श्री फोटो स्टुडिओ.
+        All Rights Reserved.
+
+        <div class="developer-credit">
+
+          Website Designed & Developed by
+          <strong>
+            Bhojraj Gade
+          </strong>
+
+          ·
+
+          <a
+            href="https://github.com/gadejayant857-beep"
+            target="_blank"
+          >
+            GitHub: gadejayant857-beep
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================
+       FLOATING BUTTONS
+  ========================= -->
+
+  <div class="floating">
+
+    <a
+      href="https://wa.me/918010823556"
+      target="_blank"
+      class="whatsapp"
+      title="WhatsApp"
+    >
+      💬
+    </a>
+
+    <a
+      href="tel:8010823556"
+      class="call"
+      title="Call"
+    >
+      📞
+    </a>
+
+  </div>
+
+
+  <!-- =========================
+       LIGHTBOX
+  ========================= -->
+
+  <div
+    id="lightbox"
+    class="lightbox"
+  >
+
+    <button
+      class="lightbox-close"
+      onclick="closeLightbox()"
+    >
+      ×
+    </button>
+
+    <button
+      class="lightbox-prev"
+      onclick="previousImage()"
+    >
+      ‹
+    </button>
+
+    <img
+      id="lightboxImage"
+      src=""
+      alt="Gallery Image"
+    />
+
+    <button
+      class="lightbox-next"
+      onclick="nextImage()"
+    >
+      ›
+    </button>
+
+  </div>
+
+
+  <script>
+
+    const API_BASE =
+      "http://localhost:5000";
+
+    let galleryData = [];
+
+    let filteredGallery = [];
+
+    let currentImageIndex = 0;
+
+
+    /* =========================
+       LOGO
+    ========================= */
+
+    async function loadLogo() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/logo`
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          data.success &&
+          data.logo
+        ) {
+
+          document.getElementById(
+            "websiteLogo"
+          ).src =
+            `${data.logo}?t=${Date.now()}`;
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Logo error:",
+          error
+        );
+      }
+    }
+
+
+    /* =========================
+       SITE IMAGES
+    ========================= */
+
+    async function loadSiteImages() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/site-images`
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          !data.success ||
+          !data.images
+        ) {
+          return;
+        }
+
+
+        /* HERO */
+
+        if (data.images.hero) {
+
+          const hero =
+            document.querySelector(
+              ".hero"
+            );
+
+          hero.style.backgroundImage =
+            `
+              linear-gradient(
+                90deg,
+                rgba(0,0,0,.82),
+                rgba(0,0,0,.30)
+              ),
+              url("${data.images.hero}?t=${Date.now()}")
+            `;
+        }
+
+
+        /* FEATURE */
+
+        if (data.images.feature) {
+
+          document.getElementById(
+            "featureImage"
+          ).src =
+            `${data.images.feature}?t=${Date.now()}`;
+        }
+
+
+        /* ABOUT */
+
+        if (data.images.about) {
+
+          document.getElementById(
+            "aboutImage"
+          ).src =
+            `${data.images.about}?t=${Date.now()}`;
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Site images error:",
+          error
+        );
+      }
+    }
+
+
+    /* =========================
+       CATEGORIES
+    ========================= */
+
+    async function loadCategories() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/categories`
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          !data.success ||
+          !data.categories
+        ) {
+          return;
+        }
+
+
+        const service =
+          document.getElementById(
+            "service"
+          );
+
+        service.innerHTML =
+          `
+            <option value="">
+              Service निवडा
+            </option>
+          `;
+
+
+        data.categories.forEach(
+          category => {
+
+            const option =
+              document.createElement(
+                "option"
+              );
+
+            option.value =
+              category.name;
+
+            option.textContent =
+              category.name;
+
+            service.appendChild(
+              option
+            );
+
+          }
+        );
+
+
+        /* Service cards */
+
+        const servicesGrid =
+          document.getElementById(
+            "servicesGrid"
+          );
+
+        const icons = [
+          "💍",
+          "🖼️",
+          "📚",
+          "🎁",
+          "👨‍👩‍👧‍👦",
+          "🪪"
+        ];
+
+        servicesGrid.innerHTML = "";
+
+        data.categories.forEach(
+          (category, index) => {
+
+            const card =
+              document.createElement(
+                "div"
+              );
+
+            card.className =
+              "service-card";
+
+            card.innerHTML = `
+
+              <div class="service-icon">
+                ${icons[index] || "📸"}
+              </div>
+
+              <h3>
+                ${escapeHtml(category.name)}
+              </h3>
+
+              <p>
+                ${escapeHtml(
+                  category.description ||
+                  "Professional photo service."
+                )}
+              </p>
+
+            `;
+
+            servicesGrid.appendChild(
+              card
+            );
+
+          }
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Categories error:",
+          error
+        );
+      }
+    }
+
+
+    /* =========================
+       GALLERY
+    ========================= */
+
+    async function loadGallery() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/gallery`
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          !data.success
+        ) {
+          return;
+        }
+
+        galleryData =
+          data.gallery || [];
+
+        filteredGallery =
+          galleryData;
+
+        createGalleryFilters();
+
+        renderGallery();
+
+      } catch (error) {
+
+        console.error(
+          "Gallery error:",
+          error
+        );
+
+        document.getElementById(
+          "publicGallery"
+        ).innerHTML = `
+          <p>
+            Gallery load nahi hui.
+          </p>
+        `;
+      }
+    }
+
+
+    function createGalleryFilters() {
+
+      const container =
+        document.getElementById(
+          "galleryFilters"
+        );
+
+      const categories = [
+        ...new Set(
+          galleryData.map(
+            item =>
+              item.category
+          )
+        )
+      ];
+
+      container.innerHTML = "";
+
+      const allButton =
+        document.createElement(
+          "button"
+        );
+
+      allButton.className =
+        "filter-btn active";
+
+      allButton.textContent =
+        "All";
+
+      allButton.onclick =
+        () => {
+
+          filteredGallery =
+            galleryData;
+
+          setActiveFilter(
+            allButton
+          );
+
+          renderGallery();
+        };
+
+      container.appendChild(
+        allButton
+      );
+
+
+      categories.forEach(
+        category => {
+
+          const button =
+            document.createElement(
+              "button"
+            );
+
+          button.className =
+            "filter-btn";
+
+          button.textContent =
+            category;
+
+          button.onclick =
+            () => {
+
+              filteredGallery =
+                galleryData.filter(
+                  item =>
+                    item.category ===
+                    category
+                );
+
+              setActiveFilter(
+                button
+              );
+
+              renderGallery();
+            };
+
+          container.appendChild(
+            button
+          );
+
+        }
+      );
+    }
+
+
+    function setActiveFilter(
+      activeButton
+    ) {
+
+      document
+        .querySelectorAll(
+          ".filter-btn"
+        )
+        .forEach(
+          button =>
+            button.classList.remove(
+              "active"
+            )
+        );
+
+      activeButton.classList.add(
+        "active"
+      );
+    }
+
+
+    function renderGallery() {
+
+      const container =
+        document.getElementById(
+          "publicGallery"
+        );
+
+      container.innerHTML = "";
+
+      if (
+        !filteredGallery.length
+      ) {
+
+        container.innerHTML = `
+          <p>
+            Gallery मध्ये अजून photos नाहीत.
+          </p>
+        `;
+
+        return;
+      }
+
+
+      filteredGallery.forEach(
+        (item, index) => {
+
+          const imageUrl =
+            item.image_url.startsWith(
+              "http"
+            )
+              ? item.image_url
+              : API_BASE +
+                item.image_url;
+
+          const div =
+            document.createElement(
+              "div"
+            );
+
+          div.className =
+            "gallery-item";
+
+          div.innerHTML = `
+
+            <img
+              src="${imageUrl}"
+              alt="${escapeHtml(item.title)}"
+              loading="lazy"
+            />
+
+            <div class="gallery-overlay">
+
+              <h3>
+                ${escapeHtml(item.title)}
+              </h3>
+
+              <p>
+                ${escapeHtml(item.category)}
+              </p>
+
+            </div>
+
+          `;
+
+          div.onclick =
+            () => {
+
+              currentImageIndex =
+                index;
+
+              openLightbox(
+                imageUrl
+              );
+            };
+
+          container.appendChild(
+            div
+          );
+
+        }
+      );
+    }
+
+
+    /* =========================
+       LIGHTBOX
+    ========================= */
+
+    function openLightbox(
+      imageUrl
+    ) {
+
+      document.getElementById(
+        "lightboxImage"
+      ).src =
+        imageUrl;
+
+      document.getElementById(
+        "lightbox"
+      ).classList.add(
+        "active"
+      );
+    }
+
+
+    function closeLightbox() {
+
+      document.getElementById(
+        "lightbox"
+      ).classList.remove(
+        "active"
+      );
+    }
+
+
+    function previousImage() {
+
+      if (
+        !filteredGallery.length
+      ) {
+        return;
+      }
+
+      currentImageIndex =
+        (
+          currentImageIndex -
+          1 +
+          filteredGallery.length
+        ) %
+        filteredGallery.length;
+
+      showCurrentImage();
+    }
+
+
+    function nextImage() {
+
+      if (
+        !filteredGallery.length
+      ) {
+        return;
+      }
+
+      currentImageIndex =
+        (
+          currentImageIndex +
+          1
+        ) %
+        filteredGallery.length;
+
+      showCurrentImage();
+    }
+
+
+    function showCurrentImage() {
+
+      const item =
+        filteredGallery[
+          currentImageIndex
+        ];
+
+      if (!item) return;
+
+      const imageUrl =
+        item.image_url.startsWith(
+          "http"
+        )
+          ? item.image_url
+          : API_BASE +
+            item.image_url;
+
+      document.getElementById(
+        "lightboxImage"
+      ).src =
+        imageUrl;
+    }
+
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+
+        const lightbox =
+          document.getElementById(
+            "lightbox"
+          );
+
+        if (
+          !lightbox.classList.contains(
+            "active"
+          )
+        ) {
+          return;
+        }
+
+        if (
+          event.key === "Escape"
+        ) {
+          closeLightbox();
+        }
+
+        if (
+          event.key === "ArrowLeft"
+        ) {
+          previousImage();
+        }
+
+        if (
+          event.key === "ArrowRight"
+        ) {
+          nextImage();
+        }
+
+      }
+    );
+
+
+    /* =========================
+       ENQUIRY
+    ========================= */
+
+    document
+      .getElementById(
+        "enquiryForm"
+      )
+      .addEventListener(
+        "submit",
+        async function (event) {
+
+          event.preventDefault();
+
+
+          const messageBox =
+            document.getElementById(
+              "formMessage"
+            );
+
+
+          const payload = {
+
+            name:
+              document.getElementById(
+                "name"
+              ).value.trim(),
+
+            mobile:
+              document.getElementById(
+                "mobile"
+              ).value.trim(),
+
+            service:
+              document.getElementById(
+                "service"
+              ).value,
+
+            preferred_date:
+              document.getElementById(
+                "preferred_date"
+              ).value,
+
+            requirement:
+              document.getElementById(
+                "requirement"
+              ).value.trim(),
+
+            message:
+              document.getElementById(
+                "message"
+              ).value.trim()
+
+          };
+
+
+          try {
+
+            const response =
+              await fetch(
+                `${API_BASE}/api/enquiries`,
+                {
+                  method: "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+
+                  body:
+                    JSON.stringify(
+                      payload
+                    )
+                }
+              );
+
+
+            const data =
+              await response.json();
+
+
+            if (!response.ok) {
+
+              throw new Error(
+                data.message ||
+                "Enquiry failed."
+              );
+            }
+
+
+            messageBox.style.display =
+              "block";
+
+            messageBox.style.background =
+              "#dcfce7";
+
+            messageBox.style.color =
+              "#166534";
+
+            messageBox.textContent =
+              "आपली enquiry successfully submit झाली!";
+
+
+            this.reset();
+
+
+            setTimeout(
+              () => {
+
+                messageBox.style.display =
+                  "none";
+
+              },
+              5000
+            );
+
+
+          } catch (error) {
+
+            messageBox.style.display =
+              "block";
+
+            messageBox.style.background =
+              "#fee2e2";
+
+            messageBox.style.color =
+              "#991b1b";
+
+            messageBox.textContent =
+              error.message;
+
+          }
+
+        }
+      );
+
+
+    /* =========================
+       SECURITY HELPER
+    ========================= */
+
+    function escapeHtml(
+      value
+    ) {
+
+      return String(
+        value ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+    }
+
+
+    /* =========================
+       START
+    ========================= */
+
+    loadLogo();
+    loadSiteImages();
+    loadCategories();
+    loadGallery();
+
+  </script>
+
+</body>
+
+</html>

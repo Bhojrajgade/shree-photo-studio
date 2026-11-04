@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Admin Dashboard | Shree Photo Studio</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f6f9;
+      color: #222;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 18px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .header h1 {
+      font-size: 24px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-success {
+      background: #16a34a;
+      color: white;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: white;
+    }
+
+    .btn-warning {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .btn-dark {
+      background: #374151;
+      color: white;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1250px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .stat-card h3 {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .stat-card strong {
+      font-size: 30px;
+    }
+
+    .section {
+      background: white;
+      border-radius: 14px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .section h2 {
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+
+    .section-description {
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+
+    .upload-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .upload-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 18px;
+      background: #fafafa;
+    }
+
+    .upload-card h3 {
+      margin-bottom: 8px;
+    }
+
+    .upload-card p {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    .preview {
+      width: 100%;
+      height: 180px;
+      border-radius: 10px;
+      background: #e5e7eb;
+      object-fit: cover;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .file-input {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .logo-box {
+      max-width: 400px;
+    }
+
+    .logo-preview {
+      width: 220px;
+      height: 140px;
+      object-fit: contain;
+      background: #f3f4f6;
+      border-radius: 10px;
+      margin: 15px 0;
+      display: block;
+    }
+
+    .gallery-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      outline: none;
+      background: white;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #2563eb;
+    }
+
+    .gallery-preview {
+      width: 180px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: none;
+      margin-top: 10px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .gallery-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-info {
+      padding: 12px;
+    }
+
+    .gallery-info h4 {
+      margin-bottom: 5px;
+    }
+
+    .gallery-info p {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    th,
+    td {
+      padding: 13px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f9fafb;
+    }
+
+    .status {
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .status-new {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .status-contacted {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-completed {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .small-btn {
+      padding: 7px 10px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .message {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .message.success {
+      background: #dcfce7;
+      color: #166534;
+      display: block;
+    }
+
+    .message.error {
+      background: #fee2e2;
+      color: #991b1b;
+      display: block;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      width: min(600px, 100%);
+      background: white;
+      border-radius: 14px;
+      padding: 25px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .close {
+      border: none;
+      background: #ef4444;
+      color: white;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .detail-row {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .detail-row strong {
+      display: block;
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .stats,
+      .upload-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+
+      .header {
+        padding: 15px;
+      }
+
+      .gallery-form {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <h1>Shree Photo Studio</h1>
+
+    <div class="header-actions">
+      <button class="btn btn-primary" onclick="viewWebsite()">
+        View Website
+      </button>
+
+      <button class="btn btn-danger" onclick="logout()">
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- STATS -->
+    <div class="stats">
+
+      <div class="stat-card">
+        <h3>Total Enquiries</h3>
+        <strong id="totalEnquiries">0</strong>
+      </div>
+
+      <div class="stat-card">
+        <h3>New</h3>
+        <strong id="newEnquiries">0</strong>
+      </div>
+
+      <div class="stat-card">
+        <h3>Completed</h3>
+        <strong id="completedEnquiries">0</strong>
+      </div>
+
+    </div>
+
+
+    <!-- LOGO -->
+    <section class="section">
+
+      <h2>Website Logo</h2>
+
+      <p class="section-description">
+        Upload the logo/photo that will be used for Shree Photo Studio.
+      </p>
+
+      <div class="logo-box">
+
+        <img
+          id="logoPreview"
+          class="logo-preview"
+          src=""
+          alt="Logo Preview"
+        />
+
+        <input
+          type="file"
+          id="logoInput"
+          class="file-input"
+          accept="image/jpeg,image/png,image/webp"
+        />
+
+        <button
+          class="btn btn-primary"
+          onclick="uploadLogo()"
+        >
+          Upload Logo
+        </button>
+
+        <div id="logoMessage" class="message"></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- WEBSITE IMAGES -->
+    <section class="section">
+
+      <h2>Website Backgrounds & Images</h2>
+
+      <p class="section-description">
+        Yahan se website ke main photos change kar sakte ho.
+        Photo upload karne ke baad website refresh karo.
+      </p>
+
+      <div class="upload-grid">
+
+        <!-- HERO -->
+        <div class="upload-card">
+
+          <h3>Hero Background</h3>
+
+          <p>
+            Website ke top/hero section ki background photo.
+          </p>
+
+          <img
+            id="heroPreview"
+            class="preview"
+            src=""
+            alt="Hero Background"
+          />
+
+          <input
+            type="file"
+            id="heroInput"
+            class="file-input"
+            accept="image/jpeg,image/png,image/webp"
+          />
+
+          <button
+            class="btn btn-primary"
+            onclick="uploadSiteImage('hero')"
+          >
+            Upload Hero
+          </button>
+
+          <div
+            id="heroMessage"
+            class="message"
+          ></div>
+
+        </div>
+
+
+        <!-- FEATURE -->
+        <div class="upload-card">
+
+          <h3>Why Choose Us Image</h3>
+
+          <p>
+            Why Choose Us / feature section ki photo.
+          </p>
+
+          <img
+            id="featurePreview"
+            class="preview"
+            src=""
+            alt="Feature Image"
+          />
+
+          <input
+            type="file"
+            id="featureInput"
+            class="file-input"
+            accept="image/jpeg,image/png,image/webp"
+          />
+
+          <button
+            class="btn btn-primary"
+            onclick="uploadSiteImage('feature')"
+          >
+            Upload Feature
+          </button>
+
+          <div
+            id="featureMessage"
+            class="message"
+          ></div>
+
+        </div>
+
+
+        <!-- ABOUT -->
+        <div class="upload-card">
+
+          <h3>About Section Image</h3>
+
+          <p>
+            About section mein dikhne wali photo.
+          </p>
+
+          <img
+            id="aboutPreview"
+            class="preview"
+            src=""
+            alt="About Image"
+          />
+
+          <input
+            type="file"
+            id="aboutInput"
+            class="file-input"
+            accept="image/jpeg,image/png,image/webp"
+          />
+
+          <button
+            class="btn btn-primary"
+            onclick="uploadSiteImage('about')"
+          >
+            Upload About
+          </button>
+
+          <div
+            id="aboutMessage"
+            class="message"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- GALLERY -->
+    <section class="section">
+
+      <h2>Gallery Management</h2>
+
+      <p class="section-description">
+        Website gallery mein new photos add karo.
+      </p>
+
+      <div class="gallery-form">
+
+        <input
+          type="text"
+          id="galleryTitle"
+          placeholder="Photo title"
+        />
+
+        <select id="galleryCategory">
+          <option value="">
+            Select Category
+          </option>
+        </select>
+
+        <input
+          type="file"
+          id="galleryImage"
+          class="full"
+          accept="image/jpeg,image/png,image/webp"
+        />
+
+        <div class="full">
+          <img
+            id="galleryPreview"
+            class="gallery-preview"
+            src=""
+            alt="Gallery Preview"
+          />
+        </div>
+
+        <button
+          class="btn btn-success full"
+          onclick="uploadGallery()"
+        >
+          Upload Gallery Photo
+        </button>
+
+      </div>
+
+      <div
+        id="galleryMessage"
+        class="message"
+      ></div>
+
+      <div
+        id="galleryGrid"
+        class="gallery-grid"
+      ></div>
+
+    </section>
+
+
+    <!-- ENQUIRIES -->
+    <section class="section">
+
+      <h2>Customer Enquiries</h2>
+
+      <p class="section-description">
+        Manage customer enquiries and their current status.
+      </p>
+
+      <div
+        style="
+          display:flex;
+          gap:10px;
+          margin-bottom:18px;
+          flex-wrap:wrap;
+        "
+      >
+
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search name, mobile or service..."
+          style="max-width:350px;"
+          oninput="renderEnquiries()"
+        />
+
+        <select
+          id="statusFilter"
+          style="max-width:180px;"
+          onchange="renderEnquiries()"
+        >
+          <option value="All">All Status</option>
+          <option value="New">New</option>
+          <option value="Contacted">Contacted</option>
+          <option value="Completed">Completed</option>
+        </select>
+
+        <button
+          class="btn btn-dark"
+          onclick="loadEnquiries()"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+      <div
+        id="enquiryMessage"
+        class="message"
+      ></div>
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Mobile</th>
+              <th>Service</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="enquiryTableBody">
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- DETAILS MODAL -->
+  <div
+    id="detailsModal"
+    class="modal"
+    onclick="closeModal(event)"
+  >
+
+    <div
+      class="modal-content"
+      onclick="event.stopPropagation()"
+    >
+
+      <div class="modal-header">
+
+        <h2>Enquiry Details</h2>
+
+        <button
+          class="close"
+          onclick="closeDetailsModal()"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div id="detailsContent"></div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const API_BASE =
+      "http://localhost:5000";
+
+    const adminToken =
+      localStorage.getItem("adminToken");
+
+    let enquiries = [];
+
+    /* =========================
+       AUTH CHECK
+    ========================= */
+
+    if (!adminToken) {
+      window.location.href =
+        "admin-login.html";
+    }
+
+    const authHeaders = {
+      "Authorization":
+        `Bearer ${adminToken}`
+    };
+
+
+    /* =========================
+       WEBSITE
+    ========================= */
+
+    function viewWebsite() {
+      window.open(
+        "index.html",
+        "_blank"
+      );
+    }
+
+
+    function logout() {
+
+      localStorage.removeItem(
+        "adminToken"
+      );
+
+      localStorage.removeItem(
+        "adminUser"
+      );
+
+      window.location.href =
+        "admin-login.html";
+    }
+
+
+    /* =========================
+       MESSAGE
+    ========================= */
+
+    function showMessage(
+      elementId,
+      message,
+      type = "success"
+    ) {
+
+      const element =
+        document.getElementById(
+          elementId
+        );
+
+      element.textContent =
+        message;
+
+      element.className =
+        `message ${type}`;
+
+      setTimeout(() => {
+        element.className =
+          "message";
+      }, 4000);
+    }
+
+
+    /* =========================
+       LOGO
+    ========================= */
+
+    async function loadLogo() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/logo`
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          data.success &&
+          data.logo
+        ) {
+          document.getElementById(
+            "logoPreview"
+          ).src =
+            `${data.logo}?t=${Date.now()}`;
+        }
+
+      } catch (error) {
+        console.error(
+          "Logo load error:",
+          error
+        );
+      }
+    }
+
+
+    async function uploadLogo() {
+
+      const input =
+        document.getElementById(
+          "logoInput"
+        );
+
+      if (!input.files.length) {
+
+        showMessage(
+          "logoMessage",
+          "Please select a logo.",
+          "error"
+        );
+
+        return;
+      }
+
+      const formData =
+        new FormData();
+
+      formData.append(
+        "logo",
+        input.files[0]
+      );
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/upload-logo`,
+            {
+              method: "POST",
+              headers: authHeaders,
+              body: formData
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message ||
+            "Logo upload failed."
+          );
+        }
+
+        document.getElementById(
+          "logoPreview"
+        ).src =
+          `${data.image_url}?t=${Date.now()}`;
+
+        input.value = "";
+
+        showMessage(
+          "logoMessage",
+          "Logo uploaded successfully."
+        );
+
+      } catch (error) {
+
+        showMessage(
+          "logoMessage",
+          error.message,
+          "error"
+        );
+      }
+    }
+
+
+    /* =========================
+       WEBSITE IMAGES
+    ========================= */
+
+    async function loadSiteImages() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/site-images`
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          !data.success ||
+          !data.images
+        ) {
+          return;
+        }
+
+        if (data.images.hero) {
+          document.getElementById(
+            "heroPreview"
+          ).src =
+            `${data.images.hero}?t=${Date.now()}`;
+        }
+
+        if (data.images.feature) {
+          document.getElementById(
+            "featurePreview"
+          ).src =
+            `${data.images.feature}?t=${Date.now()}`;
+        }
+
+        if (data.images.about) {
+          document.getElementById(
+            "aboutPreview"
+          ).src =
+            `${data.images.about}?t=${Date.now()}`;
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Site images error:",
+          error
+        );
+      }
+    }
+
+
+    async function uploadSiteImage(
+      type
+    ) {
+
+      const input =
+        document.getElementById(
+          `${type}Input`
+        );
+
+      if (!input.files.length) {
+
+        showMessage(
+          `${type}Message`,
+          "Please select an image.",
+          "error"
+        );
+
+        return;
+      }
+
+      const formData =
+        new FormData();
+
+      formData.append(
+        "image",
+        input.files[0]
+      );
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/site-images/${type}`,
+            {
+              method: "POST",
+              headers: authHeaders,
+              body: formData
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message ||
+            "Image upload failed."
+          );
+        }
+
+        document.getElementById(
+          `${type}Preview`
+        ).src =
+          `${data.image_url}?t=${Date.now()}`;
+
+        input.value = "";
+
+        showMessage(
+          `${type}Message`,
+          "Image updated successfully."
+        );
+
+      } catch (error) {
+
+        showMessage(
+          `${type}Message`,
+          error.message,
+          "error"
+        );
+      }
+    }
+
+
+    /* =========================
+       CATEGORIES
+    ========================= */
+
+    async function loadCategories() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/categories`
+          );
+
+        const data =
+          await response.json();
+
+        const select =
+          document.getElementById(
+            "galleryCategory"
+          );
+
+        select.innerHTML =
+          `<option value="">Select Category</option>`;
+
+        if (
+          data.success &&
+          data.categories
+        ) {
+
+          data.categories.forEach(
+            category => {
+
+              const option =
+                document.createElement(
+                  "option"
+                );
+
+              option.value =
+                category.name;
+
+              option.textContent =
+                category.name;
+
+              select.appendChild(
+                option
+              );
+            }
+          );
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Category error:",
+          error
+        );
+      }
+    }
+
+
+    /* =========================
+       GALLERY PREVIEW
+    ========================= */
+
+    document
+      .getElementById("galleryImage")
+      .addEventListener(
+        "change",
+        function () {
+
+          const file =
+            this.files[0];
+
+          const preview =
+            document.getElementById(
+              "galleryPreview"
+            );
+
+          if (!file) {
+
+            preview.style.display =
+              "none";
+
+            return;
+          }
+
+          preview.src =
+            URL.createObjectURL(file);
+
+          preview.style.display =
+            "block";
+        }
+      );
+
+
+    /* =========================
+       GALLERY UPLOAD
+    ========================= */
+
+    async function uploadGallery() {
+
+      const title =
+        document.getElementById(
+          "galleryTitle"
+        ).value.trim();
+
+      const category =
+        document.getElementById(
+          "galleryCategory"
+        ).value;
+
+      const image =
+        document.getElementById(
+          "galleryImage"
+        ).files[0];
+
+      if (!title) {
+
+        showMessage(
+          "galleryMessage",
+          "Please enter photo title.",
+          "error"
+        );
+
+        return;
+      }
+
+      if (!category) {
+
+        showMessage(
+          "galleryMessage",
+          "Please select category.",
+          "error"
+        );
+
+        return;
+      }
+
+      if (!image) {
+
+        showMessage(
+          "galleryMessage",
+          "Please select an image.",
+          "error"
+        );
+
+        return;
+      }
+
+      const formData =
+        new FormData();
+
+      formData.append(
+        "title",
+        title
+      );
+
+      formData.append(
+        "category",
+        category
+      );
+
+      formData.append(
+        "image",
+        image
+      );
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/gallery`,
+            {
+              method: "POST",
+              headers: authHeaders,
+              body: formData
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message ||
+            "Gallery upload failed."
+          );
+        }
+
+        document.getElementById(
+          "galleryTitle"
+        ).value = "";
+
+        document.getElementById(
+          "galleryCategory"
+        ).value = "";
+
+        document.getElementById(
+          "galleryImage"
+        ).value = "";
+
+        document.getElementById(
+          "galleryPreview"
+        ).style.display =
+          "none";
+
+        showMessage(
+          "galleryMessage",
+          "Gallery photo uploaded successfully."
+        );
+
+        loadGallery();
+
+      } catch (error) {
+
+        showMessage(
+          "galleryMessage",
+          error.message,
+          "error"
+        );
+      }
+    }
+
+
+    /* =========================
+       LOAD GALLERY
+    ========================= */
+
+    async function loadGallery() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/gallery`
+          );
+
+        const data =
+          await response.json();
+
+        const grid =
+          document.getElementById(
+            "galleryGrid"
+          );
+
+        grid.innerHTML = "";
+
+        if (
+          !data.success ||
+          !data.gallery.length
+        ) {
+
+          grid.innerHTML =
+            `<p>No gallery photos yet.</p>`;
+
+          return;
+        }
+
+        data.gallery.forEach(
+          item => {
+
+            const imageUrl =
+              item.image_url.startsWith(
+                "http"
+              )
+                ? item.image_url
+                : API_BASE +
+                  item.image_url;
+
+            const card =
+              document.createElement(
+                "div"
+              );
+
+            card.className =
+              "gallery-item";
+
+            card.innerHTML = `
+              <img
+                src="${imageUrl}"
+                alt="${escapeHtml(item.title)}"
+              />
+
+              <div class="gallery-info">
+
+                <h4>
+                  ${escapeHtml(item.title)}
+                </h4>
+
+                <p>
+                  ${escapeHtml(item.category)}
+                </p>
+
+                <button
+                  class="btn btn-danger"
+                  onclick="deleteGallery(${item.id})"
+                >
+                  Delete
+                </button>
+
+              </div>
+            `;
+
+            grid.appendChild(
+              card
+            );
+          }
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Gallery load error:",
+          error
+        );
+      }
+    }
+
+
+    async function deleteGallery(id) {
+
+      if (
+        !confirm(
+          "Delete this gallery photo?"
+        )
+      ) {
+        return;
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/gallery/${id}`,
+            {
+              method: "DELETE",
+              headers: authHeaders
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message ||
+            "Delete failed."
+          );
+        }
+
+        loadGallery();
+
+      } catch (error) {
+
+        alert(
+          error.message
+        );
+      }
+    }
+
+
+    /* =========================
+       ENQUIRIES
+    ========================= */
+
+    async function loadEnquiries() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/enquiries`,
+            {
+              headers: authHeaders
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          response.status === 401
+        ) {
+
+          logout();
+
+          return;
+        }
+
+        if (!data.success) {
+          throw new Error(
+            data.message ||
+            "Failed to load enquiries."
+          );
+        }
+
+        enquiries =
+          data.enquiries || [];
+
+        updateStats();
+
+        renderEnquiries();
+
+      } catch (error) {
+
+        showMessage(
+          "enquiryMessage",
+          error.message,
+          "error"
+        );
+      }
+    }
+
+
+    function updateStats() {
+
+      const total =
+        enquiries.length;
+
+      const newCount =
+        enquiries.filter(
+          item =>
+            item.status === "New"
+        ).length;
+
+      const completedCount =
+        enquiries.filter(
+          item =>
+            item.status ===
+            "Completed"
+        ).length;
+
+      document.getElementById(
+        "totalEnquiries"
+      ).textContent =
+        total;
+
+      document.getElementById(
+        "newEnquiries"
+      ).textContent =
+        newCount;
+
+      document.getElementById(
+        "completedEnquiries"
+      ).textContent =
+        completedCount;
+    }
+
+
+    function renderEnquiries() {
+
+      const tbody =
+        document.getElementById(
+          "enquiryTableBody"
+        );
+
+      const search =
+        document.getElementById(
+          "searchInput"
+        ).value
+          .toLowerCase()
+          .trim();
+
+      const status =
+        document.getElementById(
+          "statusFilter"
+        ).value;
+
+      const filtered =
+        enquiries.filter(
+          item => {
+
+            const matchesSearch =
+              !search ||
+              String(item.name || "")
+                .toLowerCase()
+                .includes(search) ||
+              String(item.mobile || "")
+                .toLowerCase()
+                .includes(search) ||
+              String(item.service || "")
+                .toLowerCase()
+                .includes(search);
+
+            const matchesStatus =
+              status === "All" ||
+              item.status === status;
+
+            return (
+              matchesSearch &&
+              matchesStatus
+            );
+          }
+        );
+
+      tbody.innerHTML = "";
+
+      if (!filtered.length) {
+
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7">
+              No enquiries found.
+            </td>
+          </tr>
+        `;
+
+        return;
+      }
+
+      filtered.forEach(
+        item => {
+
+          const tr =
+            document.createElement(
+              "tr"
+            );
+
+          const statusClass =
+            item.status === "New"
+              ? "status-new"
+              : item.status ===
+                "Contacted"
+              ? "status-contacted"
+              : "status-completed";
+
+          tr.innerHTML = `
+
+            <td>${item.id}</td>
+
+            <td>
+              ${escapeHtml(item.name)}
+            </td>
+
+            <td>
+              ${escapeHtml(item.mobile)}
+            </td>
+
+            <td>
+              ${escapeHtml(item.service || "-")}
+            </td>
+
+            <td>
+              ${item.preferred_date || "-"}
+            </td>
+
+            <td>
+
+              <span
+                class="status ${statusClass}"
+              >
+                ${escapeHtml(item.status)}
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  class="small-btn btn-primary"
+                  onclick="viewEnquiry(${item.id})"
+                >
+                  View
+                </button>
+
+                <button
+                  class="small-btn btn-success"
+                  onclick="callCustomer('${escapeAttr(item.mobile)}')"
+                >
+                  Call
+                </button>
+
+                <button
+                  class="small-btn btn-success"
+                  onclick="whatsappCustomer('${escapeAttr(item.mobile)}')"
+                >
+                  WhatsApp
+                </button>
+
+                <select
+                  class="small-btn"
+                  onchange="updateStatus(${item.id}, this.value)"
+                >
+                  <option
+                    value="New"
+                    ${item.status === "New" ? "selected" : ""}
+                  >
+                    New
+                  </option>
+
+                  <option
+                    value="Contacted"
+                    ${item.status === "Contacted" ? "selected" : ""}
+                  >
+                    Contacted
+                  </option>
+
+                  <option
+                    value="Completed"
+                    ${item.status === "Completed" ? "selected" : ""}
+                  >
+                    Completed
+                  </option>
+
+                </select>
+
+                <button
+                  class="small-btn btn-danger"
+                  onclick="deleteEnquiry(${item.id})"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </td>
+          `;
+
+          tbody.appendChild(
+            tr
+          );
+        }
+      );
+    }
+
+
+    async function updateStatus(
+      id,
+      status
+    ) {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/enquiries/${id}/status`,
+            {
+              method: "PATCH",
+              headers: {
+                ...authHeaders,
+                "Content-Type":
+                  "application/json"
+              },
+              body: JSON.stringify({
+                status
+              })
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message ||
+            "Status update failed."
+          );
+        }
+
+        await loadEnquiries();
+
+      } catch (error) {
+
+        alert(
+          error.message
+        );
+      }
+    }
+
+
+    async function deleteEnquiry(
+      id
+    ) {
+
+      if (
+        !confirm(
+          "Delete this enquiry?"
+        )
+      ) {
+        return;
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/enquiries/${id}`,
+            {
+              method: "DELETE",
+              headers: authHeaders
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message ||
+            "Delete failed."
+          );
+        }
+
+        loadEnquiries();
+
+      } catch (error) {
+
+        alert(
+          error.message
+        );
+      }
+    }
+
+
+    /* =========================
+       ENQUIRY DETAILS
+    ========================= */
+
+    function viewEnquiry(id) {
+
+      const item =
+        enquiries.find(
+          enquiry =>
+            enquiry.id === id
+        );
+
+      if (!item) return;
+
+      document.getElementById(
+        "detailsContent"
+      ).innerHTML = `
+
+        <div class="detail-row">
+          <strong>Name</strong>
+          ${escapeHtml(item.name)}
+        </div>
+
+        <div class="detail-row">
+          <strong>Mobile</strong>
+          ${escapeHtml(item.mobile)}
+        </div>
+
+        <div class="detail-row">
+          <strong>Service</strong>
+          ${escapeHtml(item.service || "-")}
+        </div>
+
+        <div class="detail-row">
+          <strong>Preferred Date</strong>
+          ${escapeHtml(item.preferred_date || "-")}
+        </div>
+
+        <div class="detail-row">
+          <strong>Requirement</strong>
+          ${escapeHtml(item.requirement || "-")}
+        </div>
+
+        <div class="detail-row">
+          <strong>Message</strong>
+          ${escapeHtml(item.message || "-")}
+        </div>
+
+        <div class="detail-row">
+          <strong>Status</strong>
+          ${escapeHtml(item.status)}
+        </div>
+
+      `;
+
+      document.getElementById(
+        "detailsModal"
+      ).style.display =
+        "flex";
+    }
+
+
+    function closeDetailsModal() {
+
+      document.getElementById(
+        "detailsModal"
+      ).style.display =
+        "none";
+    }
+
+
+    function closeModal(event) {
+
+      if (
+        event.target.id ===
+        "detailsModal"
+      ) {
+        closeDetailsModal();
+      }
+    }
+
+
+    /* =========================
+       CALL / WHATSAPP
+    ========================= */
+
+    function callCustomer(
+      mobile
+    ) {
+      window.location.href =
+        `tel:${mobile}`;
+    }
+
+
+    function whatsappCustomer(
+      mobile
+    ) {
+
+      const clean =
+        String(mobile)
+          .replace(/\D/g, "");
+
+      window.open(
+        `https://wa.me/91${clean}`,
+        "_blank"
+      );
+    }
+
+
+    /* =========================
+       SECURITY HELPERS
+    ========================= */
+
+    function escapeHtml(
+      value
+    ) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+
+    function escapeAttr(
+      value
+    ) {
+
+      return String(value ?? "")
+        .replace(/'/g, "\\'");
+    }
+
+
+    /* =========================
+       INITIAL LOAD
+    ========================= */
+
+    loadLogo();
+    loadSiteImages();
+    loadCategories();
+    loadGallery();
+    loadEnquiries();
+
+  </script>
+
+</body>
+
+</html>
