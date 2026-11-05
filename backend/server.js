@@ -627,8 +627,8 @@ app.post(
       res.json({
         success: true,
         message: "Logo uploaded successfully.",
-        image_url:
-          `http://localhost:${PORT}${imageUrl}`,
+       image_url:
+  `${req.protocol}://${req.get("host")}${imageUrl}`,
       });
     } catch (error) {
       console.error(
@@ -671,8 +671,8 @@ app.get(
 
       res.json({
         success: true,
-        logo:
-          `http://localhost:${PORT}/uploads/${latestLogo}`,
+       logo:
+  `${req.protocol}://${req.get("host")}/uploads/${latestLogo}`,
       });
     } catch (error) {
       console.error(
@@ -915,8 +915,8 @@ app.get(
       const images = {};
 
       result.rows.forEach((row) => {
-        images[row.image_type] =
-          `http://localhost:${PORT}${row.image_url}`;
+      images[row.image_type] =
+  `${req.protocol}://${req.get("host")}${row.image_url}`;
       });
 
       res.json({
@@ -1059,7 +1059,7 @@ app.post(
           `${imageType} image updated successfully.`,
         image_type: imageType,
         image_url:
-          `http://localhost:${PORT}${imageUrl}`,
+  `${req.protocol}://${req.get("host")}${imageUrl}`,
       });
     } catch (error) {
       console.error(

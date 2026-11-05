@@ -165,7 +165,7 @@
           rgba(0, 0, 0, 0.82),
           rgba(0, 0, 0, 0.30)
         ),
-        url("assets/images/hero.jpg")
+        none
         center / cover
         no-repeat;
 
@@ -1458,14 +1458,11 @@
 
       <div class="feature-image">
 
-        <img
-          id="featureImage"
-          src="assets/images/studio.jpg"
-          alt="Shree Photo Studio"
-          onerror="
-            this.src='assets/images/hero.jpg';
-          "
-        />
+       <img
+  id="featureImage"
+  alt="Shree Photo Studio"
+  style="display:none;"
+/>
 
       </div>
 
@@ -1727,14 +1724,10 @@
       <div class="about-image">
 
         <img
-          id="aboutImage"
-          src="assets/images/studio.jpg"
-          alt="Shree Photo Studio"
-          onerror="
-            this.src='assets/images/hero.jpg';
-          "
-        />
-
+  id="aboutImage"
+  alt="Shree Photo Studio"
+  style="display:none;"
+/>
       </div>
 
     </div>
@@ -2171,22 +2164,28 @@
 
         if (data.images.feature) {
 
-          document.getElementById(
-            "featureImage"
-          ).src =
-            `${data.images.feature}?t=${Date.now()}`;
-        }
+  const featureImage =
+    document.getElementById("featureImage");
+
+  featureImage.src =
+    `${data.images.feature}?t=${Date.now()}`;
+
+  featureImage.style.display = "block";
+}
 
 
         /* ABOUT */
 
-        if (data.images.about) {
+       if (data.images.about) {
 
-          document.getElementById(
-            "aboutImage"
-          ).src =
-            `${data.images.about}?t=${Date.now()}`;
-        }
+  const aboutImage =
+    document.getElementById("aboutImage");
+
+  aboutImage.src =
+    `${data.images.about}?t=${Date.now()}`;
+
+  aboutImage.style.display = "block";
+}
 
       } catch (error) {
 
