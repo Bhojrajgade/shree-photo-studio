@@ -85,6 +85,11 @@
       opacity: 0.9;
     }
 
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .container {
       max-width: 1250px;
       margin: auto;
@@ -335,6 +340,12 @@
       display: block;
     }
 
+    .message.info {
+      background: #dbeafe;
+      color: #1d4ed8;
+      display: block;
+    }
+
     .modal {
       position: fixed;
       inset: 0;
@@ -423,22 +434,36 @@
 <body>
 
   <header class="header">
+
     <h1>Shree Photo Studio</h1>
 
     <div class="header-actions">
-      <button class="btn btn-primary" onclick="viewWebsite()">
+
+      <button
+        class="btn btn-primary"
+        onclick="viewWebsite()"
+      >
         View Website
       </button>
 
-      <button class="btn btn-danger" onclick="logout()">
+      <button
+        class="btn btn-danger"
+        onclick="logout()"
+      >
         Logout
       </button>
+
     </div>
+
   </header>
+
 
   <main class="container">
 
-    <!-- STATS -->
+    <!-- =========================
+         STATS
+    ========================== -->
+
     <div class="stats">
 
       <div class="stat-card">
@@ -459,7 +484,10 @@
     </div>
 
 
-    <!-- LOGO -->
+    <!-- =========================
+         LOGO
+    ========================== -->
+
     <section class="section">
 
       <h2>Website Logo</h2>
@@ -485,32 +513,45 @@
         />
 
         <button
+          id="logoUploadButton"
           class="btn btn-primary"
           onclick="uploadLogo()"
         >
           Upload Logo
         </button>
 
-        <div id="logoMessage" class="message"></div>
+        <div
+          id="logoMessage"
+          class="message"
+        ></div>
 
       </div>
 
     </section>
 
 
-    <!-- WEBSITE IMAGES -->
+    <!-- =========================
+         WEBSITE IMAGES
+    ========================== -->
+
     <section class="section">
 
       <h2>Website Backgrounds & Images</h2>
 
       <p class="section-description">
         Yahan se website ke main photos change kar sakte ho.
-        Photo upload karne ke baad website refresh karo.
+        Photo select karne ke baad preview dikhega.
+        Upload ke baad website refresh karo.
       </p>
+
 
       <div class="upload-grid">
 
-        <!-- HERO -->
+
+        <!-- =========================
+             HERO
+        ========================== -->
+
         <div class="upload-card">
 
           <h3>Hero Background</h3>
@@ -534,6 +575,7 @@
           />
 
           <button
+            id="heroUploadButton"
             class="btn btn-primary"
             onclick="uploadSiteImage('hero')"
           >
@@ -548,7 +590,10 @@
         </div>
 
 
-        <!-- FEATURE -->
+        <!-- =========================
+             FEATURE
+        ========================== -->
+
         <div class="upload-card">
 
           <h3>Why Choose Us Image</h3>
@@ -572,6 +617,7 @@
           />
 
           <button
+            id="featureUploadButton"
             class="btn btn-primary"
             onclick="uploadSiteImage('feature')"
           >
@@ -586,7 +632,10 @@
         </div>
 
 
-        <!-- ABOUT -->
+        <!-- =========================
+             ABOUT
+        ========================== -->
+
         <div class="upload-card">
 
           <h3>About Section Image</h3>
@@ -610,6 +659,7 @@
           />
 
           <button
+            id="aboutUploadButton"
             class="btn btn-primary"
             onclick="uploadSiteImage('about')"
           >
@@ -628,7 +678,10 @@
     </section>
 
 
-    <!-- GALLERY -->
+    <!-- =========================
+         GALLERY
+    ========================== -->
+
     <section class="section">
 
       <h2>Gallery Management</h2>
@@ -646,9 +699,11 @@
         />
 
         <select id="galleryCategory">
+
           <option value="">
             Select Category
           </option>
+
         </select>
 
         <input
@@ -659,12 +714,14 @@
         />
 
         <div class="full">
+
           <img
             id="galleryPreview"
             class="gallery-preview"
             src=""
             alt="Gallery Preview"
           />
+
         </div>
 
         <button
@@ -689,7 +746,10 @@
     </section>
 
 
-    <!-- ENQUIRIES -->
+    <!-- =========================
+         ENQUIRIES
+    ========================== -->
+
     <section class="section">
 
       <h2>Customer Enquiries</h2>
@@ -697,6 +757,7 @@
       <p class="section-description">
         Manage customer enquiries and their current status.
       </p>
+
 
       <div
         style="
@@ -720,10 +781,23 @@
           style="max-width:180px;"
           onchange="renderEnquiries()"
         >
-          <option value="All">All Status</option>
-          <option value="New">New</option>
-          <option value="Contacted">Contacted</option>
-          <option value="Completed">Completed</option>
+
+          <option value="All">
+            All Status
+          </option>
+
+          <option value="New">
+            New
+          </option>
+
+          <option value="Contacted">
+            Contacted
+          </option>
+
+          <option value="Completed">
+            Completed
+          </option>
+
         </select>
 
         <button
@@ -735,17 +809,21 @@
 
       </div>
 
+
       <div
         id="enquiryMessage"
         class="message"
       ></div>
+
 
       <div class="table-wrap">
 
         <table>
 
           <thead>
+
             <tr>
+
               <th>ID</th>
               <th>Name</th>
               <th>Mobile</th>
@@ -753,11 +831,12 @@
               <th>Date</th>
               <th>Status</th>
               <th>Actions</th>
+
             </tr>
+
           </thead>
 
-          <tbody id="enquiryTableBody">
-          </tbody>
+          <tbody id="enquiryTableBody"></tbody>
 
         </table>
 
@@ -768,7 +847,10 @@
   </main>
 
 
-  <!-- DETAILS MODAL -->
+  <!-- =========================
+       DETAILS MODAL
+  ========================== -->
+
   <div
     id="detailsModal"
     class="modal"
@@ -802,21 +884,28 @@
 
   <script>
 
-    const API_BASE = "https://shree-photo-studio.onrender.com";
+    const API_BASE =
+      "https://shree-photo-studio.onrender.com";
+
 
     const adminToken =
       localStorage.getItem("adminToken");
 
+
     let enquiries = [];
+
 
     /* =========================
        AUTH CHECK
-    ========================= */
+    ========================== */
 
     if (!adminToken) {
+
       window.location.href =
         "admin-login.html";
+
     }
+
 
     const authHeaders = {
       "Authorization":
@@ -826,13 +915,15 @@
 
     /* =========================
        WEBSITE
-    ========================= */
+    ========================== */
 
     function viewWebsite() {
+
       window.open(
         "index.html",
         "_blank"
       );
+
     }
 
 
@@ -848,12 +939,13 @@
 
       window.location.href =
         "admin-login.html";
+
     }
 
 
     /* =========================
        MESSAGE
-    ========================= */
+    ========================== */
 
     function showMessage(
       elementId,
@@ -866,22 +958,28 @@
           elementId
         );
 
+
       element.textContent =
         message;
+
 
       element.className =
         `message ${type}`;
 
+
       setTimeout(() => {
+
         element.className =
           "message";
-      }, 4000);
+
+      }, 5000);
+
     }
 
 
     /* =========================
        LOGO
-    ========================= */
+    ========================== */
 
     async function loadLogo() {
 
@@ -892,25 +990,32 @@
             `${API_BASE}/api/admin/logo`
           );
 
+
         const data =
           await response.json();
+
 
         if (
           data.success &&
           data.logo
         ) {
+
           document.getElementById(
             "logoPreview"
           ).src =
             `${data.logo}?t=${Date.now()}`;
+
         }
 
       } catch (error) {
+
         console.error(
           "Logo load error:",
           error
         );
+
       }
+
     }
 
 
@@ -921,6 +1026,13 @@
           "logoInput"
         );
 
+
+      const button =
+        document.getElementById(
+          "logoUploadButton"
+        );
+
+
       if (!input.files.length) {
 
         showMessage(
@@ -930,15 +1042,31 @@
         );
 
         return;
+
       }
+
 
       const formData =
         new FormData();
+
 
       formData.append(
         "logo",
         input.files[0]
       );
+
+
+      button.disabled = true;
+      button.textContent =
+        "Uploading...";
+
+
+      showMessage(
+        "logoMessage",
+        "Uploading logo...",
+        "info"
+      );
+
 
       try {
 
@@ -952,42 +1080,67 @@
             }
           );
 
+
         const data =
           await response.json();
 
+
         if (!response.ok) {
+
           throw new Error(
             data.message ||
             "Logo upload failed."
           );
+
         }
+
 
         document.getElementById(
           "logoPreview"
         ).src =
           `${data.image_url}?t=${Date.now()}`;
 
+
         input.value = "";
+
 
         showMessage(
           "logoMessage",
-          "Logo uploaded successfully."
+          "Logo uploaded successfully.",
+          "success"
         );
+
 
       } catch (error) {
 
+        console.error(
+          "Logo upload error:",
+          error
+        );
+
+
         showMessage(
           "logoMessage",
-          error.message,
+          error.message ||
+          "Logo upload failed.",
           "error"
         );
+
+
+      } finally {
+
+        button.disabled = false;
+        button.textContent =
+          "Upload Logo";
+
       }
+
     }
 
 
     /* =========================
        WEBSITE IMAGES
-    ========================= */
+    ========================== */
 
     async function loadSiteImages() {
 
@@ -998,36 +1151,50 @@
             `${API_BASE}/api/site-images`
           );
 
+
         const data =
           await response.json();
+
 
         if (
           !data.success ||
           !data.images
         ) {
+
           return;
+
         }
 
+
         if (data.images.hero) {
+
           document.getElementById(
             "heroPreview"
           ).src =
             `${data.images.hero}?t=${Date.now()}`;
+
         }
 
+
         if (data.images.feature) {
+
           document.getElementById(
             "featurePreview"
           ).src =
             `${data.images.feature}?t=${Date.now()}`;
+
         }
 
+
         if (data.images.about) {
+
           document.getElementById(
             "aboutPreview"
           ).src =
             `${data.images.about}?t=${Date.now()}`;
+
         }
+
 
       } catch (error) {
 
@@ -1035,9 +1202,81 @@
           "Site images error:",
           error
         );
+
       }
+
     }
 
+
+    /* =========================
+       SELECTED IMAGE PREVIEW
+    ========================== */
+
+    ["hero", "feature", "about"].forEach(
+      type => {
+
+        const input =
+          document.getElementById(
+            `${type}Input`
+          );
+
+
+        const preview =
+          document.getElementById(
+            `${type}Preview`
+          );
+
+
+        input.addEventListener(
+          "change",
+          function () {
+
+            const file =
+              this.files[0];
+
+
+            if (!file) {
+
+              return;
+
+            }
+
+
+            if (!file.type.startsWith("image/")) {
+
+              showMessage(
+                `${type}Message`,
+                "Please select a valid image file.",
+                "error"
+              );
+
+              this.value = "";
+
+              return;
+
+            }
+
+
+            preview.src =
+              URL.createObjectURL(file);
+
+
+            showMessage(
+              `${type}Message`,
+              `Selected: ${file.name}`,
+              "info"
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    /* =========================
+       WEBSITE IMAGE UPLOAD
+    ========================== */
 
     async function uploadSiteImage(
       type
@@ -1048,24 +1287,64 @@
           `${type}Input`
         );
 
+
+      const button =
+        document.getElementById(
+          `${type}UploadButton`
+        );
+
+
       if (!input.files.length) {
 
         showMessage(
           `${type}Message`,
-          "Please select an image.",
+          "Please select an image first.",
           "error"
         );
 
         return;
+
       }
+
+
+      const file =
+        input.files[0];
+
+
+      if (!file.type.startsWith("image/")) {
+
+        showMessage(
+          `${type}Message`,
+          "Please select a valid image file.",
+          "error"
+        );
+
+        return;
+
+      }
+
 
       const formData =
         new FormData();
 
+
       formData.append(
         "image",
-        input.files[0]
+        file
       );
+
+
+      button.disabled = true;
+      button.textContent =
+        "Uploading...";
+
+
+      showMessage(
+        `${type}Message`,
+        `Uploading ${file.name}...`,
+        "info"
+      );
+
 
       try {
 
@@ -1079,42 +1358,120 @@
             }
           );
 
-        const data =
-          await response.json();
 
-        if (!response.ok) {
+        let data = {};
+
+
+        try {
+
+          data =
+            await response.json();
+
+        } catch (jsonError) {
+
           throw new Error(
-            data.message ||
-            "Image upload failed."
+            `Server returned HTTP ${response.status}.`
           );
+
         }
 
-        document.getElementById(
-          `${type}Preview`
-        ).src =
+
+        if (!response.ok) {
+
+          if (response.status === 401) {
+
+            throw new Error(
+              "Admin session expired. Please login again."
+            );
+
+          }
+
+
+          throw new Error(
+            data.message ||
+            `Image upload failed. HTTP ${response.status}`
+          );
+
+        }
+
+
+        if (
+          !data.image_url
+        ) {
+
+          throw new Error(
+            "Upload completed but server did not return image URL."
+          );
+
+        }
+
+
+        const preview =
+          document.getElementById(
+            `${type}Preview`
+          );
+
+
+        preview.src =
           `${data.image_url}?t=${Date.now()}`;
+
 
         input.value = "";
 
+
         showMessage(
           `${type}Message`,
-          "Image updated successfully."
+          `${type.charAt(0).toUpperCase() + type.slice(1)} image uploaded successfully.`,
+          "success"
         );
+
 
       } catch (error) {
 
+        console.error(
+          `${type} upload error:`,
+          error
+        );
+
+
         showMessage(
           `${type}Message`,
-          error.message,
+          error.message ||
+          "Image upload failed.",
           "error"
         );
+
+
+      } finally {
+
+        button.disabled = false;
+
+
+        if (type === "hero") {
+
+          button.textContent =
+            "Upload Hero";
+
+        } else if (type === "feature") {
+
+          button.textContent =
+            "Upload Feature";
+
+        } else {
+
+          button.textContent =
+            "Upload About";
+
+        }
+
       }
+
     }
 
 
     /* =========================
        CATEGORIES
-    ========================= */
+    ========================== */
 
     async function loadCategories() {
 
@@ -1125,16 +1482,20 @@
             `${API_BASE}/api/categories`
           );
 
+
         const data =
           await response.json();
+
 
         const select =
           document.getElementById(
             "galleryCategory"
           );
 
+
         select.innerHTML =
           `<option value="">Select Category</option>`;
+
 
         if (
           data.success &&
@@ -1149,18 +1510,24 @@
                   "option"
                 );
 
+
               option.value =
                 category.name;
+
 
               option.textContent =
                 category.name;
 
+
               select.appendChild(
                 option
               );
+
             }
           );
+
         }
+
 
       } catch (error) {
 
@@ -1168,13 +1535,15 @@
           "Category error:",
           error
         );
+
       }
+
     }
 
 
     /* =========================
        GALLERY PREVIEW
-    ========================= */
+    ========================== */
 
     document
       .getElementById("galleryImage")
@@ -1185,10 +1554,12 @@
           const file =
             this.files[0];
 
+
           const preview =
             document.getElementById(
               "galleryPreview"
             );
+
 
           if (!file) {
 
@@ -1196,20 +1567,24 @@
               "none";
 
             return;
+
           }
+
 
           preview.src =
             URL.createObjectURL(file);
 
+
           preview.style.display =
             "block";
+
         }
       );
 
 
     /* =========================
        GALLERY UPLOAD
-    ========================= */
+    ========================== */
 
     async function uploadGallery() {
 
@@ -1218,15 +1593,18 @@
           "galleryTitle"
         ).value.trim();
 
+
       const category =
         document.getElementById(
           "galleryCategory"
         ).value;
 
+
       const image =
         document.getElementById(
           "galleryImage"
         ).files[0];
+
 
       if (!title) {
 
@@ -1237,7 +1615,9 @@
         );
 
         return;
+
       }
+
 
       if (!category) {
 
@@ -1248,7 +1628,9 @@
         );
 
         return;
+
       }
+
 
       if (!image) {
 
@@ -1259,25 +1641,31 @@
         );
 
         return;
+
       }
+
 
       const formData =
         new FormData();
+
 
       formData.append(
         "title",
         title
       );
 
+
       formData.append(
         "category",
         category
       );
 
+
       formData.append(
         "image",
         image
       );
+
 
       try {
 
@@ -1291,39 +1679,50 @@
             }
           );
 
+
         const data =
           await response.json();
 
+
         if (!response.ok) {
+
           throw new Error(
             data.message ||
             "Gallery upload failed."
           );
+
         }
+
 
         document.getElementById(
           "galleryTitle"
         ).value = "";
 
+
         document.getElementById(
           "galleryCategory"
         ).value = "";
 
+
         document.getElementById(
           "galleryImage"
         ).value = "";
+
 
         document.getElementById(
           "galleryPreview"
         ).style.display =
           "none";
 
+
         showMessage(
           "galleryMessage",
           "Gallery photo uploaded successfully."
         );
 
+
         loadGallery();
+
 
       } catch (error) {
 
@@ -1332,13 +1731,15 @@
           error.message,
           "error"
         );
+
       }
+
     }
 
 
     /* =========================
        LOAD GALLERY
-    ========================= */
+    ========================== */
 
     async function loadGallery() {
 
@@ -1349,15 +1750,19 @@
             `${API_BASE}/api/gallery`
           );
 
+
         const data =
           await response.json();
+
 
         const grid =
           document.getElementById(
             "galleryGrid"
           );
 
+
         grid.innerHTML = "";
+
 
         if (
           !data.success ||
@@ -1368,7 +1773,9 @@
             `<p>No gallery photos yet.</p>`;
 
           return;
+
         }
+
 
         data.gallery.forEach(
           item => {
@@ -1381,15 +1788,19 @@
                 : API_BASE +
                   item.image_url;
 
+
             const card =
               document.createElement(
                 "div"
               );
 
+
             card.className =
               "gallery-item";
 
+
             card.innerHTML = `
+
               <img
                 src="${imageUrl}"
                 alt="${escapeHtml(item.title)}"
@@ -1413,13 +1824,17 @@
                 </button>
 
               </div>
+
             `;
+
 
             grid.appendChild(
               card
             );
+
           }
         );
+
 
       } catch (error) {
 
@@ -1427,7 +1842,9 @@
           "Gallery load error:",
           error
         );
+
       }
+
     }
 
 
@@ -1438,8 +1855,11 @@
           "Delete this gallery photo?"
         )
       ) {
+
         return;
+
       }
+
 
       try {
 
@@ -1452,30 +1872,38 @@
             }
           );
 
+
         const data =
           await response.json();
 
+
         if (!response.ok) {
+
           throw new Error(
             data.message ||
             "Delete failed."
           );
+
         }
 
+
         loadGallery();
+
 
       } catch (error) {
 
         alert(
           error.message
         );
+
       }
+
     }
 
 
     /* =========================
        ENQUIRIES
-    ========================= */
+    ========================== */
 
     async function loadEnquiries() {
 
@@ -1489,8 +1917,10 @@
             }
           );
 
+
         const data =
           await response.json();
+
 
         if (
           response.status === 401
@@ -1499,21 +1929,27 @@
           logout();
 
           return;
+
         }
 
+
         if (!data.success) {
+
           throw new Error(
             data.message ||
             "Failed to load enquiries."
           );
+
         }
+
 
         enquiries =
           data.enquiries || [];
 
-        updateStats();
 
+        updateStats();
         renderEnquiries();
+
 
       } catch (error) {
 
@@ -1522,7 +1958,9 @@
           error.message,
           "error"
         );
+
       }
+
     }
 
 
@@ -1531,33 +1969,38 @@
       const total =
         enquiries.length;
 
+
       const newCount =
         enquiries.filter(
           item =>
             item.status === "New"
         ).length;
 
+
       const completedCount =
         enquiries.filter(
           item =>
-            item.status ===
-            "Completed"
+            item.status === "Completed"
         ).length;
+
 
       document.getElementById(
         "totalEnquiries"
       ).textContent =
         total;
 
+
       document.getElementById(
         "newEnquiries"
       ).textContent =
         newCount;
 
+
       document.getElementById(
         "completedEnquiries"
       ).textContent =
         completedCount;
+
     }
 
 
@@ -1568,6 +2011,7 @@
           "enquiryTableBody"
         );
 
+
       const search =
         document.getElementById(
           "searchInput"
@@ -1575,10 +2019,12 @@
           .toLowerCase()
           .trim();
 
+
       const status =
         document.getElementById(
           "statusFilter"
         ).value;
+
 
       const filtered =
         enquiries.filter(
@@ -1596,31 +2042,42 @@
                 .toLowerCase()
                 .includes(search);
 
+
             const matchesStatus =
               status === "All" ||
               item.status === status;
+
 
             return (
               matchesSearch &&
               matchesStatus
             );
+
           }
         );
 
+
       tbody.innerHTML = "";
+
 
       if (!filtered.length) {
 
         tbody.innerHTML = `
+
           <tr>
+
             <td colspan="7">
               No enquiries found.
             </td>
+
           </tr>
+
         `;
 
         return;
+
       }
+
 
       filtered.forEach(
         item => {
@@ -1630,13 +2087,14 @@
               "tr"
             );
 
+
           const statusClass =
             item.status === "New"
               ? "status-new"
-              : item.status ===
-                "Contacted"
+              : item.status === "Contacted"
               ? "status-contacted"
               : "status-completed";
+
 
           tr.innerHTML = `
 
@@ -1697,6 +2155,7 @@
                   class="small-btn"
                   onchange="updateStatus(${item.id}, this.value)"
                 >
+
                   <option
                     value="New"
                     ${item.status === "New" ? "selected" : ""}
@@ -1730,13 +2189,17 @@
               </div>
 
             </td>
+
           `;
+
 
           tbody.appendChild(
             tr
           );
+
         }
       );
+
     }
 
 
@@ -1763,24 +2226,32 @@
             }
           );
 
+
         const data =
           await response.json();
 
+
         if (!response.ok) {
+
           throw new Error(
             data.message ||
             "Status update failed."
           );
+
         }
 
+
         await loadEnquiries();
+
 
       } catch (error) {
 
         alert(
           error.message
         );
+
       }
+
     }
 
 
@@ -1793,8 +2264,11 @@
           "Delete this enquiry?"
         )
       ) {
+
         return;
+
       }
+
 
       try {
 
@@ -1807,30 +2281,38 @@
             }
           );
 
+
         const data =
           await response.json();
 
+
         if (!response.ok) {
+
           throw new Error(
             data.message ||
             "Delete failed."
           );
+
         }
 
+
         loadEnquiries();
+
 
       } catch (error) {
 
         alert(
           error.message
         );
+
       }
+
     }
 
 
     /* =========================
        ENQUIRY DETAILS
-    ========================= */
+    ========================== */
 
     function viewEnquiry(id) {
 
@@ -1840,53 +2322,88 @@
             enquiry.id === id
         );
 
-      if (!item) return;
+
+      if (!item) {
+
+        return;
+
+      }
+
 
       document.getElementById(
         "detailsContent"
       ).innerHTML = `
 
         <div class="detail-row">
+
           <strong>Name</strong>
+
           ${escapeHtml(item.name)}
+
         </div>
 
+
         <div class="detail-row">
+
           <strong>Mobile</strong>
+
           ${escapeHtml(item.mobile)}
+
         </div>
 
+
         <div class="detail-row">
+
           <strong>Service</strong>
+
           ${escapeHtml(item.service || "-")}
+
         </div>
 
+
         <div class="detail-row">
+
           <strong>Preferred Date</strong>
+
           ${escapeHtml(item.preferred_date || "-")}
+
         </div>
 
+
         <div class="detail-row">
+
           <strong>Requirement</strong>
+
           ${escapeHtml(item.requirement || "-")}
+
         </div>
 
+
         <div class="detail-row">
+
           <strong>Message</strong>
+
           ${escapeHtml(item.message || "-")}
+
         </div>
 
+
         <div class="detail-row">
+
           <strong>Status</strong>
+
           ${escapeHtml(item.status)}
+
         </div>
 
       `;
+
 
       document.getElementById(
         "detailsModal"
       ).style.display =
         "flex";
+
     }
 
 
@@ -1896,6 +2413,7 @@
         "detailsModal"
       ).style.display =
         "none";
+
     }
 
 
@@ -1905,20 +2423,25 @@
         event.target.id ===
         "detailsModal"
       ) {
+
         closeDetailsModal();
+
       }
+
     }
 
 
     /* =========================
        CALL / WHATSAPP
-    ========================= */
+    ========================== */
 
     function callCustomer(
       mobile
     ) {
+
       window.location.href =
         `tel:${mobile}`;
+
     }
 
 
@@ -1930,16 +2453,18 @@
         String(mobile)
           .replace(/\D/g, "");
 
+
       window.open(
         `https://wa.me/91${clean}`,
         "_blank"
       );
+
     }
 
 
     /* =========================
        SECURITY HELPERS
-    ========================= */
+    ========================== */
 
     function escapeHtml(
       value
@@ -1951,6 +2476,7 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+
     }
 
 
@@ -1960,17 +2486,22 @@
 
       return String(value ?? "")
         .replace(/'/g, "\\'");
+
     }
 
 
     /* =========================
        INITIAL LOAD
-    ========================= */
+    ========================== */
 
     loadLogo();
+
     loadSiteImages();
+
     loadCategories();
+
     loadGallery();
+
     loadEnquiries();
 
   </script>
