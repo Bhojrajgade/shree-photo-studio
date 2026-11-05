@@ -3,23 +3,25 @@
 
 <head>
 
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  />
+  >
 
-  <title>
-    श्री फोटो स्टुडिओ | ब्रह्मपुरी
-  </title>
+  <title>श्री फोटो स्टुडिओ | ब्रह्मपुरी</title>
 
   <meta
     name="description"
     content="श्री फोटो स्टुडिओ | ब्रह्मपुरी — Wedding Photography, Photo Frames, Albums, Customized Gifts आणि फोटो सेवा."
-  />
+  >
 
   <style>
+
+    /* =========================================================
+       RESET
+    ========================================================= */
 
     * {
       margin: 0;
@@ -37,13 +39,48 @@
         Helvetica,
         sans-serif;
 
-      color: #222;
-      background: #fff;
+      color: #f8fafc;
+
+      background:
+        #050608;
+
       line-height: 1.6;
+
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+
+      position: fixed;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      z-index: -1;
+
+      background:
+        radial-gradient(
+          circle at 15% 10%,
+          rgba(245,158,11,.10),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 85% 30%,
+          rgba(251,191,36,.07),
+          transparent 25%
+        ),
+        radial-gradient(
+          circle at 50% 90%,
+          rgba(255,255,255,.035),
+          transparent 35%
+        );
     }
 
     img {
       max-width: 100%;
+      display: block;
     }
 
     a {
@@ -58,9 +95,13 @@
       font: inherit;
     }
 
+    button {
+      cursor: pointer;
+    }
+
     .container {
       width: min(
-        1180px,
+        1200px,
         calc(100% - 40px)
       );
 
@@ -68,944 +109,3161 @@
     }
 
 
-    /* =========================
+    /* =========================================================
+       GLASS VARIABLES
+    ========================================================= */
+
+    :root {
+
+      --gold:
+        #f6c453;
+
+      --gold-light:
+        #ffe08a;
+
+      --gold-dark:
+        #d99a20;
+
+      --white:
+        rgba(255,255,255,.94);
+
+      --muted:
+        rgba(226,232,240,.68);
+
+      --glass:
+        rgba(255,255,255,.065);
+
+      --glass-strong:
+        rgba(255,255,255,.10);
+
+      --border:
+        rgba(255,255,255,.14);
+
+      --border-gold:
+        rgba(246,196,83,.45);
+
+      --shadow:
+        0 25px 80px rgba(0,0,0,.38);
+
+      --radius:
+        24px;
+    }
+
+
+    /* =========================================================
+       SCROLLBAR
+    ========================================================= */
+
+    ::-webkit-scrollbar {
+      width: 9px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #050608;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background:
+        linear-gradient(
+          #f6c453,
+          #b77a12
+        );
+
+      border-radius: 20px;
+    }
+
+
+    /* =========================================================
        NAVBAR
-    ========================= */
+    ========================================================= */
 
     .navbar {
+
       position: sticky;
-      top: 0;
+
+      top: 12px;
+
       z-index: 1000;
 
-      background:
-        rgba(15, 23, 42, 0.96);
+      margin:
+        12px auto 0;
 
-      color: white;
+      width:
+        min(
+          1160px,
+          calc(100% - 30px)
+        );
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        22px;
+
+      background:
+        rgba(8,10,14,.70);
+
+      backdrop-filter:
+        blur(24px)
+        saturate(160%);
+
+      -webkit-backdrop-filter:
+        blur(24px)
+        saturate(160%);
 
       box-shadow:
-        0 4px 20px
-        rgba(0, 0, 0, 0.15);
+        0 18px 60px
+        rgba(0,0,0,.32);
+
+      transition:
+        .3s ease;
     }
 
-    .nav-inner {
-      min-height: 75px;
+    .navbar::after {
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      content: "";
 
-      gap: 25px;
-    }
+      position: absolute;
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      left: 8%;
+      right: 8%;
+      bottom: -1px;
 
-      font-weight: 800;
-      font-size: 20px;
-    }
-
-    .brand img {
-      width: 50px;
-      height: 50px;
-
-      object-fit: contain;
-
-      border-radius: 8px;
-      background: white;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 25px;
-    }
-
-    .nav-links a {
-      font-size: 14px;
-      font-weight: 600;
-      opacity: 0.9;
-      transition: 0.2s;
-    }
-
-    .nav-links a:hover {
-      opacity: 1;
-      color: #fbbf24;
-    }
-
-    .nav-btn {
-      background: #f59e0b;
-      color: #111827;
-
-      padding: 10px 16px;
-
-      border-radius: 8px;
-      font-weight: 800 !important;
-    }
-
-
-    /* =========================
-       HERO
-    ========================= */
-
-    .hero {
-
-      min-height: 680px;
-
-      display: flex;
-      align-items: center;
-
-      position: relative;
-      overflow: hidden;
+      height: 1px;
 
       background:
         linear-gradient(
           90deg,
-          rgba(0, 0, 0, 0.82),
-          rgba(0, 0, 0, 0.30)
-        ),
-        none
-        center / cover
-        no-repeat;
+          transparent,
+          rgba(246,196,83,.65),
+          transparent
+        );
 
-      color: white;
+      opacity: .7;
     }
 
-    .hero-content {
-      max-width: 700px;
-      padding: 90px 0;
+    .nav-inner {
+
+      min-height:
+        76px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      gap: 25px;
+
+      padding:
+        0 18px;
     }
 
-    .hero-tag {
-      display: inline-block;
+    .brand {
 
-      padding: 7px 14px;
+      display:
+        flex;
 
-      border-radius: 30px;
+      align-items:
+        center;
 
-      background:
-        rgba(245, 158, 11, 0.18);
+      gap: 12px;
+
+      font-weight: 900;
+
+      font-size: 18px;
+
+      white-space: nowrap;
+    }
+
+    .brand img {
+
+      width: 48px;
+
+      height: 48px;
+
+      object-fit:
+        contain;
+
+      border-radius:
+        14px;
 
       border:
         1px solid
-        rgba(245, 158, 11, 0.6);
+        rgba(246,196,83,.4);
 
-      color: #fbbf24;
+      background:
+        rgba(255,255,255,.06);
 
-      font-weight: 700;
+      padding: 5px;
 
-      margin-bottom: 20px;
+      box-shadow:
+        0 0 25px
+        rgba(246,196,83,.15);
+    }
+
+    .brand span {
+
+      color:
+        white;
+
+      text-shadow:
+        0 0 20px
+        rgba(255,255,255,.12);
+    }
+
+    .nav-links {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap: 5px;
+    }
+
+    .nav-links a {
+
+      position:
+        relative;
+
+      padding:
+        10px 13px;
+
+      border-radius:
+        12px;
+
+      font-size:
+        13px;
+
+      font-weight:
+        700;
+
+      color:
+        rgba(255,255,255,.78);
+
+      transition:
+        .25s ease;
+    }
+
+    .nav-links a:not(.nav-btn)::after {
+
+      content: "";
+
+      position:
+        absolute;
+
+      left: 50%;
+
+      bottom: 4px;
+
+      width: 0;
+
+      height: 2px;
+
+      background:
+        var(--gold);
+
+      transform:
+        translateX(-50%);
+
+      transition:
+        .25s ease;
+
+      border-radius:
+        10px;
+    }
+
+    .nav-links a:hover {
+
+      color:
+        white;
+
+      background:
+        rgba(255,255,255,.07);
+    }
+
+    .nav-links a:hover::after {
+
+      width:
+        22px;
+    }
+
+    .nav-btn {
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffe08a,
+          #e4a928
+        );
+
+      color:
+        #15110a !important;
+
+      padding:
+        11px 18px !important;
+
+      border-radius:
+        14px !important;
+
+      box-shadow:
+        0 8px 30px
+        rgba(246,196,83,.20);
+
+      font-weight:
+        900 !important;
+    }
+
+    .nav-btn:hover {
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 12px 35px
+        rgba(246,196,83,.32);
+    }
+
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+
+    .hero {
+
+      min-height:
+        760px;
+
+      margin-top:
+        -88px;
+
+      padding-top:
+        88px;
+
+      position:
+        relative;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      overflow:
+        hidden;
+
+      background:
+        radial-gradient(
+          circle at 72% 42%,
+          rgba(246,196,83,.10),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 30% 30%,
+          rgba(255,255,255,.04),
+          transparent 25%
+        ),
+        linear-gradient(
+          135deg,
+          #050608,
+          #090d14 50%,
+          #030406
+        );
+    }
+
+    .hero::before {
+
+      content: "";
+
+      position:
+        absolute;
+
+      width:
+        600px;
+
+      height:
+        600px;
+
+      right:
+        -180px;
+
+      top:
+        100px;
+
+      border-radius:
+        50%;
+
+      border:
+        1px solid
+        rgba(246,196,83,.13);
+
+      box-shadow:
+        0 0 100px
+        rgba(246,196,83,.06);
+
+      animation:
+        heroOrbit 12s
+        linear infinite;
+    }
+
+    .hero::after {
+
+      content: "";
+
+      position:
+        absolute;
+
+      width:
+        360px;
+
+      height:
+        360px;
+
+      right:
+        80px;
+
+      top:
+        180px;
+
+      border-radius:
+        50%;
+
+      border:
+        1px solid
+        rgba(255,255,255,.08);
+
+      animation:
+        heroOrbit 9s
+        linear infinite reverse;
+    }
+
+    @keyframes heroOrbit {
+
+      from {
+        transform:
+          rotate(0deg);
+      }
+
+      to {
+        transform:
+          rotate(360deg);
+      }
+
+    }
+
+    .hero-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1.05fr .95fr;
+
+      gap:
+        55px;
+
+      align-items:
+        center;
+
+      position:
+        relative;
+
+      z-index:
+        2;
+    }
+
+    .hero-content {
+
+      max-width:
+        680px;
+    }
+
+    .hero-tag {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      padding:
+        8px 15px;
+
+      border-radius:
+        50px;
+
+      border:
+        1px solid
+        rgba(246,196,83,.35);
+
+      background:
+        rgba(246,196,83,.07);
+
+      backdrop-filter:
+        blur(12px);
+
+      color:
+        var(--gold-light);
+
+      font-size:
+        13px;
+
+      font-weight:
+        800;
+
+      margin-bottom:
+        23px;
+
+      box-shadow:
+        inset 0 0 20px
+        rgba(246,196,83,.04);
     }
 
     .hero h1 {
+
       font-size:
-        clamp(40px, 6vw, 72px);
+        clamp(
+          44px,
+          6vw,
+          76px
+        );
 
-      line-height: 1.08;
+      line-height:
+        1.02;
 
-      margin-bottom: 20px;
+      letter-spacing:
+        -2.5px;
+
+      margin-bottom:
+        24px;
+
+      color:
+        white;
     }
 
     .hero h1 span {
-      color: #fbbf24;
+
+      display:
+        inline-block;
+
+      color:
+        var(--gold);
+
+      text-shadow:
+        0 0 35px
+        rgba(246,196,83,.18);
     }
 
     .hero p {
-      font-size: 18px;
-      max-width: 620px;
 
-      color: #e5e7eb;
+      font-size:
+        18px;
 
-      margin-bottom: 30px;
+      line-height:
+        1.8;
+
+      max-width:
+        620px;
+
+      color:
+        rgba(226,232,240,.72);
+
+      margin-bottom:
+        30px;
     }
 
     .hero-buttons {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+
+      display:
+        flex;
+
+      gap:
+        12px;
+
+      flex-wrap:
+        wrap;
     }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
 
-      padding: 13px 20px;
+      position:
+        relative;
 
-      border-radius: 9px;
+      display:
+        inline-flex;
 
-      font-weight: 800;
+      align-items:
+        center;
 
-      border: none;
-      cursor: pointer;
+      justify-content:
+        center;
 
-      transition: 0.2s;
+      gap:
+        8px;
+
+      min-height:
+        50px;
+
+      padding:
+        13px 22px;
+
+      border:
+        1px solid
+        transparent;
+
+      border-radius:
+        15px;
+
+      font-weight:
+        900;
+
+      overflow:
+        hidden;
+
+      transition:
+        .3s ease;
     }
 
-    .btn-primary {
-      background: #f59e0b;
-      color: #111827;
+    .btn::before {
+
+      content: "";
+
+      position:
+        absolute;
+
+      inset:
+        0;
+
+      background:
+        linear-gradient(
+          110deg,
+          transparent 30%,
+          rgba(255,255,255,.28),
+          transparent 70%
+        );
+
+      transform:
+        translateX(-120%);
+
+      transition:
+        .6s ease;
     }
 
-    .btn-secondary {
-      background: white;
-      color: #111827;
+    .btn:hover::before {
+
+      transform:
+        translateX(120%);
     }
 
     .btn:hover {
-      transform: translateY(-2px);
+
+      transform:
+        translateY(-3px);
+    }
+
+    .btn-primary {
+
+      color:
+        #171208;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffe08a,
+          #e5aa2b
+        );
+
+      box-shadow:
+        0 12px 35px
+        rgba(246,196,83,.20);
+    }
+
+    .btn-primary:hover {
+
+      box-shadow:
+        0 16px 45px
+        rgba(246,196,83,.34);
+    }
+
+    .btn-secondary {
+
+      color:
+        white;
+
+      background:
+        rgba(255,255,255,.06);
+
+      border-color:
+        rgba(255,255,255,.18);
+
+      backdrop-filter:
+        blur(16px);
+    }
+
+    .btn-secondary:hover {
+
+      background:
+        rgba(255,255,255,.10);
+
+      border-color:
+        rgba(246,196,83,.35);
     }
 
 
-    /* =========================
+    /* =========================================================
+       HERO CAMERA VISUAL
+    ========================================================= */
+
+    .hero-visual {
+
+      min-height:
+        520px;
+
+      position:
+        relative;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+    }
+
+    .camera-stage {
+
+      width:
+        min(
+          470px,
+          100%
+        );
+
+      height:
+        400px;
+
+      position:
+        relative;
+
+      border-radius:
+        35px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.14);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,.10),
+          rgba(255,255,255,.025)
+        );
+
+      backdrop-filter:
+        blur(25px)
+        saturate(140%);
+
+      box-shadow:
+        0 30px 90px
+        rgba(0,0,0,.48),
+        inset 0 1px 0
+        rgba(255,255,255,.12);
+
+      transform:
+        rotate(2deg);
+
+      overflow:
+        hidden;
+    }
+
+    .camera-stage::before {
+
+      content: "";
+
+      position:
+        absolute;
+
+      inset:
+        18px;
+
+      border:
+        1px solid
+        rgba(246,196,83,.20);
+
+      border-radius:
+        25px;
+    }
+
+    .camera-stage::after {
+
+      content:
+        "CAPTURE • CREATE • CHERISH";
+
+      position:
+        absolute;
+
+      bottom:
+        24px;
+
+      left:
+        30px;
+
+      font-size:
+        11px;
+
+      letter-spacing:
+        4px;
+
+      color:
+        rgba(255,255,255,.45);
+    }
+
+    .lens {
+
+      position:
+        absolute;
+
+      width:
+        220px;
+
+      height:
+        220px;
+
+      left:
+        50%;
+
+      top:
+        50%;
+
+      transform:
+        translate(-50%,-50%);
+
+      border-radius:
+        50%;
+
+      background:
+        radial-gradient(
+          circle at 35% 30%,
+          #6d7078 0 5%,
+          #20242c 7% 23%,
+          #080a0e 25% 38%,
+          #262b34 40% 47%,
+          #08090c 49% 62%,
+          #171a21 64% 100%
+        );
+
+      border:
+        8px solid
+        #16191f;
+
+      box-shadow:
+        0 20px 55px
+        rgba(0,0,0,.65),
+        inset 0 0 25px
+        rgba(255,255,255,.07);
+    }
+
+    .lens::before {
+
+      content: "";
+
+      position:
+        absolute;
+
+      width:
+        55px;
+
+      height:
+        55px;
+
+      border-radius:
+        50%;
+
+      left:
+        30px;
+
+      top:
+        25px;
+
+      background:
+        rgba(255,255,255,.16);
+
+      filter:
+        blur(8px);
+    }
+
+    .lens::after {
+
+      content:
+        "PHOTO";
+
+      position:
+        absolute;
+
+      right:
+        25px;
+
+      bottom:
+        38px;
+
+      color:
+        rgba(255,255,255,.55);
+
+      font-size:
+        10px;
+
+      letter-spacing:
+        3px;
+    }
+
+    .camera-body {
+
+      position:
+        absolute;
+
+      width:
+        285px;
+
+      height:
+        155px;
+
+      left:
+        50%;
+
+      top:
+        50%;
+
+      transform:
+        translate(-50%,-45%);
+
+      border-radius:
+        20px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #30343c,
+          #0c0f14
+        );
+
+      border:
+        1px solid
+        rgba(255,255,255,.16);
+
+      box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.5);
+    }
+
+    .camera-body::before {
+
+      content: "";
+
+      position:
+        absolute;
+
+      width:
+        85px;
+
+      height:
+        30px;
+
+      left:
+        25px;
+
+      top:
+        -17px;
+
+      border-radius:
+        8px 8px 0 0;
+
+      background:
+        #181b21;
+
+      border:
+        1px solid
+        rgba(255,255,255,.12);
+    }
+
+    .camera-body::after {
+
+      content:
+        "SHREE";
+
+      position:
+        absolute;
+
+      right:
+        24px;
+
+      top:
+        20px;
+
+      font-size:
+        10px;
+
+      letter-spacing:
+        3px;
+
+      color:
+        var(--gold);
+    }
+
+    .camera-shine {
+
+      position:
+        absolute;
+
+      width:
+        130px;
+
+      height:
+        130px;
+
+      border-radius:
+        50%;
+
+      background:
+        rgba(246,196,83,.14);
+
+      filter:
+        blur(45px);
+
+      right:
+        40px;
+
+      top:
+        55px;
+
+      animation:
+        glow 4s
+        ease-in-out infinite;
+    }
+
+    @keyframes glow {
+
+      0%,100% {
+        opacity:
+          .45;
+
+        transform:
+          scale(1);
+      }
+
+      50% {
+        opacity:
+          .9;
+
+        transform:
+          scale(1.18);
+      }
+
+    }
+
+    .floating-photo {
+
+      position:
+        absolute;
+
+      width:
+        150px;
+
+      height:
+        190px;
+
+      padding:
+        8px;
+
+      border-radius:
+        12px;
+
+      background:
+        rgba(255,255,255,.10);
+
+      border:
+        1px solid
+        rgba(255,255,255,.22);
+
+      backdrop-filter:
+        blur(12px);
+
+      box-shadow:
+        0 25px 50px
+        rgba(0,0,0,.38);
+
+      z-index:
+        4;
+    }
+
+    .floating-photo::before {
+
+      content:
+        "YOUR STORY";
+
+      position:
+        absolute;
+
+      inset:
+        8px;
+
+      display:
+        flex;
+
+      align-items:
+        flex-end;
+
+      justify-content:
+        center;
+
+      padding-bottom:
+        15px;
+
+      color:
+        rgba(255,255,255,.72);
+
+      font-size:
+        10px;
+
+      letter-spacing:
+        2px;
+
+      background:
+        linear-gradient(
+          transparent 45%,
+          rgba(0,0,0,.55)
+        );
+
+      border-radius:
+        8px;
+    }
+
+    .photo-one {
+
+      left:
+        8px;
+
+      top:
+        45px;
+
+      transform:
+        rotate(-12deg);
+    }
+
+    .photo-two {
+
+      right:
+        -5px;
+
+      top:
+        65px;
+
+      transform:
+        rotate(11deg);
+    }
+
+    .photo-inner {
+
+      width:
+        100%;
+
+      height:
+        100%;
+
+      border-radius:
+        8px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(246,196,83,.28),
+          rgba(255,255,255,.04)
+        );
+    }
+
+
+    /* =========================================================
        TRUST
-    ========================= */
+    ========================================================= */
 
     .trust-strip {
-      background: #111827;
-      color: white;
+
+      position:
+        relative;
+
+      margin-top:
+        -30px;
+
+      z-index:
+        5;
+
+      padding:
+        0 0 35px;
     }
 
     .trust-grid {
 
-      display: grid;
+      display:
+        grid;
+
       grid-template-columns:
-        repeat(4, 1fr);
+        repeat(4,1fr);
 
-      gap: 15px;
+      gap:
+        12px;
 
-      padding: 20px 0;
+      padding:
+        22px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        22px;
+
+      background:
+        rgba(255,255,255,.055);
+
+      backdrop-filter:
+        blur(22px);
+
+      box-shadow:
+        var(--shadow);
     }
 
     .trust-item {
-      text-align: center;
+
+      text-align:
+        center;
+
+      padding:
+        8px;
+
+      border-right:
+        1px solid
+        rgba(255,255,255,.08);
+    }
+
+    .trust-item:last-child {
+      border-right:
+        none;
     }
 
     .trust-item strong {
-      display: block;
-      font-size: 19px;
+
+      display:
+        block;
+
+      color:
+        white;
+
+      font-size:
+        17px;
     }
 
     .trust-item span {
-      font-size: 13px;
-      color: #9ca3af;
+
+      display:
+        block;
+
+      margin-top:
+        3px;
+
+      color:
+        rgba(226,232,240,.52);
+
+      font-size:
+        12px;
     }
 
 
-    /* =========================
-       SECTIONS
-    ========================= */
+    /* =========================================================
+       GENERAL SECTIONS
+    ========================================================= */
 
     .section {
-      padding: 90px 0;
+
+      position:
+        relative;
+
+      padding:
+        105px 0;
+    }
+
+    .section::before {
+
+      content: "";
+
+      position:
+        absolute;
+
+      left:
+        50%;
+
+      top:
+        0;
+
+      width:
+        min(800px,80%);
+
+      height:
+        1px;
+
+      transform:
+        translateX(-50%);
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(255,255,255,.09),
+          transparent
+        );
     }
 
     .section-heading {
-      text-align: center;
-      max-width: 720px;
-      margin: 0 auto 50px;
+
+      max-width:
+        760px;
+
+      text-align:
+        center;
+
+      margin:
+        0 auto 55px;
     }
 
-    .section-heading span {
-      color: #d97706;
-      font-weight: 800;
+    .section-heading > span {
+
+      display:
+        inline-block;
+
+      color:
+        var(--gold);
+
+      font-size:
+        12px;
+
+      font-weight:
+        900;
+
+      letter-spacing:
+        3px;
+
+      text-transform:
+        uppercase;
     }
 
     .section-heading h2 {
+
+      margin:
+        10px 0 15px;
+
+      color:
+        white;
+
       font-size:
-        clamp(30px, 4vw, 44px);
+        clamp(
+          31px,
+          4vw,
+          48px
+        );
 
-      margin: 8px 0 14px;
+      line-height:
+        1.12;
 
-      color: #111827;
+      letter-spacing:
+        -1px;
     }
 
     .section-heading p {
-      color: #6b7280;
+
+      color:
+        var(--muted);
+
+      max-width:
+        650px;
+
+      margin:
+        auto;
+
+      font-size:
+        15px;
     }
 
 
-    /* =========================
+    /* =========================================================
        SERVICES
-    ========================= */
+    ========================================================= */
 
     .services-grid {
 
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
-        repeat(3, 1fr);
+        repeat(3,1fr);
 
-      gap: 22px;
+      gap:
+        18px;
     }
 
     .service-card {
 
-      padding: 30px;
+      position:
+        relative;
+
+      min-height:
+        245px;
+
+      padding:
+        28px;
 
       border:
-        1px solid #e5e7eb;
+        1px solid
+        var(--border);
 
-      border-radius: 15px;
+      border-radius:
+        var(--radius);
 
-      background: white;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.085),
+          rgba(255,255,255,.025)
+        );
+
+      backdrop-filter:
+        blur(22px)
+        saturate(140%);
 
       box-shadow:
-        0 10px 30px
-        rgba(0, 0, 0, 0.05);
+        0 18px 50px
+        rgba(0,0,0,.22);
 
-      transition: 0.25s;
+      overflow:
+        hidden;
+
+      transition:
+        .35s ease;
+    }
+
+    .service-card::before {
+
+      content: "";
+
+      position:
+        absolute;
+
+      width:
+        140px;
+
+      height:
+        140px;
+
+      right:
+        -70px;
+
+      top:
+        -70px;
+
+      border-radius:
+        50%;
+
+      background:
+        rgba(246,196,83,.10);
+
+      filter:
+        blur(5px);
+
+      transition:
+        .35s ease;
+    }
+
+    .service-card::after {
+
+      content: "";
+
+      position:
+        absolute;
+
+      left:
+        0;
+
+      bottom:
+        0;
+
+      width:
+        0;
+
+      height:
+        2px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+
+      transition:
+        .4s ease;
     }
 
     .service-card:hover {
-      transform: translateY(-5px);
+
+      transform:
+        translateY(-9px);
+
+      border-color:
+        rgba(246,196,83,.32);
 
       box-shadow:
-        0 15px 35px
-        rgba(0, 0, 0, 0.10);
+        0 25px 70px
+        rgba(0,0,0,.36),
+        0 0 35px
+        rgba(246,196,83,.06);
+    }
+
+    .service-card:hover::after {
+      width:
+        100%;
+    }
+
+    .service-card:hover::before {
+
+      transform:
+        scale(1.5);
+
+      opacity:
+        .8;
     }
 
     .service-icon {
-      width: 55px;
-      height: 55px;
 
-      display: grid;
-      place-items: center;
+      width:
+        60px;
 
-      background: #fff7ed;
-      color: #d97706;
+      height:
+        60px;
 
-      border-radius: 12px;
+      display:
+        grid;
 
-      font-size: 25px;
+      place-items:
+        center;
 
-      margin-bottom: 18px;
+      border-radius:
+        18px;
+
+      color:
+        var(--gold-light);
+
+      background:
+        rgba(246,196,83,.08);
+
+      border:
+        1px solid
+        rgba(246,196,83,.20);
+
+      font-size:
+        25px;
+
+      margin-bottom:
+        22px;
+
+      box-shadow:
+        inset 0 0 20px
+        rgba(246,196,83,.04);
     }
 
     .service-card h3 {
-      margin-bottom: 8px;
+
+      color:
+        white;
+
+      font-size:
+        20px;
+
+      margin-bottom:
+        10px;
     }
 
     .service-card p {
-      color: #6b7280;
-      font-size: 14px;
+
+      color:
+        rgba(226,232,240,.62);
+
+      font-size:
+        14px;
+
+      line-height:
+        1.75;
     }
 
 
-    /* =========================
+    /* =========================================================
        GALLERY
-    ========================= */
+    ========================================================= */
+
+    #gallery {
+
+      background:
+        linear-gradient(
+          180deg,
+          #07090d,
+          #050608
+        );
+    }
 
     .filters {
 
-      display: flex;
-      justify-content: center;
+      display:
+        flex;
 
-      gap: 10px;
+      justify-content:
+        center;
 
-      flex-wrap: wrap;
+      align-items:
+        center;
 
-      margin-bottom: 30px;
+      gap:
+        9px;
+
+      flex-wrap:
+        wrap;
+
+      margin-bottom:
+        35px;
     }
 
     .filter-btn {
 
-      padding: 9px 15px;
+      padding:
+        9px 17px;
 
       border:
-        1px solid #d1d5db;
+        1px solid
+        var(--border);
 
-      background: white;
+      border-radius:
+        50px;
 
-      border-radius: 30px;
+      color:
+        rgba(255,255,255,.68);
 
-      cursor: pointer;
+      background:
+        rgba(255,255,255,.045);
 
-      font-weight: 600;
+      backdrop-filter:
+        blur(14px);
+
+      font-size:
+        13px;
+
+      font-weight:
+        700;
+
+      transition:
+        .25s ease;
+    }
+
+    .filter-btn:hover {
+
+      color:
+        white;
+
+      border-color:
+        rgba(246,196,83,.35);
+
+      transform:
+        translateY(-2px);
     }
 
     .filter-btn.active {
 
-      background: #111827;
-      color: white;
+      color:
+        #171208;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffe08a,
+          #e2a427
+        );
 
       border-color:
-        #111827;
+        transparent;
+
+      box-shadow:
+        0 8px 25px
+        rgba(246,196,83,.18);
     }
 
     .gallery-grid {
 
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
-        repeat(4, 1fr);
+        repeat(4,1fr);
 
-      gap: 16px;
+      gap:
+        16px;
     }
 
     .gallery-item {
 
-      position: relative;
+      position:
+        relative;
 
-      overflow: hidden;
+      overflow:
+        hidden;
 
-      border-radius: 13px;
+      aspect-ratio:
+        1 / 1;
 
-      aspect-ratio: 1 / 1;
+      border-radius:
+        20px;
 
-      background: #f3f4f6;
+      border:
+        1px solid
+        rgba(255,255,255,.10);
 
-      cursor: pointer;
+      background:
+        rgba(255,255,255,.035);
+
+      cursor:
+        pointer;
+
+      box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.25);
+
+      transition:
+        .35s ease;
+    }
+
+    .gallery-item::before {
+
+      content: "";
+
+      position:
+        absolute;
+
+      inset:
+        0;
+
+      z-index:
+        2;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(246,196,83,.18),
+          transparent 35%,
+          transparent 65%,
+          rgba(255,255,255,.08)
+        );
+
+      opacity:
+        .25;
+
+      pointer-events:
+        none;
     }
 
     .gallery-item img {
 
-      width: 100%;
-      height: 100%;
+      width:
+        100%;
 
-      object-fit: cover;
+      height:
+        100%;
+
+      object-fit:
+        cover;
 
       transition:
-        transform 0.4s;
+        transform .7s
+        cubic-bezier(.2,.7,.2,1);
+    }
+
+    .gallery-item:hover {
+
+      transform:
+        translateY(-6px);
+
+      border-color:
+        rgba(246,196,83,.35);
+
+      box-shadow:
+        0 25px 65px
+        rgba(0,0,0,.42);
     }
 
     .gallery-item:hover img {
-      transform: scale(1.06);
+
+      transform:
+        scale(1.10);
     }
 
     .gallery-overlay {
 
-      position: absolute;
+      position:
+        absolute;
 
-      left: 0;
-      right: 0;
-      bottom: 0;
+      z-index:
+        3;
 
-      padding: 35px 14px 14px;
+      left:
+        0;
+
+      right:
+        0;
+
+      bottom:
+        0;
+
+      padding:
+        60px 17px 17px;
+
+      color:
+        white;
 
       background:
         linear-gradient(
           transparent,
-          rgba(0, 0, 0, 0.8)
+          rgba(0,0,0,.82)
         );
 
-      color: white;
+      transform:
+        translateY(3px);
+
+      transition:
+        .3s ease;
     }
 
     .gallery-overlay h3 {
-      font-size: 15px;
+
+      font-size:
+        15px;
+
+      margin-bottom:
+        2px;
     }
 
     .gallery-overlay p {
-      font-size: 12px;
-      opacity: 0.8;
+
+      color:
+        rgba(255,255,255,.58);
+
+      font-size:
+        11px;
     }
 
 
-    /* =========================
+    /* =========================================================
        FEATURE
-    ========================= */
+    ========================================================= */
 
     .feature {
 
-      background: #f8fafc;
+      background:
+        #080a0e;
     }
 
     .feature-grid {
 
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
         1fr 1fr;
 
-      gap: 55px;
+      gap:
+        70px;
 
-      align-items: center;
+      align-items:
+        center;
     }
 
     .feature-image {
 
-      min-height: 500px;
+      min-height:
+        510px;
 
-      border-radius: 20px;
+      position:
+        relative;
 
-      overflow: hidden;
+      border-radius:
+        30px;
+
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        var(--border);
 
       background:
-        #e5e7eb;
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.08),
+          rgba(255,255,255,.02)
+        );
+
+      box-shadow:
+        0 30px 80px
+        rgba(0,0,0,.38);
+    }
+
+    .feature-image::before {
+
+      content:
+        "SHREE PHOTO STUDIO";
+
+      position:
+        absolute;
+
+      z-index:
+        3;
+
+      top:
+        20px;
+
+      left:
+        20px;
+
+      padding:
+        7px 12px;
+
+      border-radius:
+        50px;
+
+      background:
+        rgba(0,0,0,.48);
+
+      border:
+        1px solid
+        rgba(255,255,255,.15);
+
+      backdrop-filter:
+        blur(12px);
+
+      color:
+        rgba(255,255,255,.75);
+
+      font-size:
+        9px;
+
+      letter-spacing:
+        2px;
     }
 
     .feature-image img {
 
-      width: 100%;
-      height: 100%;
+      width:
+        100%;
 
-      min-height: 500px;
+      height:
+        100%;
 
-      object-fit: cover;
+      min-height:
+        510px;
+
+      object-fit:
+        cover;
+
+      transition:
+        transform .8s ease;
     }
 
-    .feature-content span {
-      color: #d97706;
-      font-weight: 800;
+    .feature-image:hover img {
+
+      transform:
+        scale(1.04);
+    }
+
+    .feature-content > span {
+
+      color:
+        var(--gold);
+
+      font-size:
+        12px;
+
+      letter-spacing:
+        3px;
+
+      font-weight:
+        900;
     }
 
     .feature-content h2 {
 
       font-size:
-        clamp(30px, 4vw, 45px);
+        clamp(
+          32px,
+          4vw,
+          48px
+        );
 
-      line-height: 1.15;
+      line-height:
+        1.1;
 
-      margin: 10px 0 18px;
+      margin:
+        12px 0 18px;
+
+      color:
+        white;
     }
 
     .feature-content > p {
-      color: #6b7280;
-      margin-bottom: 25px;
+
+      color:
+        var(--muted);
+
+      margin-bottom:
+        28px;
+
+      line-height:
+        1.8;
     }
 
     .feature-list {
 
-      display: grid;
-      gap: 15px;
+      display:
+        grid;
+
+      gap:
+        16px;
     }
 
-    .feature-list div {
+    .feature-list > div {
 
-      display: flex;
-      gap: 12px;
+      display:
+        flex;
 
-      align-items: flex-start;
+      align-items:
+        flex-start;
+
+      gap:
+        13px;
+
+      padding:
+        14px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.07);
+
+      border-radius:
+        16px;
+
+      background:
+        rgba(255,255,255,.035);
+
+      transition:
+        .25s ease;
+    }
+
+    .feature-list > div:hover {
+
+      background:
+        rgba(255,255,255,.06);
+
+      border-color:
+        rgba(246,196,83,.20);
     }
 
     .check {
 
-      width: 28px;
-      height: 28px;
+      width:
+        31px;
 
-      min-width: 28px;
+      height:
+        31px;
 
-      display: grid;
-      place-items: center;
+      min-width:
+        31px;
 
-      background: #fef3c7;
-      color: #92400e;
+      display:
+        grid;
 
-      border-radius: 50%;
+      place-items:
+        center;
 
-      font-weight: 900;
+      border-radius:
+        50%;
+
+      color:
+        #171208;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffe08a,
+          #d99a20
+        );
+
+      font-weight:
+        900;
+    }
+
+    .feature-list strong {
+
+      display:
+        block;
+
+      color:
+        white;
+
+      margin-bottom:
+        2px;
+    }
+
+    .feature-list p {
+
+      color:
+        rgba(226,232,240,.55);
+
+      font-size:
+        13px;
     }
 
 
-    /* =========================
+    /* =========================================================
        PACKAGES
-    ========================= */
+    ========================================================= */
 
     .packages {
 
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
-        repeat(3, 1fr);
+        repeat(3,1fr);
 
-      gap: 22px;
+      gap:
+        18px;
     }
 
     .package {
 
+      position:
+        relative;
+
+      padding:
+        35px 28px;
+
+      text-align:
+        center;
+
       border:
-        1px solid #e5e7eb;
+        1px solid
+        var(--border);
 
-      border-radius: 15px;
+      border-radius:
+        25px;
 
-      padding: 30px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.07),
+          rgba(255,255,255,.025)
+        );
 
-      background: white;
+      backdrop-filter:
+        blur(22px);
 
-      text-align: center;
+      box-shadow:
+        0 20px 55px
+        rgba(0,0,0,.22);
+
+      transition:
+        .35s ease;
+    }
+
+    .package:hover {
+
+      transform:
+        translateY(-8px);
+
+      border-color:
+        rgba(246,196,83,.28);
     }
 
     .package.featured {
 
       border:
-        2px solid #f59e0b;
+        1px solid
+        rgba(246,196,83,.55);
 
-      transform: translateY(-8px);
+      background:
+        linear-gradient(
+          145deg,
+          rgba(246,196,83,.12),
+          rgba(255,255,255,.035)
+        );
+
+      box-shadow:
+        0 25px 70px
+        rgba(246,196,83,.09);
+
+      transform:
+        translateY(-12px);
     }
 
-    .package h3 {
-      margin-bottom: 10px;
+    .package.featured:hover {
+
+      transform:
+        translateY(-18px);
     }
 
-    .price {
+    .package.featured::before {
 
-      font-size: 35px;
-      font-weight: 900;
+      content:
+        "MOST POPULAR";
 
-      color: #111827;
+      position:
+        absolute;
 
-      margin-bottom: 15px;
-    }
+      top:
+        -13px;
 
-    .package ul {
+      left:
+        50%;
 
-      list-style: none;
+      transform:
+        translateX(-50%);
 
-      color: #6b7280;
+      padding:
+        6px 14px;
 
-      display: grid;
-
-      gap: 8px;
-
-      margin-bottom: 25px;
-    }
-
-
-    /* =========================
-       ABOUT
-    ========================= */
-
-    .about {
+      border-radius:
+        50px;
 
       background:
         linear-gradient(
           135deg,
-          #111827,
-          #1f2937
+          #ffe08a,
+          #e2a427
         );
 
-      color: white;
+      color:
+        #171208;
+
+      font-size:
+        10px;
+
+      font-weight:
+        900;
+
+      letter-spacing:
+        1px;
+    }
+
+    .package h3 {
+
+      color:
+        white;
+
+      font-size:
+        21px;
+
+      margin-bottom:
+        12px;
+    }
+
+    .price {
+
+      font-size:
+        38px;
+
+      font-weight:
+        900;
+
+      color:
+        var(--gold);
+
+      margin-bottom:
+        20px;
+    }
+
+    .package ul {
+
+      list-style:
+        none;
+
+      display:
+        grid;
+
+      gap:
+        10px;
+
+      color:
+        rgba(226,232,240,.63);
+
+      font-size:
+        14px;
+
+      margin-bottom:
+        25px;
+    }
+
+
+    /* =========================================================
+       ABOUT
+    ========================================================= */
+
+    .about {
+
+      background:
+        radial-gradient(
+          circle at 10% 20%,
+          rgba(246,196,83,.08),
+          transparent 25%
+        ),
+        linear-gradient(
+          135deg,
+          #090b10,
+          #050608
+        );
     }
 
     .about-grid {
 
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
-        1.1fr 0.9fr;
+        1.05fr .95fr;
 
-      gap: 50px;
+      gap:
+        65px;
 
-      align-items: center;
+      align-items:
+        center;
     }
 
     .about h2 {
 
       font-size:
-        clamp(30px, 4vw, 45px);
+        clamp(
+          34px,
+          4vw,
+          52px
+        );
 
-      line-height: 1.15;
+      color:
+        white;
 
-      margin: 10px 0 18px;
+      line-height:
+        1.08;
+
+      margin:
+        10px 0 20px;
     }
 
     .about p {
-      color: #d1d5db;
-      margin-bottom: 18px;
+
+      color:
+        rgba(226,232,240,.65);
+
+      margin-bottom:
+        17px;
+
+      line-height:
+        1.8;
     }
 
     .about-image {
 
-      min-height: 400px;
+      min-height:
+        430px;
 
-      border-radius: 20px;
+      position:
+        relative;
 
-      overflow: hidden;
+      border-radius:
+        30px;
 
-      background: #374151;
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        var(--border);
+
+      background:
+        rgba(255,255,255,.04);
+
+      box-shadow:
+        0 30px 80px
+        rgba(0,0,0,.40);
+    }
+
+    .about-image::after {
+
+      content:
+        "MEMORIES • STORIES • EMOTIONS";
+
+      position:
+        absolute;
+
+      left:
+        22px;
+
+      bottom:
+        20px;
+
+      padding:
+        7px 12px;
+
+      border-radius:
+        50px;
+
+      background:
+        rgba(0,0,0,.50);
+
+      border:
+        1px solid
+        rgba(255,255,255,.15);
+
+      backdrop-filter:
+        blur(12px);
+
+      color:
+        rgba(255,255,255,.72);
+
+      font-size:
+        9px;
+
+      letter-spacing:
+        2px;
     }
 
     .about-image img {
 
-      width: 100%;
-      height: 100%;
+      width:
+        100%;
 
-      min-height: 400px;
+      height:
+        100%;
 
-      object-fit: cover;
+      min-height:
+        430px;
+
+      object-fit:
+        cover;
     }
 
 
-    /* =========================
+    /* =========================================================
        CONTACT
-    ========================= */
+    ========================================================= */
 
     .contact-grid {
 
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
-        0.8fr 1.2fr;
+        .8fr 1.2fr;
 
-      gap: 40px;
+      gap:
+        20px;
+
+      align-items:
+        stretch;
     }
 
     .contact-card {
 
-      background: #111827;
-      color: white;
+      padding:
+        35px;
 
-      border-radius: 18px;
+      border:
+        1px solid
+        rgba(246,196,83,.20);
 
-      padding: 35px;
+      border-radius:
+        25px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(246,196,83,.09),
+          rgba(255,255,255,.035)
+        );
+
+      backdrop-filter:
+        blur(24px);
+
+      box-shadow:
+        var(--shadow);
     }
 
     .contact-card h3 {
-      font-size: 27px;
-      margin-bottom: 15px;
+
+      font-size:
+        28px;
+
+      color:
+        white;
+
+      margin-bottom:
+        12px;
+    }
+
+    .contact-card > p {
+
+      color:
+        rgba(226,232,240,.63);
+
+      line-height:
+        1.8;
     }
 
     .contact-info {
 
-      display: grid;
+      display:
+        grid;
 
-      gap: 18px;
+      gap:
+        12px;
 
-      margin-top: 25px;
+      margin-top:
+        28px;
     }
 
     .contact-info div {
-      display: flex;
-      gap: 12px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        12px;
+
+      padding:
+        13px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.07);
+
+      border-radius:
+        14px;
+
+      background:
+        rgba(255,255,255,.035);
+
+      color:
+        rgba(255,255,255,.72);
+    }
+
+    .contact-info a:hover {
+
+      color:
+        var(--gold);
     }
 
     .contact-form {
 
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
         1fr 1fr;
 
-      gap: 15px;
-    }
+      gap:
+        13px;
 
-    .contact-form .full {
-      grid-column: 1 / -1;
+      padding:
+        28px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        25px;
+
+      background:
+        rgba(255,255,255,.055);
+
+      backdrop-filter:
+        blur(24px);
+
+      box-shadow:
+        var(--shadow);
     }
 
     .contact-form input,
     .contact-form select,
     .contact-form textarea {
 
-      width: 100%;
-
-      padding: 13px;
+      width:
+        100%;
 
       border:
-        1px solid #d1d5db;
+        1px solid
+        rgba(255,255,255,.11);
 
-      border-radius: 8px;
+      border-radius:
+        14px;
 
-      outline: none;
+      padding:
+        14px 15px;
+
+      outline:
+        none;
+
+      color:
+        white;
+
+      background:
+        rgba(255,255,255,.045);
+
+      backdrop-filter:
+        blur(12px);
+
+      transition:
+        .25s ease;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+
+      color:
+        rgba(226,232,240,.40);
+    }
+
+    .contact-form select {
+
+      color:
+        rgba(255,255,255,.72);
+    }
+
+    .contact-form select option {
+
+      color:
+        #111;
+
+      background:
+        white;
     }
 
     .contact-form textarea {
-      min-height: 130px;
-      resize: vertical;
+
+      min-height:
+        140px;
+
+      resize:
+        vertical;
+    }
+
+    .contact-form input:focus,
+    .contact-form select:focus,
+    .contact-form textarea:focus {
+
+      border-color:
+        rgba(246,196,83,.55);
+
+      background:
+        rgba(255,255,255,.07);
+
+      box-shadow:
+        0 0 0 4px
+        rgba(246,196,83,.07);
+    }
+
+    .contact-form .full {
+
+      grid-column:
+        1 / -1;
+    }
+
+    #formMessage {
+
+      border:
+        1px solid
+        rgba(255,255,255,.12);
+
+      backdrop-filter:
+        blur(12px);
     }
 
 
-    /* =========================
+    /* =========================================================
        FOOTER
-    ========================= */
+    ========================================================= */
 
     footer {
 
-      background: #030712;
+      position:
+        relative;
 
-      color: white;
+      padding:
+        60px 0 25px;
 
-      padding: 45px 0 25px;
+      background:
+        #030405;
+
+      border-top:
+        1px solid
+        rgba(255,255,255,.08);
+    }
+
+    footer::before {
+
+      content: "";
+
+      position:
+        absolute;
+
+      left:
+        15%;
+
+      right:
+        15%;
+
+      top:
+        -1px;
+
+      height:
+        1px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+
+      opacity:
+        .55;
     }
 
     .footer-grid {
 
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
         1fr 1fr 1fr;
 
-      gap: 30px;
+      gap:
+        40px;
 
-      padding-bottom: 30px;
+      padding-bottom:
+        35px;
 
       border-bottom:
-        1px solid #374151;
+        1px solid
+        rgba(255,255,255,.08);
     }
 
     footer h3 {
-      margin-bottom: 12px;
+
+      color:
+        white;
+
+      margin-bottom:
+        15px;
     }
 
     footer p,
     footer a {
-      color: #9ca3af;
-      font-size: 14px;
+
+      color:
+        rgba(226,232,240,.48);
+
+      font-size:
+        13px;
+
+      line-height:
+        1.9;
+    }
+
+    footer a:hover {
+
+      color:
+        var(--gold);
     }
 
     .footer-bottom {
 
-      text-align: center;
+      text-align:
+        center;
 
-      padding-top: 22px;
+      padding-top:
+        25px;
 
-      color: #9ca3af;
+      color:
+        rgba(226,232,240,.42);
 
-      font-size: 13px;
+      font-size:
+        12px;
     }
 
     .developer-credit {
-      margin-top: 8px;
-      color: #fbbf24;
+
+      margin-top:
+        8px;
+
+      color:
+        rgba(246,196,83,.72);
     }
 
 
-    /* =========================
+    /* =========================================================
        FLOATING BUTTONS
-    ========================= */
+    ========================================================= */
 
     .floating {
 
-      position: fixed;
+      position:
+        fixed;
 
-      right: 18px;
-      bottom: 18px;
+      right:
+        20px;
 
-      display: grid;
+      bottom:
+        20px;
 
-      gap: 10px;
+      z-index:
+        900;
 
-      z-index: 900;
+      display:
+        grid;
+
+      gap:
+        10px;
     }
 
     .floating a {
 
-      width: 52px;
-      height: 52px;
+      width:
+        54px;
 
-      border-radius: 50%;
+      height:
+        54px;
 
-      display: grid;
-      place-items: center;
+      display:
+        grid;
 
-      color: white;
+      place-items:
+        center;
 
-      font-size: 20px;
+      border-radius:
+        18px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.20);
+
+      color:
+        white;
+
+      font-size:
+        20px;
+
+      backdrop-filter:
+        blur(18px);
 
       box-shadow:
-        0 5px 20px
-        rgba(0, 0, 0, 0.2);
+        0 15px 40px
+        rgba(0,0,0,.35);
+
+      transition:
+        .3s ease;
+    }
+
+    .floating a:hover {
+
+      transform:
+        translateY(-5px)
+        scale(1.05);
     }
 
     .whatsapp {
-      background: #16a34a;
+
+      background:
+        rgba(22,163,74,.72);
     }
 
     .call {
-      background: #2563eb;
+
+      background:
+        rgba(37,99,235,.72);
     }
 
 
-    /* =========================
+    /* =========================================================
        LIGHTBOX
-    ========================= */
+    ========================================================= */
 
     .lightbox {
 
-      position: fixed;
+      position:
+        fixed;
 
-      inset: 0;
+      inset:
+        0;
+
+      display:
+        none;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      z-index:
+        2000;
+
+      padding:
+        20px;
 
       background:
-        rgba(0, 0, 0, 0.92);
+        rgba(0,0,0,.88);
 
-      display: none;
-
-      align-items: center;
-      justify-content: center;
-
-      z-index: 2000;
-
-      padding: 20px;
+      backdrop-filter:
+        blur(20px);
     }
 
     .lightbox.active {
-      display: flex;
+      display:
+        flex;
     }
 
     .lightbox img {
 
-      max-width: 90vw;
-      max-height: 85vh;
+      max-width:
+        90vw;
 
-      object-fit: contain;
+      max-height:
+        85vh;
 
-      border-radius: 8px;
+      object-fit:
+        contain;
+
+      border-radius:
+        18px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.18);
+
+      box-shadow:
+        0 30px 100px
+        rgba(0,0,0,.7);
     }
 
     .lightbox-close,
     .lightbox-prev,
     .lightbox-next {
 
-      position: absolute;
+      position:
+        absolute;
 
-      border: none;
+      width:
+        48px;
+
+      height:
+        48px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border:
+        1px solid
+        rgba(255,255,255,.18);
+
+      border-radius:
+        50%;
+
+      color:
+        white;
 
       background:
-        rgba(255, 255, 255, 0.15);
+        rgba(255,255,255,.08);
 
-      color: white;
+      backdrop-filter:
+        blur(16px);
 
-      cursor: pointer;
+      font-size:
+        24px;
 
-      width: 45px;
-      height: 45px;
-
-      border-radius: 50%;
-
-      font-size: 22px;
+      transition:
+        .25s ease;
     }
 
     .lightbox-close {
-      right: 25px;
-      top: 25px;
+
+      top:
+        25px;
+
+      right:
+        25px;
     }
 
     .lightbox-prev {
-      left: 25px;
+
+      left:
+        25px;
     }
 
     .lightbox-next {
-      right: 25px;
+
+      right:
+        25px;
+    }
+
+    .lightbox-close:hover,
+    .lightbox-prev:hover,
+    .lightbox-next:hover {
+
+      background:
+        rgba(246,196,83,.18);
+
+      border-color:
+        rgba(246,196,83,.45);
+
+      color:
+        var(--gold);
     }
 
 
-    /* =========================
-       RESPONSIVE
-    ========================= */
+    /* =========================================================
+       REVEAL ANIMATION
+    ========================================================= */
 
-    @media (max-width: 950px) {
+    .service-card,
+    .gallery-item,
+    .package,
+    .feature-content,
+    .feature-image,
+    .about-grid > div,
+    .contact-card,
+    .contact-form {
+
+      animation:
+        reveal .8s
+        ease both;
+    }
+
+    @keyframes reveal {
+
+      from {
+
+        opacity:
+          0;
+
+        transform:
+          translateY(20px);
+      }
+
+      to {
+
+        opacity:
+          1;
+
+        transform:
+          translateY(0);
+      }
+
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 1000px) {
 
       .nav-links {
-        display: none;
+        gap:
+          0;
+      }
+
+      .nav-links a {
+        padding:
+          9px 8px;
+
+        font-size:
+          12px;
+      }
+
+      .hero-grid {
+
+        grid-template-columns:
+          1fr;
+
+        text-align:
+          center;
+      }
+
+      .hero-content {
+        max-width:
+          800px;
+        margin:
+          auto;
+      }
+
+      .hero p {
+        margin-left:
+          auto;
+
+        margin-right:
+          auto;
+      }
+
+      .hero-buttons {
+        justify-content:
+          center;
+      }
+
+      .hero-visual {
+        min-height:
+          430px;
       }
 
       .services-grid {
         grid-template-columns:
-          repeat(2, 1fr);
+          repeat(2,1fr);
       }
 
       .gallery-grid {
         grid-template-columns:
-          repeat(3, 1fr);
+          repeat(3,1fr);
       }
 
       .feature-grid,
-      .about-grid,
-      .contact-grid {
-        grid-template-columns: 1fr;
+      .about-grid {
+        grid-template-columns:
+          1fr;
       }
 
       .packages {
@@ -1013,8 +3271,15 @@
           1fr;
       }
 
-      .package.featured {
-        transform: none;
+      .package.featured,
+      .package.featured:hover {
+        transform:
+          none;
+      }
+
+      .contact-grid {
+        grid-template-columns:
+          1fr;
       }
 
       .footer-grid {
@@ -1025,48 +3290,231 @@
     }
 
 
-    @media (max-width: 650px) {
+    @media (max-width: 700px) {
 
       .container {
+
         width:
-          calc(100% - 30px);
+          calc(100% - 28px);
+      }
+
+      .navbar {
+
+        top:
+          8px;
+
+        width:
+          calc(100% - 18px);
+
+        border-radius:
+          18px;
+      }
+
+      .nav-inner {
+
+        min-height:
+          66px;
+
+        padding:
+          0 12px;
+      }
+
+      .brand {
+
+        font-size:
+          15px;
+      }
+
+      .brand img {
+
+        width:
+          42px;
+
+        height:
+          42px;
+      }
+
+      .nav-links {
+
+        display:
+          none;
       }
 
       .hero {
-        min-height: 600px;
+
+        min-height:
+          780px;
+
+        margin-top:
+          -74px;
+
+        padding-top:
+          74px;
       }
 
-      .hero-content {
-        padding: 70px 0;
+      .hero h1 {
+
+        font-size:
+          clamp(
+            40px,
+            12vw,
+            58px
+          );
+
+        letter-spacing:
+          -1.5px;
+      }
+
+      .hero p {
+
+        font-size:
+          15px;
+      }
+
+      .hero-visual {
+
+        min-height:
+          330px;
+      }
+
+      .camera-stage {
+
+        height:
+          300px;
+
+        transform:
+          rotate(1deg)
+          scale(.82);
+      }
+
+      .floating-photo {
+        display:
+          none;
       }
 
       .trust-grid {
+
         grid-template-columns:
           1fr 1fr;
+
+        padding:
+          15px;
+      }
+
+      .trust-item {
+
+        border-right:
+          none;
+
+        padding:
+          10px 4px;
+      }
+
+      .section {
+
+        padding:
+          75px 0;
+      }
+
+      .section-heading {
+
+        margin-bottom:
+          35px;
       }
 
       .services-grid,
       .gallery-grid {
-        grid-template-columns: 1fr;
+
+        grid-template-columns:
+          1fr;
       }
 
-      .contact-form {
-        grid-template-columns: 1fr;
-      }
+      .service-card {
 
-      .contact-form .full {
-        grid-column: auto;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
+        min-height:
+          auto;
       }
 
       .feature-image,
-      .feature-image img,
+      .feature-image img {
+
+        min-height:
+          350px;
+      }
+
       .about-image,
       .about-image img {
-        min-height: 320px;
+
+        min-height:
+          330px;
+      }
+
+      .contact-form {
+
+        grid-template-columns:
+          1fr;
+
+        padding:
+          20px;
+      }
+
+      .contact-form .full {
+
+        grid-column:
+          auto;
+      }
+
+      .footer-grid {
+
+        grid-template-columns:
+          1fr;
+      }
+
+      .floating {
+
+        right:
+          14px;
+
+        bottom:
+          14px;
+      }
+
+      .floating a {
+
+        width:
+          48px;
+
+        height:
+          48px;
+      }
+
+      .lightbox-prev {
+        left:
+          10px;
+      }
+
+      .lightbox-next {
+        right:
+          10px;
+      }
+
+    }
+
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+
+        scroll-behavior:
+          auto !important;
+
+        animation:
+          none !important;
+
+        transition:
+          none !important;
       }
 
     }
@@ -1079,13 +3527,13 @@
 <body>
 
 
-  <!-- =========================
+  <!-- =========================================================
        NAVBAR
-  ========================= -->
+  ========================================================= -->
 
   <header class="navbar">
 
-    <div class="container nav-inner">
+    <div class="nav-inner">
 
       <a
         href="#home"
@@ -1094,9 +3542,10 @@
 
         <img
           id="websiteLogo"
-          src="assets/images/logo.png"
+          src=""
           alt="Shree Photo Studio Logo"
-        />
+          style="display:none;"
+        >
 
         <span>
           श्री फोटो स्टुडिओ
@@ -1141,9 +3590,10 @@
   </header>
 
 
-  <!-- =========================
+
+  <!-- =========================================================
        HERO
-  ========================= -->
+  ========================================================= -->
 
   <section
     id="home"
@@ -1152,39 +3602,88 @@
 
     <div class="container">
 
-      <div class="hero-content">
+      <div class="hero-grid">
 
-        <div class="hero-tag">
-          📸 ब्रह्मपुरी मधील विश्वासू फोटो स्टुडिओ
+
+        <div class="hero-content">
+
+          <div class="hero-tag">
+
+            📸
+            ब्रह्मपुरी मधील विश्वासू फोटो स्टुडिओ
+
+          </div>
+
+
+          <h1>
+
+            तुमच्या खास क्षणांना
+
+            <span>
+              कायमस्वरूपी
+            </span>
+
+            जतन करा.
+
+          </h1>
+
+
+          <p>
+
+            Wedding Photography,
+            Photo Frames, Albums,
+            Customized Gifts,
+            Family Photoshoot आणि
+            इतर दर्जेदार फोटो सेवा.
+
+          </p>
+
+
+          <div class="hero-buttons">
+
+            <a
+              href="#gallery"
+              class="btn btn-primary"
+            >
+              📸 Gallery पाहा
+            </a>
+
+            <a
+              href="#contact"
+              class="btn btn-secondary"
+            >
+              ✨ Enquiry करा
+            </a>
+
+          </div>
+
         </div>
 
-        <h1>
-          तुमच्या खास क्षणांना
-          <span>कायमस्वरूपी</span>
-          जतन करा.
-        </h1>
 
-        <p>
-          Wedding Photography, Photo Frames,
-          Albums, Customized Gifts, Family Photoshoot
-          आणि इतर दर्जेदार फोटो सेवा.
-        </p>
 
-        <div class="hero-buttons">
+        <!-- CAMERA VISUAL -->
 
-          <a
-            href="#contact"
-            class="btn btn-primary"
-          >
-            Enquiry करा
-          </a>
+        <div class="hero-visual">
 
-          <a
-            href="tel:8010823556"
-            class="btn btn-secondary"
-          >
-            📞 Call करा
-          </a>
+          <div class="camera-stage">
+
+            <div class="camera-shine"></div>
+
+            <div class="floating-photo photo-one">
+              <div class="photo-inner"></div>
+            </div>
+
+            <div class="floating-photo photo-two">
+              <div class="photo-inner"></div>
+            </div>
+
+            <div class="camera-body">
+            </div>
+
+            <div class="lens">
+            </div>
+
+          </div>
 
         </div>
 
@@ -1195,48 +3694,64 @@
   </section>
 
 
-  <!-- =========================
+
+  <!-- =========================================================
        TRUST
-  ========================= -->
+  ========================================================= -->
 
   <section class="trust-strip">
 
     <div class="container trust-grid">
 
       <div class="trust-item">
+
         <strong>
-          📸 Quality
+          📸 Professional
         </strong>
+
         <span>
-          Professional Work
+          Quality Work
         </span>
+
       </div>
 
+
       <div class="trust-item">
+
         <strong>
           ❤️ Memories
         </strong>
+
         <span>
           Special Moments
         </span>
+
       </div>
 
+
       <div class="trust-item">
+
         <strong>
           🎁 Customized
         </strong>
+
         <span>
           Personalized Gifts
         </span>
+
       </div>
 
+
       <div class="trust-item">
+
         <strong>
           📍 Brahmapuri
         </strong>
+
         <span>
           Local Service
         </span>
+
       </div>
 
     </div>
@@ -1244,9 +3759,10 @@
   </section>
 
 
-  <!-- =========================
+
+  <!-- =========================================================
        SERVICES
-  ========================= -->
+  ========================================================= -->
 
   <section
     id="services"
@@ -1262,14 +3778,14 @@
         </span>
 
         <h2>
-          तुमच्यासाठी फोटोच्या
-          सर्व आवश्यक सेवा
+          तुमच्या प्रत्येक
+          खास क्षणासाठी
         </h2>
 
         <p>
-          तुमच्या प्रत्येक खास क्षणासाठी
-          professional आणि customized photography
-          solutions.
+          Professional photography,
+          editing आणि customized
+          photo solutions.
         </p>
 
       </div>
@@ -1280,113 +3796,6 @@
         class="services-grid"
       >
 
-        <div class="service-card">
-
-          <div class="service-icon">
-            💍
-          </div>
-
-          <h3>
-            Wedding Photography
-          </h3>
-
-          <p>
-            लग्नातील खास क्षण सुंदरपणे
-            capture आणि preserve करा.
-          </p>
-
-        </div>
-
-
-        <div class="service-card">
-
-          <div class="service-icon">
-            🖼️
-          </div>
-
-          <h3>
-            Photo Frames
-          </h3>
-
-          <p>
-            तुमच्या आवडत्या आठवणींसाठी
-            सुंदर custom photo frames.
-          </p>
-
-        </div>
-
-
-        <div class="service-card">
-
-          <div class="service-icon">
-            📚
-          </div>
-
-          <h3>
-            Photo Albums
-          </h3>
-
-          <p>
-            खास moments साठी premium
-            photo albums आणि collections.
-          </p>
-
-        </div>
-
-
-        <div class="service-card">
-
-          <div class="service-icon">
-            🎁
-          </div>
-
-          <h3>
-            Customized Gifts
-          </h3>
-
-          <p>
-            आपल्या प्रिय व्यक्तींसाठी
-            personalized photo gifts.
-          </p>
-
-        </div>
-
-
-        <div class="service-card">
-
-          <div class="service-icon">
-            👨‍👩‍👧‍👦
-          </div>
-
-          <h3>
-            Family Photoshoot
-          </h3>
-
-          <p>
-            Family मधील सुंदर आठवणी
-            professional photoshoot मध्ये जतन करा.
-          </p>
-
-        </div>
-
-
-        <div class="service-card">
-
-          <div class="service-icon">
-            🪪
-          </div>
-
-          <h3>
-            Passport Photos
-          </h3>
-
-          <p>
-            Passport आणि ID साठी
-            योग्य फोटो सेवा.
-          </p>
-
-        </div>
-
       </div>
 
     </div>
@@ -1394,14 +3803,14 @@
   </section>
 
 
-  <!-- =========================
+
+  <!-- =========================================================
        GALLERY
-  ========================= -->
+  ========================================================= -->
 
   <section
     id="gallery"
     class="section"
-    style="background:#f8fafc;"
   >
 
     <div class="container">
@@ -1409,7 +3818,7 @@
       <div class="section-heading">
 
         <span>
-          आमची Gallery
+          OUR PORTFOLIO
         </span>
 
         <h2>
@@ -1417,8 +3826,8 @@
         </h2>
 
         <p>
-          Admin panel मधून uploaded photos
-          इथे automatically दिसतील.
+          Admin panel मधून uploaded
+          photos इथे automatically दिसतील.
         </p>
 
       </div>
@@ -1446,25 +3855,26 @@
   </section>
 
 
-  <!-- =========================
-       FEATURE
-  ========================= -->
 
-  <section
-    class="section feature"
-  >
+  <!-- =========================================================
+       FEATURE
+  ========================================================= -->
+
+  <section class="section feature">
 
     <div class="container feature-grid">
 
+
       <div class="feature-image">
 
-       <img
-  id="featureImage"
-  alt="Shree Photo Studio"
-  style="display:none;"
-/>
+        <img
+          id="featureImage"
+          alt="Shree Photo Studio"
+          style="display:none;"
+        >
 
       </div>
+
 
 
       <div class="feature-content">
@@ -1481,11 +3891,13 @@
         <p>
           प्रत्येक फोटो हा एक moment असतो.
           त्या moment ला सुंदर आणि
-          long-lasting memory बनवणे हे आमचे ध्येय आहे.
+          long-lasting memory बनवणे
+          हे आमचे ध्येय आहे.
         </p>
 
 
         <div class="feature-list">
+
 
           <div>
 
@@ -1494,14 +3906,16 @@
             </div>
 
             <div>
+
               <strong>
                 Professional Quality
               </strong>
 
               <p>
-                प्रत्येक कामामध्ये quality आणि
-                finishing वर लक्ष.
+                प्रत्येक कामामध्ये quality
+                आणि finishing वर लक्ष.
               </p>
+
             </div>
 
           </div>
@@ -1514,6 +3928,7 @@
             </div>
 
             <div>
+
               <strong>
                 Customized Solutions
               </strong>
@@ -1522,6 +3937,7 @@
                 तुमच्या गरजेनुसार personalized
                 photo products.
               </p>
+
             </div>
 
           </div>
@@ -1534,17 +3950,20 @@
             </div>
 
             <div>
+
               <strong>
                 Local & Trusted
               </strong>
 
               <p>
-                ब्रह्मपुरीमध्ये सोयीस्कर आणि
-                विश्वासू photo service.
+                ब्रह्मपुरीमध्ये सोयीस्कर
+                आणि विश्वासू photo service.
               </p>
+
             </div>
 
           </div>
+
 
         </div>
 
@@ -1555,9 +3974,10 @@
   </section>
 
 
-  <!-- =========================
+
+  <!-- =========================================================
        PACKAGES
-  ========================= -->
+  ========================================================= -->
 
   <section class="section">
 
@@ -1570,7 +3990,8 @@
         </span>
 
         <h2>
-          तुमच्या गरजेनुसार Packages
+          तुमच्या गरजेनुसार
+          Packages
         </h2>
 
         <p>
@@ -1583,6 +4004,7 @@
 
       <div class="packages">
 
+
         <div class="package">
 
           <h3>
@@ -1594,20 +4016,30 @@
           </div>
 
           <ul>
-            <li>📸 Photography</li>
-            <li>🖼️ Photo Selection</li>
-            <li>💾 Digital Photos</li>
+
+            <li>
+              📸 Photography
+            </li>
+
+            <li>
+              🖼️ Photo Selection
+            </li>
+
+            <li>
+              💾 Digital Photos
+            </li>
+
           </ul>
 
           <a
             href="#contact"
             class="btn btn-secondary"
-            style="border:1px solid #d1d5db;"
           >
             Enquiry
           </a>
 
         </div>
+
 
 
         <div class="package featured">
@@ -1621,10 +4053,23 @@
           </div>
 
           <ul>
-            <li>📸 Professional Photography</li>
-            <li>📚 Premium Album</li>
-            <li>🖼️ Photo Frames</li>
-            <li>💾 Digital Photos</li>
+
+            <li>
+              📸 Professional Photography
+            </li>
+
+            <li>
+              📚 Premium Album
+            </li>
+
+            <li>
+              🖼️ Photo Frames
+            </li>
+
+            <li>
+              💾 Digital Photos
+            </li>
+
           </ul>
 
           <a
@@ -1635,6 +4080,7 @@
           </a>
 
         </div>
+
 
 
         <div class="package">
@@ -1648,21 +4094,34 @@
           </div>
 
           <ul>
-            <li>🎁 Customized Gifts</li>
-            <li>🖼️ Custom Frames</li>
-            <li>📸 Photoshoot</li>
-            <li>❤️ Personalized Work</li>
+
+            <li>
+              🎁 Customized Gifts
+            </li>
+
+            <li>
+              🖼️ Custom Frames
+            </li>
+
+            <li>
+              📸 Photoshoot
+            </li>
+
+            <li>
+              ❤️ Personalized Work
+            </li>
+
           </ul>
 
           <a
             href="#contact"
             class="btn btn-secondary"
-            style="border:1px solid #d1d5db;"
           >
             Enquiry
           </a>
 
         </div>
+
 
       </div>
 
@@ -1671,9 +4130,10 @@
   </section>
 
 
-  <!-- =========================
+
+  <!-- =========================================================
        ABOUT
-  ========================= -->
+  ========================================================= -->
 
   <section
     id="about"
@@ -1682,26 +4142,32 @@
 
     <div class="container about-grid">
 
+
       <div>
 
         <span
           style="
-            color:#fbbf24;
-            font-weight:800;
+            color:#f6c453;
+            font-size:12px;
+            letter-spacing:3px;
+            font-weight:900;
           "
         >
           ABOUT US
         </span>
 
+
         <h2>
           श्री फोटो स्टुडिओ
         </h2>
+
 
         <p>
           ब्रह्मपुरीमध्ये photo आणि
           customized photo services साठी
           श्री फोटो स्टुडिओ.
         </p>
+
 
         <p>
           Wedding Photography पासून
@@ -1711,33 +4177,38 @@
           विविध सेवा उपलब्ध आहेत.
         </p>
 
+
         <a
           href="#contact"
           class="btn btn-primary"
         >
-          Contact करा
+          ✨ Contact करा
         </a>
 
       </div>
 
 
+
       <div class="about-image">
 
         <img
-  id="aboutImage"
-  alt="Shree Photo Studio"
-  style="display:none;"
-/>
+          id="aboutImage"
+          alt="Shree Photo Studio"
+          style="display:none;"
+        >
+
       </div>
+
 
     </div>
 
   </section>
 
 
-  <!-- =========================
+
+  <!-- =========================================================
        CONTACT
-  ========================= -->
+  ========================================================= -->
 
   <section
     id="contact"
@@ -1746,10 +4217,11 @@
 
     <div class="container">
 
+
       <div class="section-heading">
 
         <span>
-          CONTACT
+          GET IN TOUCH
         </span>
 
         <h2>
@@ -1762,6 +4234,7 @@
         </p>
 
       </div>
+
 
 
       <div class="contact-grid">
@@ -1781,33 +4254,48 @@
 
           <div class="contact-info">
 
+
             <div>
+
               📍
+
               <span>
                 ब्रह्मपुरी, महाराष्ट्र
               </span>
+
             </div>
 
+
             <div>
+
               📞
+
               <a href="tel:8010823556">
                 8010823556
               </a>
+
             </div>
 
+
             <div>
+
               💬
+
               <a
                 href="https://wa.me/918010823556"
                 target="_blank"
+                rel="noopener"
               >
                 WhatsApp वर संपर्क करा
               </a>
+
             </div>
+
 
           </div>
 
         </div>
+
 
 
         <form
@@ -1815,19 +4303,22 @@
           class="contact-form"
         >
 
+
           <input
             type="text"
             id="name"
             placeholder="तुमचे नाव"
             required
-          />
+          >
+
 
           <input
             type="tel"
             id="mobile"
             placeholder="मोबाईल नंबर"
             required
-          />
+          >
+
 
           <select
             id="service"
@@ -1844,7 +4335,7 @@
           <input
             type="date"
             id="preferred_date"
-          />
+          >
 
 
           <input
@@ -1852,7 +4343,7 @@
             id="requirement"
             placeholder="Requirement"
             class="full"
-          />
+          >
 
 
           <textarea
@@ -1866,21 +4357,16 @@
             type="submit"
             class="btn btn-primary full"
           >
-            Enquiry Submit करा
+            📩 Enquiry Submit करा
           </button>
 
 
           <div
             id="formMessage"
             class="full"
-            style="
-              display:none;
-              padding:12px;
-              border-radius:8px;
-              background:#dcfce7;
-              color:#166534;
-            "
+            style="display:none;padding:12px;border-radius:12px;"
           ></div>
+
 
         </form>
 
@@ -1891,15 +4377,18 @@
   </section>
 
 
-  <!-- =========================
+
+  <!-- =========================================================
        FOOTER
-  ========================= -->
+  ========================================================= -->
 
   <footer>
 
     <div class="container">
 
+
       <div class="footer-grid">
+
 
         <div>
 
@@ -1910,10 +4399,11 @@
           <p>
             तुमच्या खास क्षणांना
             कायमस्वरूपी जतन करणाऱ्या
-            photo services.
+            professional photo services.
           </p>
 
         </div>
+
 
 
         <div>
@@ -1949,6 +4439,7 @@
         </div>
 
 
+
         <div>
 
           <h3>
@@ -1969,7 +4460,9 @@
 
         </div>
 
+
       </div>
+
 
 
       <div class="footer-bottom">
@@ -1989,6 +4482,7 @@
           <a
             href="https://github.com/gadejayant857-beep"
             target="_blank"
+            rel="noopener"
           >
             GitHub: gadejayant857-beep
           </a>
@@ -1997,25 +4491,30 @@
 
       </div>
 
+
     </div>
 
   </footer>
 
 
-  <!-- =========================
+
+  <!-- =========================================================
        FLOATING BUTTONS
-  ========================= -->
+  ========================================================= -->
 
   <div class="floating">
+
 
     <a
       href="https://wa.me/918010823556"
       target="_blank"
+      rel="noopener"
       class="whatsapp"
       title="WhatsApp"
     >
       💬
     </a>
+
 
     <a
       href="tel:8010823556"
@@ -2025,17 +4524,20 @@
       📞
     </a>
 
+
   </div>
 
 
-  <!-- =========================
+
+  <!-- =========================================================
        LIGHTBOX
-  ========================= -->
+  ========================================================= -->
 
   <div
     id="lightbox"
     class="lightbox"
   >
+
 
     <button
       class="lightbox-close"
@@ -2044,6 +4546,7 @@
       ×
     </button>
 
+
     <button
       class="lightbox-prev"
       onclick="previousImage()"
@@ -2051,11 +4554,13 @@
       ‹
     </button>
 
+
     <img
       id="lightboxImage"
       src=""
       alt="Gallery Image"
-    />
+    >
+
 
     <button
       class="lightbox-next"
@@ -2064,12 +4569,21 @@
       ›
     </button>
 
+
   </div>
 
 
+
+  <!-- =========================================================
+       JAVASCRIPT
+       BACKEND API UNCHANGED
+  ========================================================= -->
+
   <script>
 
-      const API_BASE = "https://shree-photo-studio.onrender.com";
+    const API_BASE =
+      "https://shree-photo-studio.onrender.com";
+
     let galleryData = [];
 
     let filteredGallery = [];
@@ -2077,9 +4591,10 @@
     let currentImageIndex = 0;
 
 
-    /* =========================
+
+    /* =========================================================
        LOGO
-    ========================= */
+    ========================================================= */
 
     async function loadLogo() {
 
@@ -2093,16 +4608,29 @@
         const data =
           await response.json();
 
+        const logo =
+          document.getElementById(
+            "websiteLogo"
+          );
+
         if (
           data.success &&
           data.logo
         ) {
 
-          document.getElementById(
-            "websiteLogo"
-          ).src =
+          logo.src =
             `${data.logo}?t=${Date.now()}`;
 
+          logo.style.display =
+            "block";
+
+        } else {
+
+          logo.src =
+            "";
+
+          logo.style.display =
+            "none";
         }
 
       } catch (error) {
@@ -2111,13 +4639,25 @@
           "Logo error:",
           error
         );
+
+        const logo =
+          document.getElementById(
+            "websiteLogo"
+          );
+
+        logo.src =
+          "";
+
+        logo.style.display =
+          "none";
       }
     }
 
 
-    /* =========================
+
+    /* =========================================================
        SITE IMAGES
-    ========================= */
+    ========================================================= */
 
     async function loadSiteImages() {
 
@@ -2135,13 +4675,17 @@
           !data.success ||
           !data.images
         ) {
+
           return;
         }
 
 
+
         /* HERO */
 
-        if (data.images.hero) {
+        if (
+          data.images.hero
+        ) {
 
           const hero =
             document.querySelector(
@@ -2152,40 +4696,52 @@
             `
               linear-gradient(
                 90deg,
-                rgba(0,0,0,.82),
-                rgba(0,0,0,.30)
+                rgba(0,0,0,.84),
+                rgba(0,0,0,.32)
               ),
               url("${data.images.hero}?t=${Date.now()}")
             `;
         }
 
 
+
         /* FEATURE */
 
-        if (data.images.feature) {
+        if (
+          data.images.feature
+        ) {
 
-  const featureImage =
-    document.getElementById("featureImage");
+          const featureImage =
+            document.getElementById(
+              "featureImage"
+            );
 
-  featureImage.src =
-    `${data.images.feature}?t=${Date.now()}`;
+          featureImage.src =
+            `${data.images.feature}?t=${Date.now()}`;
 
-  featureImage.style.display = "block";
-}
+          featureImage.style.display =
+            "block";
+        }
+
 
 
         /* ABOUT */
 
-       if (data.images.about) {
+        if (
+          data.images.about
+        ) {
 
-  const aboutImage =
-    document.getElementById("aboutImage");
+          const aboutImage =
+            document.getElementById(
+              "aboutImage"
+            );
 
-  aboutImage.src =
-    `${data.images.about}?t=${Date.now()}`;
+          aboutImage.src =
+            `${data.images.about}?t=${Date.now()}`;
 
-  aboutImage.style.display = "block";
-}
+          aboutImage.style.display =
+            "block";
+        }
 
       } catch (error) {
 
@@ -2197,9 +4753,10 @@
     }
 
 
-    /* =========================
+
+    /* =========================================================
        CATEGORIES
-    ========================= */
+    ========================================================= */
 
     async function loadCategories() {
 
@@ -2217,8 +4774,10 @@
           !data.success ||
           !data.categories
         ) {
+
           return;
         }
+
 
 
         const service =
@@ -2232,6 +4791,7 @@
               Service निवडा
             </option>
           `;
+
 
 
         data.categories.forEach(
@@ -2251,12 +4811,12 @@
             service.appendChild(
               option
             );
-
           }
         );
 
 
-        /* Service cards */
+
+        /* SERVICE CARDS */
 
         const servicesGrid =
           document.getElementById(
@@ -2272,10 +4832,13 @@
           "🪪"
         ];
 
-        servicesGrid.innerHTML = "";
+        servicesGrid.innerHTML =
+          "";
+
+
 
         data.categories.forEach(
-          (category, index) => {
+          (category,index) => {
 
             const card =
               document.createElement(
@@ -2285,24 +4848,27 @@
             card.className =
               "service-card";
 
-            card.innerHTML = `
+            card.innerHTML =
+              `
 
-              <div class="service-icon">
-                ${icons[index] || "📸"}
-              </div>
+                <div class="service-icon">
+                  ${icons[index] || "📸"}
+                </div>
 
-              <h3>
-                ${escapeHtml(category.name)}
-              </h3>
+                <h3>
+                  ${escapeHtml(
+                    category.name
+                  )}
+                </h3>
 
-              <p>
-                ${escapeHtml(
-                  category.description ||
-                  "Professional photo service."
-                )}
-              </p>
+                <p>
+                  ${escapeHtml(
+                    category.description ||
+                    "Professional photo service."
+                  )}
+                </p>
 
-            `;
+              `;
 
             servicesGrid.appendChild(
               card
@@ -2321,9 +4887,10 @@
     }
 
 
-    /* =========================
+
+    /* =========================================================
        GALLERY
-    ========================= */
+    ========================================================= */
 
     async function loadGallery() {
 
@@ -2340,6 +4907,7 @@
         if (
           !data.success
         ) {
+
           return;
         }
 
@@ -2362,13 +4930,19 @@
 
         document.getElementById(
           "publicGallery"
-        ).innerHTML = `
-          <p>
-            Gallery load nahi hui.
-          </p>
-        `;
+        ).innerHTML =
+          `
+            <p style="
+              color:rgba(255,255,255,.55);
+              text-align:center;
+              grid-column:1/-1;
+            ">
+              Gallery load nahi hui.
+            </p>
+          `;
       }
     }
+
 
 
     function createGalleryFilters() {
@@ -2387,7 +4961,10 @@
         )
       ];
 
-      container.innerHTML = "";
+      container.innerHTML =
+        "";
+
+
 
       const allButton =
         document.createElement(
@@ -2416,6 +4993,7 @@
       container.appendChild(
         allButton
       );
+
 
 
       categories.forEach(
@@ -2458,6 +5036,7 @@
     }
 
 
+
     function setActiveFilter(
       activeButton
     ) {
@@ -2479,6 +5058,7 @@
     }
 
 
+
     function renderGallery() {
 
       const container =
@@ -2486,24 +5066,33 @@
           "publicGallery"
         );
 
-      container.innerHTML = "";
+      container.innerHTML =
+        "";
+
+
 
       if (
         !filteredGallery.length
       ) {
 
-        container.innerHTML = `
-          <p>
-            Gallery मध्ये अजून photos नाहीत.
-          </p>
-        `;
+        container.innerHTML =
+          `
+            <p style="
+              color:rgba(255,255,255,.55);
+              text-align:center;
+              grid-column:1/-1;
+            ">
+              Gallery मध्ये अजून photos नाहीत.
+            </p>
+          `;
 
         return;
       }
 
 
+
       filteredGallery.forEach(
-        (item, index) => {
+        (item,index) => {
 
           const imageUrl =
             item.image_url.startsWith(
@@ -2513,6 +5102,8 @@
               : API_BASE +
                 item.image_url;
 
+
+
           const div =
             document.createElement(
               "div"
@@ -2521,27 +5112,36 @@
           div.className =
             "gallery-item";
 
-          div.innerHTML = `
 
-            <img
-              src="${imageUrl}"
-              alt="${escapeHtml(item.title)}"
-              loading="lazy"
-            />
 
-            <div class="gallery-overlay">
+          div.innerHTML =
+            `
 
-              <h3>
-                ${escapeHtml(item.title)}
-              </h3>
+              <img
+                src="${imageUrl}"
+                alt="${escapeHtml(item.title)}"
+                loading="lazy"
+              >
 
-              <p>
-                ${escapeHtml(item.category)}
-              </p>
+              <div class="gallery-overlay">
 
-            </div>
+                <h3>
+                  ${escapeHtml(
+                    item.title
+                  )}
+                </h3>
 
-          `;
+                <p>
+                  ${escapeHtml(
+                    item.category
+                  )}
+                </p>
+
+              </div>
+
+            `;
+
+
 
           div.onclick =
             () => {
@@ -2554,6 +5154,8 @@
               );
             };
 
+
+
           container.appendChild(
             div
           );
@@ -2563,9 +5165,10 @@
     }
 
 
-    /* =========================
+
+    /* =========================================================
        LIGHTBOX
-    ========================= */
+    ========================================================= */
 
     function openLightbox(
       imageUrl
@@ -2584,6 +5187,7 @@
     }
 
 
+
     function closeLightbox() {
 
       document.getElementById(
@@ -2594,11 +5198,13 @@
     }
 
 
+
     function previousImage() {
 
       if (
         !filteredGallery.length
       ) {
+
         return;
       }
 
@@ -2614,11 +5220,13 @@
     }
 
 
+
     function nextImage() {
 
       if (
         !filteredGallery.length
       ) {
+
         return;
       }
 
@@ -2633,6 +5241,7 @@
     }
 
 
+
     function showCurrentImage() {
 
       const item =
@@ -2640,7 +5249,10 @@
           currentImageIndex
         ];
 
-      if (!item) return;
+      if (!item) {
+
+        return;
+      }
 
       const imageUrl =
         item.image_url.startsWith(
@@ -2657,9 +5269,10 @@
     }
 
 
+
     document.addEventListener(
       "keydown",
-      function (event) {
+      function(event) {
 
         const lightbox =
           document.getElementById(
@@ -2671,24 +5284,31 @@
             "active"
           )
         ) {
+
           return;
         }
 
         if (
-          event.key === "Escape"
+          event.key ===
+          "Escape"
         ) {
+
           closeLightbox();
         }
 
         if (
-          event.key === "ArrowLeft"
+          event.key ===
+          "ArrowLeft"
         ) {
+
           previousImage();
         }
 
         if (
-          event.key === "ArrowRight"
+          event.key ===
+          "ArrowRight"
         ) {
+
           nextImage();
         }
 
@@ -2696,9 +5316,10 @@
     );
 
 
-    /* =========================
+
+    /* =========================================================
        ENQUIRY
-    ========================= */
+    ========================================================= */
 
     document
       .getElementById(
@@ -2706,7 +5327,7 @@
       )
       .addEventListener(
         "submit",
-        async function (event) {
+        async function(event) {
 
           event.preventDefault();
 
@@ -2758,17 +5379,22 @@
               await fetch(
                 `${API_BASE}/api/enquiries`,
                 {
-                  method: "POST",
+
+                  method:
+                    "POST",
 
                   headers: {
+
                     "Content-Type":
                       "application/json"
+
                   },
 
                   body:
                     JSON.stringify(
                       payload
                     )
+
                 }
               );
 
@@ -2777,7 +5403,9 @@
               await response.json();
 
 
-            if (!response.ok) {
+            if (
+              !response.ok
+            ) {
 
               throw new Error(
                 data.message ||
@@ -2790,10 +5418,13 @@
               "block";
 
             messageBox.style.background =
-              "#dcfce7";
+              "rgba(22,163,74,.14)";
 
             messageBox.style.color =
-              "#166534";
+              "#86efac";
+
+            messageBox.style.border =
+              "1px solid rgba(74,222,128,.25)";
 
             messageBox.textContent =
               "आपली enquiry successfully submit झाली!";
@@ -2819,10 +5450,13 @@
               "block";
 
             messageBox.style.background =
-              "#fee2e2";
+              "rgba(220,38,38,.12)";
 
             messageBox.style.color =
-              "#991b1b";
+              "#fca5a5";
+
+            messageBox.style.border =
+              "1px solid rgba(248,113,113,.25)";
 
             messageBox.textContent =
               error.message;
@@ -2833,9 +5467,10 @@
       );
 
 
-    /* =========================
+
+    /* =========================================================
        SECURITY HELPER
-    ========================= */
+    ========================================================= */
 
     function escapeHtml(
       value
@@ -2844,22 +5479,27 @@
       return String(
         value ?? ""
       )
+
         .replace(
           /&/g,
           "&amp;"
         )
+
         .replace(
           /</g,
           "&lt;"
         )
+
         .replace(
           />/g,
           "&gt;"
         )
+
         .replace(
           /"/g,
           "&quot;"
         )
+
         .replace(
           /'/g,
           "&#039;"
@@ -2867,13 +5507,17 @@
     }
 
 
-    /* =========================
+
+    /* =========================================================
        START
-    ========================= */
+    ========================================================= */
 
     loadLogo();
+
     loadSiteImages();
+
     loadCategories();
+
     loadGallery();
 
   </script>
