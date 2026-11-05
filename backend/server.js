@@ -8,54 +8,52 @@ const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs");
+const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
-
-/* ==================================================
-   CONFIG
-================================================== */
 
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET;
 
-/*
-  Render par HTTPS reverse proxy ke through aata hai.
-  Isliye Express ko proxy trust karna zaroori hai.
-*/
 app.set("trust proxy", 1);
 
-/*
-  Render Environment Variable:
-  PUBLIC_BASE_URL=https://shree-photo-studio.onrender.com
-
-  Agar ye set hai to wahi use hoga.
-  Local development me fallback req.protocol + host hoga.
-*/
 const PUBLIC_BASE_URL =
   process.env.PUBLIC_BASE_URL || "";
+
+const SUPABASE_URL =
+  process.env.SUPABASE_URL;
+
+const SUPABASE_SERVICE_ROLE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+const SUPABASE_BUCKET =
+  "website-images";
 
 if (!JWT_SECRET) {
   console.error("JWT_SECRET missing in .env");
   process.exit(1);
 }
 
-/* ==================================================
-   MIDDLEWARE
-================================================== */
+if (!SUPABASE_URL) {
+  console.error("SUPABASE_URL missing in .env");
+  process.exit(1);
+}
 
-app.use(cors());
+if (!SUPABASE_SERVICE_ROLE_KEY) {
+  console.error(
+    "SUPABASE_SERVICE_ROLE_KEY missing in .env"
+  );
+  process.exit(1);
+}
 
-app.use(express.json());
-
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_SERVICE_ROLE_KEY
 );
 
-/* ==================================================
-   DATABASE
-================================================== */
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -65,18 +63,9 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-/* ==================================================
-   PUBLIC URL HELPER
-================================================== */
-
 function buildPublicUrl(req, relativePath) {
-  if (!relativePath) {
-    return null;
-  }
+  if (!relativePath) return null;
 
-  /*
-    Already absolute URL hai to same return karo.
-  */
   if (
     relativePath.startsWith("http://") ||
     relativePath.startsWith("https://")
@@ -84,32 +73,103 @@ function buildPublicUrl(req, relativePath) {
     return relativePath;
   }
 
-  /*
-    Render production URL.
-  */
   if (PUBLIC_BASE_URL) {
-    return `${PUBLIC_BASE_URL.replace(/\/$/, "")}${relativePath}`;
+    return `${PUBLIC_BASE_URL.replace(
+      /\/$/,
+      ""
+    )}${relativePath}`;
   }
 
-  /*
-    Local development fallback.
-  */
-  return `${req.protocol}://${req.get("host")}${relativePath}`;
+  return `${req.protocol}://${req.get(
+    "host"
+  )}${relativePath}`;
 }
 
-/* ==================================================
-   DATABASE INITIALIZATION
-================================================== */
+function getStoragePathFromPublicUrl(url) {
+  if (!url) return null;
+
+  const marker =
+    `/storage/v1/object/public/${SUPABASE_BUCKET}/`;
+
+  const index = url.indexOf(marker);
+
+  if (index === -1) {
+    return null;
+  }
+
+  return decodeURIComponent(
+    url.substring(index + marker.length)
+  );
+}
+
+async function uploadFileToSupabase(
+  localPath,
+  storagePath,
+  contentType
+) {
+  const fileBuffer =
+    fs.readFileSync(localPath);
+
+  const { error } =
+    await supabase.storage
+      .from(SUPABASE_BUCKET)
+      .upload(
+        storagePath,
+        fileBuffer,
+        {
+          contentType,
+          upsert: true,
+        }
+      );
+
+  if (error) {
+    throw error;
+  }
+
+  const { data } =
+    supabase.storage
+      .from(SUPABASE_BUCKET)
+      .getPublicUrl(storagePath);
+
+  if (!data || !data.publicUrl) {
+    throw new Error(
+      "Failed to generate Supabase public URL."
+    );
+  }
+
+  return data.publicUrl;
+}
+
+async function deleteFromSupabase(publicUrl) {
+  const storagePath =
+    getStoragePathFromPublicUrl(
+      publicUrl
+    );
+
+  if (!storagePath) {
+    return;
+  }
+
+  const { error } =
+    await supabase.storage
+      .from(SUPABASE_BUCKET)
+      .remove([storagePath]);
+
+  if (error) {
+    console.error(
+      "Supabase delete error:",
+      error.message
+    );
+  }
+}
 
 async function initializeDatabase() {
   const client = await pool.connect();
 
   try {
-    console.log("PostgreSQL connected successfully!");
-
-    /* =========================
-       SITE IMAGES
-    ========================= */
+    console.log(
+      "PostgreSQL connected successfully!"
+    );
 
     await client.query(`
       CREATE TABLE IF NOT EXISTS site_images (
@@ -120,11 +180,9 @@ async function initializeDatabase() {
       )
     `);
 
-    console.log("Site images table ready.");
-
-    /* =========================
-       GALLERY
-    ========================= */
+    console.log(
+      "Site images table ready."
+    );
 
     await client.query(`
       CREATE TABLE IF NOT EXISTS gallery (
@@ -136,7 +194,9 @@ async function initializeDatabase() {
       )
     `);
 
-    console.log("Gallery table ready.");
+    console.log(
+      "Gallery table ready."
+    );
   } catch (error) {
     console.error(
       "Database initialization error:",
@@ -154,14 +214,19 @@ initializeDatabase().catch((error) => {
   );
 });
 
-/* ==================================================
-   UPLOADS FOLDER
-================================================== */
+/*
+  Temporary local upload directory.
 
-const uploadsDir = path.join(
-  __dirname,
-  "uploads"
-);
+  Multer first receives the file here.
+  The file is immediately uploaded to
+  Supabase Storage and then deleted locally.
+
+  Therefore Render's filesystem is NOT used
+  for permanent image storage.
+*/
+
+const uploadsDir =
+  path.join(__dirname, "uploads");
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, {
@@ -169,75 +234,71 @@ if (!fs.existsSync(uploadsDir)) {
   });
 }
 
-/*
-  Public uploaded images:
-  /uploads/filename.jpg
-*/
 app.use(
   "/uploads",
   express.static(uploadsDir)
 );
 
-/* ==================================================
-   MULTER
-================================================== */
+const storage =
+  multer.diskStorage({
+    destination: function (
+      req,
+      file,
+      cb
+    ) {
+      cb(null, uploadsDir);
+    },
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadsDir);
-  },
+    filename: function (
+      req,
+      file,
+      cb
+    ) {
+      const ext =
+        path.extname(
+          file.originalname
+        );
 
-  filename: function (req, file, cb) {
-    const ext = path.extname(
-      file.originalname
-    );
+      const filename =
+        `temp-${Date.now()}-${Math.round(
+          Math.random() * 1e9
+        )}${ext}`;
 
-    const filename =
-      `upload-${Date.now()}-${Math.round(
-        Math.random() * 1e9
-      )}${ext}`;
+      cb(null, filename);
+    },
+  });
 
-    cb(null, filename);
-  },
-});
+const fileFilter =
+  function (req, file, cb) {
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+    ];
 
-const fileFilter = function (
-  req,
-  file,
-  cb
-) {
-  const allowedTypes = [
-    "image/jpeg",
-    "image/png",
-    "image/webp",
-  ];
-
-  if (
-    allowedTypes.includes(
-      file.mimetype
-    )
-  ) {
-    cb(null, true);
-  } else {
-    cb(
-      new Error(
-        "Only JPG, PNG and WEBP images are allowed."
+    if (
+      allowedTypes.includes(
+        file.mimetype
       )
-    );
-  }
-};
+    ) {
+      cb(null, true);
+    } else {
+      cb(
+        new Error(
+          "Only JPG, PNG and WEBP images are allowed."
+        )
+      );
+    }
+  };
 
-const upload = multer({
-  storage,
-  fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024,
-  },
-});
-
-/* ==================================================
-   JWT AUTHENTICATION
-================================================== */
+const upload =
+  multer({
+    storage,
+    fileFilter,
+    limits: {
+      fileSize: 5 * 1024 * 1024,
+    },
+  });
 
 function authenticateAdmin(
   req,
@@ -272,10 +333,11 @@ function authenticateAdmin(
   const token = parts[1];
 
   try {
-    const decoded = jwt.verify(
-      token,
-      JWT_SECRET
-    );
+    const decoded =
+      jwt.verify(
+        token,
+        JWT_SECRET
+      );
 
     req.admin = decoded;
 
@@ -289,10 +351,6 @@ function authenticateAdmin(
   }
 }
 
-/* ==================================================
-   BASIC TEST
-================================================== */
-
 app.get("/", (req, res) => {
   res.json({
     success: true,
@@ -300,10 +358,6 @@ app.get("/", (req, res) => {
       "Shree Photo Studio backend is running.",
   });
 });
-
-/* ==================================================
-   CATEGORIES
-================================================== */
 
 app.get(
   "/api/categories",
@@ -323,7 +377,8 @@ app.get(
 
       res.json({
         success: true,
-        categories: result.rows,
+        categories:
+          result.rows,
       });
     } catch (error) {
       console.error(
@@ -339,10 +394,6 @@ app.get(
     }
   }
 );
-
-/* ==================================================
-   ENQUIRIES - CREATE
-================================================== */
 
 app.post(
   "/api/enquiries",
@@ -379,7 +430,15 @@ app.post(
             status
           )
           VALUES
-          ($1, $2, $3, $4, $5, $6, 'New')
+          (
+            $1,
+            $2,
+            $3,
+            $4,
+            $5,
+            $6,
+            'New'
+          )
           RETURNING *
           `,
           [
@@ -396,7 +455,8 @@ app.post(
         success: true,
         message:
           "Enquiry submitted successfully.",
-        enquiry: result.rows[0],
+        enquiry:
+          result.rows[0],
       });
     } catch (error) {
       console.error(
@@ -413,10 +473,6 @@ app.post(
   }
 );
 
-/* ==================================================
-   ADMIN LOGIN
-================================================== */
-
 app.post(
   "/api/admin/login",
   async (req, res) => {
@@ -426,7 +482,10 @@ app.post(
         password,
       } = req.body;
 
-      if (!username || !password) {
+      if (
+        !username ||
+        !password
+      ) {
         return res.status(400).json({
           success: false,
           message:
@@ -445,7 +504,9 @@ app.post(
           [username]
         );
 
-      if (result.rows.length === 0) {
+      if (
+        result.rows.length === 0
+      ) {
         return res.status(401).json({
           success: false,
           message:
@@ -479,7 +540,8 @@ app.post(
           },
           JWT_SECRET,
           {
-            expiresIn: "2h",
+            expiresIn:
+              "2h",
           }
         );
 
@@ -509,10 +571,6 @@ app.post(
   }
 );
 
-/* ==================================================
-   ADMIN ME
-================================================== */
-
 app.get(
   "/api/admin/me",
   authenticateAdmin,
@@ -532,7 +590,9 @@ app.get(
           [req.admin.id]
         );
 
-      if (result.rows.length === 0) {
+      if (
+        result.rows.length === 0
+      ) {
         return res.status(404).json({
           success: false,
           message:
@@ -559,10 +619,6 @@ app.get(
     }
   }
 );
-
-/* ==================================================
-   ENQUIRIES - ADMIN
-================================================== */
 
 app.get(
   "/api/enquiries",
@@ -604,10 +660,6 @@ app.get(
     }
   }
 );
-
-/* ==================================================
-   UPDATE ENQUIRY STATUS
-================================================== */
 
 app.patch(
   "/api/enquiries/:id/status",
@@ -652,7 +704,9 @@ app.patch(
           ]
         );
 
-      if (result.rows.length === 0) {
+      if (
+        result.rows.length === 0
+      ) {
         return res.status(404).json({
           success: false,
           message:
@@ -682,10 +736,6 @@ app.patch(
   }
 );
 
-/* ==================================================
-   DELETE ENQUIRY
-================================================== */
-
 app.delete(
   "/api/enquiries/:id",
   authenticateAdmin,
@@ -704,7 +754,9 @@ app.delete(
           [enquiryId]
         );
 
-      if (result.rows.length === 0) {
+      if (
+        result.rows.length === 0
+      ) {
         return res.status(404).json({
           success: false,
           message:
@@ -732,15 +784,17 @@ app.delete(
   }
 );
 
-/* ==================================================
-   LOGO UPLOAD
-================================================== */
+/* =========================
+   LOGO
+========================= */
 
 app.post(
   "/api/admin/upload-logo",
   authenticateAdmin,
   upload.single("logo"),
   async (req, res) => {
+    let localPath = null;
+
     try {
       if (!req.file) {
         return res.status(400).json({
@@ -750,69 +804,100 @@ app.post(
         });
       }
 
+      localPath =
+        req.file.path;
+
       const ext =
         path.extname(
           req.file.originalname
-        );
+        ).toLowerCase();
 
-      const newFilename =
-        `logo-${Date.now()}${ext}`;
-
-      const oldPath =
-        req.file.path;
-
-      const newPath =
-        path.join(
-          uploadsDir,
-          newFilename
-        );
-
-      fs.renameSync(
-        oldPath,
-        newPath
-      );
-
-      const files =
-        fs.readdirSync(
-          uploadsDir
-        );
-
-      for (const file of files) {
-        if (
-          file.startsWith(
-            "logo-"
-          ) &&
-          file !== newFilename
-        ) {
-          try {
-            fs.unlinkSync(
-              path.join(
-                uploadsDir,
-                file
-              )
-            );
-          } catch {}
-        }
-      }
+      const storagePath =
+        `logo/logo-${Date.now()}${ext}`;
 
       const imageUrl =
-        `/uploads/${newFilename}`;
+        await uploadFileToSupabase(
+          localPath,
+          storagePath,
+          req.file.mimetype
+        );
+
+      const oldResult =
+        await pool.query(
+          `
+          SELECT image_url
+          FROM site_images
+          WHERE image_type = 'logo'
+          LIMIT 1
+          `
+        );
+
+      await pool.query(
+        `
+        INSERT INTO site_images
+        (
+          image_type,
+          image_url,
+          updated_at
+        )
+        VALUES
+        (
+          'logo',
+          $1,
+          CURRENT_TIMESTAMP
+        )
+        ON CONFLICT (image_type)
+        DO UPDATE SET
+          image_url = EXCLUDED.image_url,
+          updated_at = CURRENT_TIMESTAMP
+        `,
+        [imageUrl]
+      );
+
+      if (
+        oldResult.rows.length > 0 &&
+        oldResult.rows[0].image_url
+      ) {
+        await deleteFromSupabase(
+          oldResult.rows[0]
+            .image_url
+        );
+      }
+
+      if (
+        localPath &&
+        fs.existsSync(localPath)
+      ) {
+        fs.unlinkSync(
+          localPath
+        );
+      }
+
+      localPath = null;
 
       res.json({
         success: true,
         message:
           "Logo uploaded successfully.",
         image_url:
-          buildPublicUrl(
-            req,
-            imageUrl
-          ),
+          imageUrl,
       });
     } catch (error) {
       console.error(
         "Logo upload error:",
         error.message
       );
+
+      if (
+        localPath &&
+        fs.existsSync(localPath)
+      ) {
+        try {
+          fs.unlinkSync(
+            localPath
+          );
+        } catch {}
+      }
 
       res.status(500).json({
         success: false,
@@ -823,45 +908,34 @@ app.post(
   }
 );
 
-/* ==================================================
-   GET LOGO
-================================================== */
-
 app.get(
   "/api/admin/logo",
   async (req, res) => {
     try {
-      const files =
-        fs
-          .readdirSync(
-            uploadsDir
-          )
-          .filter((file) =>
-            file.startsWith(
-              "logo-"
-            )
-          )
-          .sort();
+      const result =
+        await pool.query(
+          `
+          SELECT image_url
+          FROM site_images
+          WHERE image_type = 'logo'
+          LIMIT 1
+          `
+        );
 
-      if (files.length === 0) {
+      if (
+        result.rows.length === 0
+      ) {
         return res.json({
           success: true,
           logo: null,
         });
       }
 
-      const latestLogo =
-        files[
-          files.length - 1
-        ];
-
       res.json({
         success: true,
         logo:
-          buildPublicUrl(
-            req,
-            `/uploads/${latestLogo}`
-          ),
+          result.rows[0]
+            .image_url,
       });
     } catch (error) {
       console.error(
@@ -878,9 +952,9 @@ app.get(
   }
 );
 
-/* ==================================================
-   GALLERY - PUBLIC
-================================================== */
+/* =========================
+   GALLERY
+========================= */
 
 app.get(
   "/api/gallery",
@@ -903,10 +977,7 @@ app.get(
           (item) => ({
             ...item,
             image_url:
-              buildPublicUrl(
-                req,
-                item.image_url
-              ),
+              item.image_url,
           })
         );
 
@@ -929,15 +1000,14 @@ app.get(
   }
 );
 
-/* ==================================================
-   GALLERY - UPLOAD
-================================================== */
-
 app.post(
   "/api/admin/gallery",
   authenticateAdmin,
   upload.single("image"),
   async (req, res) => {
+    let localPath = null;
+    let uploadedUrl = null;
+
     try {
       const {
         title,
@@ -952,7 +1022,10 @@ app.post(
         });
       }
 
-      if (!title || !category) {
+      if (
+        !title ||
+        !category
+      ) {
         return res.status(400).json({
           success: false,
           message:
@@ -960,29 +1033,28 @@ app.post(
         });
       }
 
+      localPath =
+        req.file.path;
+
       const ext =
         path.extname(
           req.file.originalname
-        );
+        ).toLowerCase();
 
       const filename =
         `gallery-${Date.now()}-${Math.round(
           Math.random() * 1e9
         )}${ext}`;
 
-      const newPath =
-        path.join(
-          uploadsDir,
-          filename
+      const storagePath =
+        `gallery/${filename}`;
+
+      uploadedUrl =
+        await uploadFileToSupabase(
+          localPath,
+          storagePath,
+          req.file.mimetype
         );
-
-      fs.renameSync(
-        req.file.path,
-        newPath
-      );
-
-      const imageUrl =
-        `/uploads/${filename}`;
 
       const result =
         await pool.query(
@@ -994,36 +1066,60 @@ app.post(
             image_url
           )
           VALUES
-          ($1, $2, $3)
+          (
+            $1,
+            $2,
+            $3
+          )
           RETURNING *
           `,
           [
             title,
             category,
-            imageUrl,
+            uploadedUrl,
           ]
         );
 
-      const gallery =
-        result.rows[0];
-
-      gallery.image_url =
-        buildPublicUrl(
-          req,
-          gallery.image_url
+      if (
+        localPath &&
+        fs.existsSync(localPath)
+      ) {
+        fs.unlinkSync(
+          localPath
         );
+      }
+
+      localPath = null;
 
       res.status(201).json({
         success: true,
         message:
           "Gallery image uploaded successfully.",
-        gallery,
+        gallery:
+          result.rows[0],
       });
     } catch (error) {
       console.error(
         "Gallery upload error:",
         error.message
       );
+
+      if (uploadedUrl) {
+        await deleteFromSupabase(
+          uploadedUrl
+        );
+      }
+
+      if (
+        localPath &&
+        fs.existsSync(localPath)
+      ) {
+        try {
+          fs.unlinkSync(
+            localPath
+          );
+        } catch {}
+      }
 
       res.status(500).json({
         success: false,
@@ -1033,10 +1129,6 @@ app.post(
     }
   }
 );
-
-/* ==================================================
-   GALLERY - DELETE
-================================================== */
 
 app.delete(
   "/api/admin/gallery/:id",
@@ -1056,7 +1148,9 @@ app.delete(
           [galleryId]
         );
 
-      if (result.rows.length === 0) {
+      if (
+        result.rows.length === 0
+      ) {
         return res.status(404).json({
           success: false,
           message:
@@ -1065,32 +1159,12 @@ app.delete(
       }
 
       const imageUrl =
-        result.rows[0].image_url;
+        result.rows[0]
+          .image_url;
 
-      if (imageUrl) {
-        const filename =
-          path.basename(
-            imageUrl
-          );
-
-        const filePath =
-          path.join(
-            uploadsDir,
-            filename
-          );
-
-        if (
-          fs.existsSync(
-            filePath
-          )
-        ) {
-          try {
-            fs.unlinkSync(
-              filePath
-            );
-          } catch {}
-        }
-      }
+      await deleteFromSupabase(
+        imageUrl
+      );
 
       res.json({
         success: true,
@@ -1112,20 +1186,16 @@ app.delete(
   }
 );
 
-/* ==================================================
+/* =========================
    WEBSITE IMAGES
-   HERO / FEATURE / ABOUT
-================================================== */
+   hero / feature / about
+========================= */
 
 const allowedSiteImageTypes = [
   "hero",
   "feature",
   "about",
 ];
-
-/* ==================================================
-   GET WEBSITE IMAGES
-================================================== */
 
 app.get(
   "/api/site-images",
@@ -1138,6 +1208,12 @@ app.get(
             image_url,
             updated_at
           FROM site_images
+          WHERE image_type IN
+          (
+            'hero',
+            'feature',
+            'about'
+          )
           ORDER BY id ASC
         `);
 
@@ -1147,10 +1223,7 @@ app.get(
         (row) => {
           images[
             row.image_type
-          ] = buildPublicUrl(
-            req,
-            row.image_url
-          );
+          ] = row.image_url;
         }
       );
 
@@ -1173,16 +1246,13 @@ app.get(
   }
 );
 
-/* ==================================================
-   UPLOAD WEBSITE IMAGE
-================================================== */
-
 app.post(
   "/api/admin/site-images/:type",
   authenticateAdmin,
   upload.single("image"),
   async (req, res) => {
-    let newFilePath = null;
+    let localPath = null;
+    let uploadedUrl = null;
 
     try {
       const imageType =
@@ -1208,28 +1278,26 @@ app.post(
         });
       }
 
+      localPath =
+        req.file.path;
+
       const ext =
         path.extname(
           req.file.originalname
-        );
+        ).toLowerCase();
 
       const filename =
         `site-${imageType}-${Date.now()}${ext}`;
 
-      newFilePath =
-        path.join(
-          uploadsDir,
-          filename
+      const storagePath =
+        `site-images/${filename}`;
+
+      uploadedUrl =
+        await uploadFileToSupabase(
+          localPath,
+          storagePath,
+          req.file.mimetype
         );
-
-      fs.renameSync(
-        req.file.path,
-        newFilePath
-      );
-
-      /* =========================
-         OLD IMAGE
-      ========================= */
 
       const oldResult =
         await pool.query(
@@ -1242,13 +1310,6 @@ app.post(
           [imageType]
         );
 
-      const imageUrl =
-        `/uploads/${filename}`;
-
-      /* =========================
-         DATABASE UPDATE
-      ========================= */
-
       await pool.query(
         `
         INSERT INTO site_images
@@ -1258,8 +1319,11 @@ app.post(
           updated_at
         )
         VALUES
-        ($1, $2, CURRENT_TIMESTAMP)
-
+        (
+          $1,
+          $2,
+          CURRENT_TIMESTAMP
+        )
         ON CONFLICT (image_type)
         DO UPDATE SET
           image_url = EXCLUDED.image_url,
@@ -1267,42 +1331,30 @@ app.post(
         `,
         [
           imageType,
-          imageUrl,
+          uploadedUrl,
         ]
       );
-
-      /* =========================
-         DELETE OLD IMAGE
-      ========================= */
 
       if (
         oldResult.rows.length > 0 &&
         oldResult.rows[0].image_url
       ) {
-        const oldFilename =
-          path.basename(
-            oldResult.rows[0]
-              .image_url
-          );
-
-        const oldFilePath =
-          path.join(
-            uploadsDir,
-            oldFilename
-          );
-
-        if (
-          fs.existsSync(
-            oldFilePath
-          )
-        ) {
-          try {
-            fs.unlinkSync(
-              oldFilePath
-            );
-          } catch {}
-        }
+        await deleteFromSupabase(
+          oldResult.rows[0]
+            .image_url
+        );
       }
+
+      if (
+        localPath &&
+        fs.existsSync(localPath)
+      ) {
+        fs.unlinkSync(
+          localPath
+        );
+      }
+
+      localPath = null;
 
       res.json({
         success: true,
@@ -1311,10 +1363,7 @@ app.post(
         image_type:
           imageType,
         image_url:
-          buildPublicUrl(
-            req,
-            imageUrl
-          ),
+          uploadedUrl,
       });
     } catch (error) {
       console.error(
@@ -1322,17 +1371,19 @@ app.post(
         error.message
       );
 
-      /* Delete newly uploaded file
-         if database update failed */
+      if (uploadedUrl) {
+        await deleteFromSupabase(
+          uploadedUrl
+        );
+      }
+
       if (
-        newFilePath &&
-        fs.existsSync(
-          newFilePath
-        )
+        localPath &&
+        fs.existsSync(localPath)
       ) {
         try {
           fs.unlinkSync(
-            newFilePath
+            localPath
           );
         } catch {}
       }
@@ -1346,9 +1397,9 @@ app.post(
   }
 );
 
-/* ==================================================
-   MULTER / GENERAL ERROR HANDLER
-================================================== */
+/* =========================
+   ERROR HANDLER
+========================= */
 
 app.use(
   (
@@ -1391,10 +1442,6 @@ app.use(
   }
 );
 
-/* ==================================================
-   START SERVER
-================================================== */
-
 app.listen(
   PORT,
   () => {
@@ -1407,5 +1454,12 @@ app.listen(
         `Public URL: ${PUBLIC_BASE_URL}`
       );
     }
+
+    console.log(
+      "Supabase Storage: connected"
+    );
+    console.log(
+      `Supabase bucket: ${SUPABASE_BUCKET}`
+    );
   }
 );
