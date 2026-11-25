@@ -188,8 +188,27 @@
       -webkit-backdrop-filter: blur(18px);
     }
 
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -35px;
+      background:
+        linear-gradient(
+          115deg,
+          rgba(20, 18, 16, 0.72),
+          rgba(70, 62, 52, 0.48),
+          rgba(20, 18, 16, 0.38)
+        ),
+        url("./assets/images/wedding-moments.jpg") center center / cover no-repeat;
+      filter: blur(22px);
+      transform: scale(1.08);
+      z-index: 0;
+      pointer-events: none;
+    }
+
     .hero-card {
       min-height: 640px;
+      z-index: 1;
       border-radius: 0 0 42px 42px;
       overflow: hidden;
       position: relative;
