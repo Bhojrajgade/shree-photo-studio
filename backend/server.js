@@ -146,7 +146,26 @@ const supabase = createClient(
   SUPABASE_SERVICE_ROLE_KEY
 );
 
-app.use(cors());
+const allowedOrigins = [
+  "https://shree-photo-studio-1.onrender.com",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -2377,6 +2396,7 @@ app.listen(
     );
   }
 );
+
 
 
 
