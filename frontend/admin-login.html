@@ -1,4 +1,4 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="en">
 
@@ -226,7 +226,124 @@
     .back-link:hover {
       color: #111827;
     }
-  </style>
+/* =========================
+   FORGOT PASSWORD MODAL
+========================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 9999;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.reset-card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+}
+
+.reset-card h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.reset-card p {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.reset-step {
+  display: none;
+}
+
+.reset-step.active {
+  display: block;
+}
+
+.reset-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.reset-btn {
+  flex: 1;
+  border: none;
+  background: #111827;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.reset-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.reset-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 14px;
+}
+
+.reset-input:focus {
+  border-color: #111827;
+}
+
+.otp-input {
+  text-align: center;
+  font-size: 24px;
+  letter-spacing: 8px;
+  font-weight: 700;
+}
+
+.reset-message {
+  margin-top: 14px;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  display: none;
+}
+
+.reset-message.error {
+  display: block;
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.reset-message.success {
+  display: block;
+  background: #dcfce7;
+  color: #166534;
+}
+</style>
+</style>
 </head>
 
 <body>
@@ -318,7 +435,7 @@
       href="index.html"
       class="back-link"
     >
-      ← Back to Website
+      â† Back to Website
     </a>
 
   </div>
@@ -465,7 +582,7 @@
 
           const response =
             await fetch(
-  "https://shree-photo-studio.onrender.com/api/admin/login",
+  "https://shree-photo-studio-backend.onrender.com/api/admin/login",
               {
                 method: "POST",
 
@@ -560,19 +677,6 @@
        FORGOT PASSWORD
     ========================= */
 
-    forgotPassword.addEventListener(
-      "click",
-      function (event) {
-
-        event.preventDefault();
-
-        alert(
-          "Forgot Password feature will be added next."
-        );
-
-      }
-    );
-
 
     /* =========================
        INITIALIZE
@@ -582,6 +686,467 @@
 
   </script>
 
+<!-- =========================
+     FORGOT PASSWORD MODAL
+========================= -->
+
+<div class="modal-overlay" id="resetModal">
+
+  <div class="reset-card">
+
+    <div class="reset-step active" id="resetStep1">
+
+      <h2>Forgot Password</h2>
+
+      <p>
+        Enter your registered recovery email.
+        We'll send you a verification OTP.
+      </p>
+
+      <input
+        type="email"
+        id="resetEmail"
+        class="reset-input"
+        placeholder="Enter recovery email"
+        autocomplete="email"
+      />
+
+      <div class="reset-actions">
+
+        <button
+          type="button"
+          class="reset-btn cancel-btn"
+          id="closeResetBtn"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="reset-btn"
+          id="sendOtpBtn"
+        >
+          Send OTP
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="reset-step" id="resetStep2">
+
+      <h2>Verify OTP</h2>
+
+      <p>
+        Enter the 6-digit OTP sent to your
+        recovery email. The OTP expires in
+        10 minutes.
+      </p>
+
+      <input
+        type="text"
+        id="resetOtp"
+        class="reset-input otp-input"
+        placeholder="000000"
+        inputmode="numeric"
+        maxlength="6"
+        autocomplete="one-time-code"
+      />
+
+      <div class="reset-actions">
+
+        <button
+          type="button"
+          class="reset-btn cancel-btn"
+          id="cancelOtpBtn"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="reset-btn"
+          id="verifyOtpBtn"
+        >
+          Verify OTP
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="reset-step" id="resetStep3">
+
+      <h2>Create New Password</h2>
+
+      <p>
+        Set a new password for your admin account.
+      </p>
+
+      <input
+        type="password"
+        id="newResetPassword"
+        class="reset-input"
+        placeholder="New password"
+        autocomplete="new-password"
+      />
+
+      <input
+        type="password"
+        id="confirmResetPassword"
+        class="reset-input"
+        placeholder="Confirm new password"
+        autocomplete="new-password"
+      />
+
+      <div class="reset-actions">
+
+        <button
+          type="button"
+          class="reset-btn cancel-btn"
+          id="cancelPasswordBtn"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="reset-btn"
+          id="resetPasswordBtn"
+        >
+          Reset Password
+        </button>
+
+      </div>
+
+    </div>
+
+    <div
+      class="reset-message"
+      id="resetMessage"
+    ></div>
+
+  </div>
+
+</div>
+<script>
+/* =========================
+   FORGOT PASSWORD
+========================= */
+
+const resetModal = document.getElementById("resetModal");
+const resetEmail = document.getElementById("resetEmail");
+const resetOtp = document.getElementById("resetOtp");
+const newResetPassword = document.getElementById("newResetPassword");
+const confirmResetPassword = document.getElementById("confirmResetPassword");
+
+const sendOtpBtn = document.getElementById("sendOtpBtn");
+const verifyOtpBtn = document.getElementById("verifyOtpBtn");
+const resetPasswordBtn = document.getElementById("resetPasswordBtn");
+
+const closeResetBtn = document.getElementById("closeResetBtn");
+const cancelOtpBtn = document.getElementById("cancelOtpBtn");
+const cancelPasswordBtn = document.getElementById("cancelPasswordBtn");
+
+const resetMessage = document.getElementById("resetMessage");
+
+const resetStep1 = document.getElementById("resetStep1");
+const resetStep2 = document.getElementById("resetStep2");
+const resetStep3 = document.getElementById("resetStep3");
+
+let resetToken = null;
+
+function showResetMessage(text, type) {
+  resetMessage.textContent = text;
+  resetMessage.className = "reset-message " + type;
+}
+
+function showResetStep(step) {
+  resetStep1.classList.remove("active");
+  resetStep2.classList.remove("active");
+  resetStep3.classList.remove("active");
+
+  if (step === 1) resetStep1.classList.add("active");
+  if (step === 2) resetStep2.classList.add("active");
+  if (step === 3) resetStep3.classList.add("active");
+
+  resetMessage.textContent = "";
+  resetMessage.className = "reset-message";
+}
+
+function closeResetModal() {
+  resetModal.classList.remove("show");
+
+  resetEmail.value = "";
+  resetOtp.value = "";
+  newResetPassword.value = "";
+  confirmResetPassword.value = "";
+
+  resetToken = null;
+
+  showResetStep(1);
+}
+
+forgotPassword.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  resetModal.classList.add("show");
+  showResetStep(1);
+  resetEmail.focus();
+});
+
+closeResetBtn.addEventListener("click", closeResetModal);
+cancelOtpBtn.addEventListener("click", closeResetModal);
+cancelPasswordBtn.addEventListener("click", closeResetModal);
+
+
+/* =========================
+   SEND OTP
+========================= */
+
+sendOtpBtn.addEventListener("click", async function () {
+  const email = resetEmail.value.trim().toLowerCase();
+
+  if (!email) {
+    showResetMessage(
+      "Please enter your recovery email.",
+      "error"
+    );
+    return;
+  }
+
+  sendOtpBtn.disabled = true;
+  sendOtpBtn.textContent = "Sending...";
+
+  try {
+    const response = await fetch(
+      "https://shree-photo-studio-backend.onrender.com/api/admin/forgot-password",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.message || "Unable to send OTP."
+      );
+    }
+
+    showResetStep(2);
+
+    showResetMessage(
+      "If this email is registered, an OTP has been sent.",
+      "success"
+    );
+
+    resetOtp.focus();
+
+  } catch (error) {
+    console.error(
+      "Forgot password error:",
+      error
+    );
+
+    showResetMessage(
+      error.message || "Unable to send OTP.",
+      "error"
+    );
+
+  } finally {
+    sendOtpBtn.disabled = false;
+    sendOtpBtn.textContent = "Send OTP";
+  }
+});
+
+
+/* =========================
+   VERIFY OTP
+========================= */
+
+verifyOtpBtn.addEventListener("click", async function () {
+  const email = resetEmail.value.trim().toLowerCase();
+  const otp = resetOtp.value.trim();
+
+  if (!/^\d{6}$/.test(otp)) {
+    showResetMessage(
+      "Enter a valid 6-digit OTP.",
+      "error"
+    );
+    return;
+  }
+
+  verifyOtpBtn.disabled = true;
+  verifyOtpBtn.textContent = "Verifying...";
+
+  try {
+    const response = await fetch(
+      "https://shree-photo-studio-backend.onrender.com/api/admin/verify-reset-otp",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          otp: otp
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.message || "Invalid OTP."
+      );
+    }
+
+    resetToken = data.resetToken;
+
+    showResetStep(3);
+
+    newResetPassword.focus();
+
+  } catch (error) {
+    console.error(
+      "OTP verification error:",
+      error
+    );
+
+    showResetMessage(
+      error.message || "OTP verification failed.",
+      "error"
+    );
+
+  } finally {
+    verifyOtpBtn.disabled = false;
+    verifyOtpBtn.textContent = "Verify OTP";
+  }
+});
+
+
+/* =========================
+   RESET PASSWORD
+========================= */
+
+resetPasswordBtn.addEventListener("click", async function () {
+  const newPassword = newResetPassword.value;
+  const confirmPassword = confirmResetPassword.value;
+
+  if (!newPassword || !confirmPassword) {
+    showResetMessage(
+      "Please fill both password fields.",
+      "error"
+    );
+    return;
+  }
+
+  if (newPassword.length < 8) {
+    showResetMessage(
+      "Password must be at least 8 characters.",
+      "error"
+    );
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    showResetMessage(
+      "Passwords do not match.",
+      "error"
+    );
+    return;
+  }
+
+  if (!resetToken) {
+    showResetMessage(
+      "Reset session expired. Please start again.",
+      "error"
+    );
+    return;
+  }
+
+  resetPasswordBtn.disabled = true;
+  resetPasswordBtn.textContent = "Resetting...";
+
+  try {
+    const response = await fetch(
+      "https://shree-photo-studio-backend.onrender.com/api/admin/reset-password",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          resetToken: resetToken,
+          newPassword: newPassword,
+          confirmPassword: confirmPassword
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.message || "Password reset failed."
+      );
+    }
+
+    showResetMessage(
+      "Password reset successfully. You can now login.",
+      "success"
+    );
+
+    resetToken = null;
+
+    setTimeout(function () {
+      closeResetModal();
+      passwordInput.value = "";
+      usernameInput.focus();
+    }, 1800);
+
+  } catch (error) {
+    console.error(
+      "Password reset error:",
+      error
+    );
+
+    showResetMessage(
+      error.message || "Unable to reset password.",
+      "error"
+    );
+
+  } finally {
+    resetPasswordBtn.disabled = false;
+    resetPasswordBtn.textContent = "Reset Password";
+  }
+});
+
+
+/* =========================
+   OTP INPUT
+========================= */
+
+resetOtp.addEventListener("input", function () {
+  this.value = this.value
+    .replace(/\D/g, "")
+    .slice(0, 6);
+});
+</script>
+
 </body>
 
 </html>
+
+
+
+
+
