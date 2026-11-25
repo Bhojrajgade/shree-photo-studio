@@ -620,6 +620,144 @@ app.get(
   }
 );
 
+
+/* =========================
+   ADMIN CHANGE PASSWORD
+========================= */
+
+app.post(
+  "/api/admin/change-password",
+  authenticateAdmin,
+  async (req, res) => {
+    try {
+      const {
+        currentPassword,
+        newPassword,
+      } = req.body;
+
+      if (
+        !currentPassword ||
+        !newPassword
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Current password and new password are required.",
+        });
+      }
+
+      if (newPassword.length < 8) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "New password must be at least 8 characters long.",
+        });
+      }
+
+      if (
+        currentPassword ===
+        newPassword
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "New password must be different from current password.",
+        });
+      }
+
+      const result =
+        await pool.query(
+          `
+          SELECT
+            id,
+            username,
+            password_hash
+          FROM admin_users
+          WHERE id = $1
+          LIMIT 1
+          `,
+          [req.admin.id]
+        );
+
+      if (
+        result.rows.length === 0
+      ) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Admin account not found.",
+        });
+      }
+
+      const admin =
+        result.rows[0];
+
+      const passwordMatch =
+        await bcrypt.compare(
+          currentPassword,
+          admin.password_hash
+        );
+
+      if (!passwordMatch) {
+        return res.status(401).json({
+          success: false,
+          message:
+            "Current password is incorrect.",
+        });
+      }
+
+      const newPasswordHash =
+        await bcrypt.hash(
+          newPassword,
+          10
+        );
+
+      await pool.query(
+        `
+        UPDATE admin_users
+        SET password_hash = $1
+        WHERE id = $2
+        `,
+        [
+          newPasswordHash,
+          admin.id,
+        ]
+      );
+
+      const newToken =
+        jwt.sign(
+          {
+            id: admin.id,
+            username:
+              admin.username,
+          },
+          JWT_SECRET,
+          {
+            expiresIn:
+              "2h",
+          }
+        );
+
+      res.json({
+        success: true,
+        message:
+          "Password changed successfully.",
+        token: newToken,
+      });
+    } catch (error) {
+      console.error(
+        "Change password error:",
+        error.message
+      );
+
+      res.status(500).json({
+        success: false,
+        message:
+          "Failed to change password.",
+      });
+    }
+  }
+);
 app.get(
   "/api/enquiries",
   authenticateAdmin,

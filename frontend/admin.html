@@ -787,6 +787,12 @@
         >
           ✉ &nbsp; Enquiries
         </button>
+        <button
+          class="nav-btn"
+          data-section="settings"
+        >
+          ⚙ &nbsp; Settings
+        </button>
 
       </nav>
 
@@ -1192,7 +1198,75 @@
 
       </section>
 
-    </main>
+    <section class="section" id="settings">
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <h2>Change Password</h2>
+        <p>Update your admin account password securely.</p>
+      </div>
+    </div>
+
+    <form class="upload-form" id="changePasswordForm">
+      <div class="field full">
+        <label for="currentPassword">Current Password</label>
+        <input
+          type="password"
+          id="currentPassword"
+          placeholder="Enter current password"
+          autocomplete="current-password"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="newPassword">New Password</label>
+        <input
+          type="password"
+          id="newPassword"
+          placeholder="Minimum 8 characters"
+          autocomplete="new-password"
+          minlength="8"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirm New Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          placeholder="Re-enter new password"
+          autocomplete="new-password"
+          minlength="8"
+          required
+        />
+      </div>
+
+      <div class="file-info">
+        Use a strong password with letters, numbers and symbols.
+      </div>
+
+      <div class="upload-actions">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          id="changePasswordBtn"
+        >
+          Change Password
+        </button>
+
+        <button
+          type="reset"
+          class="btn btn-secondary"
+        >
+          Clear
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+</main>
 
   </div>
 
@@ -1372,26 +1446,23 @@
     ========================== */
 
     const sectionInfo = {
-
-      dashboard: {
-        title: "Dashboard",
-        subtitle:
-          "Manage your photography website."
-      },
-
-      gallery: {
-        title: "Gallery",
-        subtitle:
-          "Upload and manage your photography gallery."
-      },
-
-      enquiries: {
-        title: "Enquiries",
-        subtitle:
-          "Manage customer enquiries and their status."
-      }
-
-    };
+  dashboard: {
+    title: "Dashboard",
+    subtitle: "Manage your photography website."
+  },
+  gallery: {
+    title: "Gallery",
+    subtitle: "Upload and manage your photography gallery."
+  },
+  enquiries: {
+    title: "Enquiries",
+    subtitle: "Manage customer enquiries and their status."
+  },
+  settings: {
+    title: "Settings",
+    subtitle: "Manage your admin account security."
+  }
+};
 
 
     function openSection(
@@ -2705,7 +2776,117 @@
     }
 
 
-    initialize();
+
+const changePasswordForm =
+  document.getElementById("changePasswordForm");
+
+const changePasswordBtn =
+  document.getElementById("changePasswordBtn");
+
+if (changePasswordForm && changePasswordBtn) {
+  changePasswordForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const currentPassword =
+      document.getElementById("currentPassword").value;
+
+    const newPassword =
+      document.getElementById("newPassword").value;
+
+    const confirmPassword =
+      document.getElementById("confirmPassword").value;
+
+    if (
+      !currentPassword ||
+      !newPassword ||
+      !confirmPassword
+    ) {
+      showToast(
+        "All password fields are required.",
+        "error"
+      );
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      showToast(
+        "New password must be at least 8 characters.",
+        "error"
+      );
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      showToast(
+        "New passwords do not match.",
+        "error"
+      );
+      return;
+    }
+
+    if (currentPassword === newPassword) {
+      showToast(
+        "New password must be different from current password.",
+        "error"
+      );
+      return;
+    }
+
+    changePasswordBtn.disabled = true;
+    changePasswordBtn.textContent =
+      "Changing Password...";
+
+    try {
+      const data = await apiFetch(
+        "/api/admin/change-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            currentPassword,
+            newPassword
+          })
+        }
+      );
+
+      if (data.success && data.token) {
+        localStorage.setItem(
+          "adminToken",
+          data.token
+        );
+
+        changePasswordForm.reset();
+
+        showToast(
+          "Password changed successfully."
+        );
+      } else {
+        throw new Error(
+          data.message ||
+          "Password change failed."
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Change password error:",
+        error
+      );
+
+      showToast(
+        error.message ||
+        "Unable to change password.",
+        "error"
+      );
+    } finally {
+      changePasswordBtn.disabled = false;
+      changePasswordBtn.textContent =
+        "Change Password";
+    }
+  });
+}
+initialize();
 
   </script>
 
