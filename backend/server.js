@@ -1,4 +1,4 @@
-require("dotenv").config();
+﻿require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
@@ -8,6 +8,8 @@ const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs");
+const crypto = require("crypto");
+const { Resend } = require("resend");
 const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
@@ -15,6 +17,99 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET;
 
+const RESEND_API_KEY =
+  process.env.RESEND_API_KEY || "";
+
+const RESEND_FROM_EMAIL =
+  process.env.RESEND_FROM_EMAIL ||
+  "onboarding@resend.dev";
+
+const resend =
+  RESEND_API_KEY
+    ? new Resend(RESEND_API_KEY)
+    : null;
+async function sendSecurityEmail({
+  to,
+  subject,
+  html,
+}) {
+  if (!resend) {
+    console.error(
+      "Resend is not configured. Email not sent."
+    );
+    return {
+      success: false,
+      reason: "resend_not_configured",
+    };
+  }
+
+  try {
+    const result =
+      await resend.emails.send({
+        from: RESEND_FROM_EMAIL,
+        to: [to],
+        subject,
+        html,
+      });
+
+    if (result.error) {
+      console.error(
+        "Resend email error:",
+        result.error.message
+      );
+
+      return {
+        success: false,
+        reason: "resend_error",
+      };
+    }
+
+    return {
+      success: true,
+      id: result.data?.id || null,
+    };
+  } catch (error) {
+    console.error(
+      "Security email error:",
+      error.message
+    );
+
+    return {
+      success: false,
+      reason: "email_send_failed",
+    };
+  }
+}
+function generateOtp() {
+  return crypto
+    .randomInt(100000, 1000000)
+    .toString();
+}
+
+function hashResetValue(value) {
+  return crypto
+    .createHmac("sha256", JWT_SECRET)
+    .update(value)
+    .digest("hex");
+}
+
+function generateResetToken() {
+  return crypto
+    .randomBytes(32)
+    .toString("hex");
+}
+
+function getClientIp(req) {
+  return (
+    req.ip ||
+    req.headers["x-forwarded-for"] ||
+    req.socket.remoteAddress ||
+    "unknown"
+  )
+    .toString()
+    .split(",")[0]
+    .trim();
+}
 app.set("trust proxy", 1);
 
 const PUBLIC_BASE_URL =
@@ -300,7 +395,7 @@ const upload =
     },
   });
 
-function authenticateAdmin(
+async function authenticateAdmin(
   req,
   res,
   next
@@ -339,7 +434,61 @@ function authenticateAdmin(
         JWT_SECRET
       );
 
-    req.admin = decoded;
+    if (
+      !decoded.id ||
+      typeof decoded.tokenVersion !== "number"
+    ) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Invalid authorization token.",
+      });
+    }
+
+    const result =
+      await pool.query(
+        `
+        SELECT
+          id,
+          username,
+          token_version
+        FROM admin_users
+        WHERE id = $1
+        LIMIT 1
+        `,
+        [decoded.id]
+      );
+
+    if (
+      result.rows.length === 0
+    ) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Admin account not found.",
+      });
+    }
+
+    const admin =
+      result.rows[0];
+
+    if (
+      decoded.tokenVersion !==
+      admin.token_version
+    ) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Session expired. Please log in again.",
+      });
+    }
+
+    req.admin = {
+      id: admin.id,
+      username: admin.username,
+      tokenVersion:
+        admin.token_version,
+    };
 
     next();
   } catch (error) {
@@ -474,6 +623,545 @@ app.post(
 );
 
 app.post(
+  "/api/admin/forgot-password",
+  async (req, res) => {
+    try {
+      const email =
+        typeof req.body?.email === "string"
+          ? req.body.email.trim().toLowerCase()
+          : "";
+
+      const genericResponse = {
+        success: true,
+        message:
+          "If the recovery email is registered, an OTP has been sent.",
+      };
+
+      if (!email) {
+        return res.json(genericResponse);
+      }
+
+      const adminResult =
+        await pool.query(
+          `
+          SELECT
+            id,
+            username,
+            recovery_email
+          FROM admin_users
+          WHERE LOWER(recovery_email) = $1
+          LIMIT 1
+          `,
+          [email]
+        );
+
+      if (adminResult.rows.length === 0) {
+        return res.json(genericResponse);
+      }
+
+      const admin =
+        adminResult.rows[0];
+
+      const clientIp =
+        getClientIp(req);
+
+      const rateLimitResult =
+        await pool.query(
+          `
+          SELECT COUNT(*)::int AS count
+          FROM admin_password_resets
+          WHERE
+            admin_id = $1
+            AND created_at > NOW() - INTERVAL '15 minutes'
+          `,
+          [admin.id]
+        );
+
+      if (
+        rateLimitResult.rows[0].count >= 3
+      ) {
+        return res.json(genericResponse);
+      }
+
+      const otp =
+        generateOtp();
+
+      const otpHash =
+        hashResetValue(otp);
+
+      await pool.query(
+        `
+        UPDATE admin_password_resets
+        SET used_at = NOW()
+        WHERE
+          admin_id = $1
+          AND used_at IS NULL
+          AND verified_at IS NULL
+        `,
+        [admin.id]
+      );
+
+      await pool.query(
+        `
+        INSERT INTO admin_password_resets
+        (
+          admin_id,
+          otp_hash,
+          expires_at,
+          request_ip
+        )
+        VALUES
+        (
+          $1,
+          $2,
+          NOW() + INTERVAL '10 minutes',
+          $3
+        )
+        `,
+        [
+          admin.id,
+          otpHash,
+          clientIp,
+        ]
+      );
+
+      const emailResult =
+        await sendSecurityEmail({
+          to: email,
+          subject:
+            "Shree Photo Studio Admin Password Reset OTP",
+          html: `
+            <div style="font-family:Arial,sans-serif;line-height:1.6;color:#222;">
+              <h2>Admin Password Reset</h2>
+              <p>
+                A password reset request was made
+                for your Shree Photo Studio admin account.
+              </p>
+              <p>Your OTP is:</p>
+
+              <div style="
+                font-size:32px;
+                font-weight:700;
+                letter-spacing:8px;
+                margin:20px 0;
+              ">
+                ${otp}
+              </div>
+
+              <p>
+                This OTP expires in
+                <strong>10 minutes</strong>.
+              </p>
+
+              <p>
+                If you did not request this,
+                you can safely ignore this email.
+              </p>
+
+              <p>
+                — Shree Photo Studio Security
+              </p>
+            </div>
+          `,
+        });
+
+      if (!emailResult.success) {
+        console.error(
+          "Password reset email could not be sent."
+        );
+      }
+
+      return res.json(genericResponse);
+    } catch (error) {
+      console.error(
+        "Forgot-password error:",
+        error.message
+      );
+
+      return res.json({
+        success: true,
+        message:
+          "If the recovery email is registered, an OTP has been sent.",
+      });
+    }
+  }
+);
+app.post(
+  "/api/admin/verify-reset-otp",
+  async (req, res) => {
+    try {
+      const email =
+        typeof req.body?.email === "string"
+          ? req.body.email.trim().toLowerCase()
+          : "";
+
+      const otp =
+        typeof req.body?.otp === "string"
+          ? req.body.otp.trim()
+          : "";
+
+      if (
+        !email ||
+        !/^\d{6}$/.test(otp)
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Valid email and 6-digit OTP are required.",
+        });
+      }
+
+      const adminResult =
+        await pool.query(
+          `
+          SELECT
+            id,
+            username,
+            recovery_email
+          FROM admin_users
+          WHERE LOWER(recovery_email) = $1
+          LIMIT 1
+          `,
+          [email]
+        );
+
+      if (
+        adminResult.rows.length === 0
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Invalid or expired OTP.",
+        });
+      }
+
+      const admin =
+        adminResult.rows[0];
+
+      const resetResult =
+        await pool.query(
+          `
+          SELECT
+            id,
+            otp_hash,
+            attempts,
+            expires_at
+          FROM admin_password_resets
+          WHERE
+            admin_id = $1
+            AND used_at IS NULL
+            AND verified_at IS NULL
+          ORDER BY created_at DESC
+          LIMIT 1
+          `,
+          [admin.id]
+        );
+
+      if (
+        resetResult.rows.length === 0
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Invalid or expired OTP.",
+        });
+      }
+
+      const reset =
+        resetResult.rows[0];
+
+      if (
+        new Date(reset.expires_at) <=
+        new Date()
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Invalid or expired OTP.",
+        });
+      }
+
+      if (reset.attempts >= 5) {
+        return res.status(429).json({
+          success: false,
+          message:
+            "Too many OTP attempts. Please request a new OTP.",
+        });
+      }
+
+      const submittedHash =
+        hashResetValue(otp);
+
+      if (
+        submittedHash !==
+        reset.otp_hash
+      ) {
+        await pool.query(
+          `
+          UPDATE admin_password_resets
+          SET attempts = attempts + 1
+          WHERE id = $1
+          `,
+          [reset.id]
+        );
+
+        return res.status(400).json({
+          success: false,
+          message:
+            "Invalid or expired OTP.",
+        });
+      }
+
+      const resetToken =
+        generateResetToken();
+
+      const resetTokenHash =
+        hashResetValue(
+          resetToken
+        );
+
+      await pool.query(
+        `
+        UPDATE admin_password_resets
+        SET
+          verified_at = NOW(),
+          reset_token_hash = $1,
+          reset_token_expires_at =
+            NOW() + INTERVAL '10 minutes'
+        WHERE id = $2
+        `,
+        [
+          resetTokenHash,
+          reset.id,
+        ]
+      );
+
+      return res.json({
+        success: true,
+        message:
+          "OTP verified successfully.",
+        resetToken,
+      });
+    } catch (error) {
+      console.error(
+        "Verify reset OTP error:",
+        error.message
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Unable to verify OTP.",
+      });
+    }
+  }
+);
+app.post(
+  "/api/admin/reset-password",
+  async (req, res) => {
+    try {
+      const email =
+        typeof req.body?.email === "string"
+          ? req.body.email.trim().toLowerCase()
+          : "";
+
+      const resetToken =
+        typeof req.body?.resetToken === "string"
+          ? req.body.resetToken.trim()
+          : "";
+
+      const newPassword =
+        typeof req.body?.newPassword === "string"
+          ? req.body.newPassword
+          : "";
+
+      if (
+        !email ||
+        !resetToken ||
+        !newPassword
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Email, reset token and new password are required.",
+        });
+      }
+
+      if (newPassword.length < 8) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "New password must be at least 8 characters long.",
+        });
+      }
+
+      const adminResult =
+        await pool.query(
+          `
+          SELECT
+            id,
+            username,
+            recovery_email
+          FROM admin_users
+          WHERE LOWER(recovery_email) = $1
+          LIMIT 1
+          `,
+          [email]
+        );
+
+      if (
+        adminResult.rows.length === 0
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Invalid or expired reset request.",
+        });
+      }
+
+      const admin =
+        adminResult.rows[0];
+
+      const resetTokenHash =
+        hashResetValue(
+          resetToken
+        );
+
+      const resetResult =
+        await pool.query(
+          `
+          SELECT
+            id,
+            reset_token_hash,
+            reset_token_expires_at
+          FROM admin_password_resets
+          WHERE
+            admin_id = $1
+            AND verified_at IS NOT NULL
+            AND used_at IS NULL
+            AND reset_token_hash = $2
+          ORDER BY verified_at DESC
+          LIMIT 1
+          `,
+          [
+            admin.id,
+            resetTokenHash,
+          ]
+        );
+
+      if (
+        resetResult.rows.length === 0
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Invalid or expired reset request.",
+        });
+      }
+
+      const reset =
+        resetResult.rows[0];
+
+      if (
+        !reset.reset_token_expires_at ||
+        new Date(
+          reset.reset_token_expires_at
+        ) <= new Date()
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Invalid or expired reset request.",
+        });
+      }
+
+      const newPasswordHash =
+        await bcrypt.hash(
+          newPassword,
+          10
+        );
+
+      await pool.query(
+        `
+        UPDATE admin_users
+        SET
+          password_hash = $1,
+          token_version = token_version + 1
+        WHERE id = $2
+        `,
+        [
+          newPasswordHash,
+          admin.id,
+        ]
+      );
+
+      await pool.query(
+        `
+        UPDATE admin_password_resets
+        SET
+          used_at = NOW()
+        WHERE id = $1
+        `,
+        [reset.id]
+      );
+
+      const emailResult =
+        await sendSecurityEmail({
+          to: email,
+          subject:
+            "Shree Photo Studio Admin Password Changed",
+          html: `
+            <div style="font-family:Arial,sans-serif;line-height:1.6;color:#222;">
+              <h2>Password Changed</h2>
+
+              <p>
+                Your Shree Photo Studio admin password
+                was successfully changed.
+              </p>
+
+              <p>
+                For security, all existing admin sessions
+                have been invalidated.
+              </p>
+
+              <p>
+                If you did not make this change,
+                secure your account immediately.
+              </p>
+
+              <p>
+                — Shree Photo Studio Security
+              </p>
+            </div>
+          `,
+        });
+
+      if (!emailResult.success) {
+        console.error(
+          "Password-change security email could not be sent."
+        );
+      }
+
+      return res.json({
+        success: true,
+        message:
+          "Password reset successfully. Please log in again.",
+      });
+    } catch (error) {
+      console.error(
+        "Reset-password error:",
+        error.message
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Unable to reset password.",
+      });
+    }
+  }
+);
+app.post(
   "/api/admin/login",
   async (req, res) => {
     try {
@@ -493,6 +1181,38 @@ app.post(
         });
       }
 
+      const clientIp =
+        getClientIp(req);
+
+      const recentFailures =
+        await pool.query(
+          `
+          SELECT COUNT(*)::int AS count
+          FROM admin_login_attempts
+          WHERE
+            created_at > NOW() - INTERVAL '15 minutes'
+            AND success = FALSE
+            AND (
+              ip_address = $1
+              OR username = $2
+            )
+          `,
+          [
+            clientIp,
+            username,
+          ]
+        );
+
+      if (
+        recentFailures.rows[0].count >= 5
+      ) {
+        return res.status(429).json({
+          success: false,
+          message:
+            "Too many failed login attempts. Please try again later.",
+        });
+      }
+
       const result =
         await pool.query(
           `
@@ -507,6 +1227,18 @@ app.post(
       if (
         result.rows.length === 0
       ) {
+        await pool.query(
+          `
+          INSERT INTO admin_login_attempts
+            (username, ip_address, success)
+          VALUES ($1, $2, FALSE)
+          `,
+          [
+            username,
+            clientIp,
+          ]
+        );
+
         return res.status(401).json({
           success: false,
           message:
@@ -524,6 +1256,18 @@ app.post(
         );
 
       if (!passwordMatch) {
+        await pool.query(
+          `
+          INSERT INTO admin_login_attempts
+            (username, ip_address, success)
+          VALUES ($1, $2, FALSE)
+          `,
+          [
+            username,
+            clientIp,
+          ]
+        );
+
         return res.status(401).json({
           success: false,
           message:
@@ -531,12 +1275,26 @@ app.post(
         });
       }
 
+      await pool.query(
+        `
+        INSERT INTO admin_login_attempts
+          (username, ip_address, success)
+        VALUES ($1, $2, TRUE)
+        `,
+        [
+          username,
+          clientIp,
+        ]
+      );
+
       const token =
         jwt.sign(
           {
             id: admin.id,
             username:
               admin.username,
+            tokenVersion:
+              admin.token_version,
           },
           JWT_SECRET,
           {
@@ -545,7 +1303,7 @@ app.post(
           }
         );
 
-      res.json({
+      return res.json({
         success: true,
         message:
           "Login successful.",
@@ -562,7 +1320,7 @@ app.post(
         error.message
       );
 
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message:
           "Login failed.",
@@ -699,6 +1457,16 @@ app.post(
         );
 
       if (!passwordMatch) {
+        await pool.query(
+          `
+          INSERT INTO admin_login_attempts
+            (username, ip_address, success)
+          VALUES (      if (!passwordMatch) {
+,         return res.status(401).json({, FALSE)
+          `,
+          [username, clientIp]
+        );
+
         return res.status(401).json({
           success: false,
           message:
@@ -712,11 +1480,15 @@ app.post(
           10
         );
 
-      await pool.query(
+      const passwordUpdateResult =
+        await pool.query(
         `
         UPDATE admin_users
-        SET password_hash = $1
+        SET
+          password_hash = $1,
+          token_version = token_version + 1
         WHERE id = $2
+        RETURNING token_version
         `,
         [
           newPasswordHash,
@@ -724,12 +1496,16 @@ app.post(
         ]
       );
 
+      const newTokenVersion =
+        passwordUpdateResult.rows[0].token_version;
       const newToken =
         jwt.sign(
           {
             id: admin.id,
             username:
               admin.username,
+            tokenVersion:
+              newTokenVersion,
           },
           JWT_SECRET,
           {
@@ -1601,3 +2377,9 @@ app.listen(
     );
   }
 );
+
+
+
+
+
+
