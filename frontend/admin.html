@@ -3,11 +3,28 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Admin Dashboard | Shree Photo Studio</title>
 
   <style>
+    :root {
+      --bg: #f7f4ee;
+      --card: #ffffff;
+      --text: #211f1b;
+      --muted: #777067;
+      --gold: #b18a4a;
+      --gold-dark: #8e6a32;
+      --border: #e8e0d3;
+      --danger: #b42318;
+      --success: #18794e;
+      --shadow: 0 12px 35px rgba(46, 36, 22, 0.08);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -15,9 +32,17 @@
     }
 
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f6f9;
-      color: #222;
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
     }
 
     button,
@@ -27,241 +52,416 @@
       font: inherit;
     }
 
-    .header {
-      background: #111827;
-      color: white;
-      padding: 18px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .header h1 {
-      font-size: 24px;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 8px;
-      padding: 10px 16px;
+    button {
       cursor: pointer;
+    }
+
+    /* =========================
+       LAYOUT
+    ========================== */
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      min-height: 100vh;
+
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+
+      background: #211f1b;
+      color: white;
+
+      padding: 28px 18px;
+
+      display: flex;
+      flex-direction: column;
+
+      z-index: 100;
+    }
+
+    .brand {
+      text-align: center;
+      padding: 5px 10px 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      margin-bottom: 24px;
+    }
+
+    .brand img {
+      width: 145px;
+      max-height: 70px;
+      object-fit: contain;
+      background: white;
+      border-radius: 12px;
+      padding: 7px;
+    }
+
+    .brand p {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #cfc8bd;
+      letter-spacing: 0.5px;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .nav button {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: #d8d2c9;
+
+      padding: 13px 15px;
+      border-radius: 10px;
+
+      text-align: left;
+      font-size: 14px;
+      font-weight: 600;
+
+      transition: 0.2s;
+    }
+
+    .nav button:hover,
+    .nav button.active {
+      background: rgba(177, 138, 74, 0.18);
+      color: #f1d49d;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+    }
+
+    .logout-btn {
+      width: 100%;
+
+      border: 1px solid rgba(255,255,255,0.15);
+
+      background: transparent;
+      color: #ddd7ce;
+
+      padding: 12px;
+      border-radius: 10px;
+
       font-weight: 600;
     }
 
-    .btn-primary {
-      background: #2563eb;
-      color: white;
+    .logout-btn:hover {
+      background: rgba(255,255,255,0.08);
     }
 
-    .btn-success {
-      background: #16a34a;
-      color: white;
+    .main {
+      width: calc(100% - 250px);
+      margin-left: 250px;
+      padding: 32px;
     }
 
-    .btn-danger {
-      background: #dc2626;
-      color: white;
+    /* =========================
+       TOP BAR
+    ========================== */
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 30px;
     }
 
-    .btn-warning {
-      background: #f59e0b;
-      color: white;
+    .topbar h1 {
+      font-family: Georgia, serif;
+      font-size: 32px;
+      font-weight: 500;
     }
 
-    .btn-dark {
-      background: #374151;
-      color: white;
+    .topbar p {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    .btn:hover {
-      opacity: 0.9;
+    .admin-info {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 15px;
+      box-shadow: var(--shadow);
+      font-size: 13px;
     }
 
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .admin-info strong {
+      color: var(--gold-dark);
     }
 
-    .container {
-      max-width: 1250px;
-      margin: auto;
-      padding: 25px;
+    /* =========================
+       SECTIONS
+    ========================== */
+
+    .section {
+      display: none;
     }
+
+    .section.active {
+      display: block;
+    }
+
+    /* =========================
+       STATS
+    ========================== */
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
       gap: 18px;
-      margin-bottom: 25px;
+
+      margin-bottom: 28px;
     }
 
     .stat-card {
-      background: white;
+      background: var(--card);
+      border: 1px solid var(--border);
+
+      border-radius: 16px;
+
       padding: 22px;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+
+      box-shadow: var(--shadow);
     }
 
-    .stat-card h3 {
-      color: #6b7280;
-      font-size: 14px;
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
       margin-bottom: 10px;
     }
 
-    .stat-card strong {
-      font-size: 30px;
+    .stat-value {
+      font-family: Georgia, serif;
+      font-size: 34px;
+      color: var(--gold-dark);
     }
 
-    .section {
-      background: white;
-      border-radius: 14px;
-      padding: 25px;
-      margin-bottom: 25px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    /* =========================
+       CARD
+    ========================== */
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 22px;
     }
 
-    .section h2 {
-      margin-bottom: 8px;
-      font-size: 22px;
-    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-    .section-description {
-      color: #6b7280;
+      gap: 15px;
       margin-bottom: 20px;
     }
 
-    .upload-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+    .card-header h2 {
+      font-family: Georgia, serif;
+      font-size: 22px;
+      font-weight: 500;
     }
 
-    .upload-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 18px;
-      background: #fafafa;
-    }
-
-    .upload-card h3 {
-      margin-bottom: 8px;
-    }
-
-    .upload-card p {
-      color: #6b7280;
+    .card-header p {
+      color: var(--muted);
       font-size: 13px;
-      margin-bottom: 14px;
+      margin-top: 4px;
     }
 
-    .preview {
-      width: 100%;
-      height: 180px;
-      border-radius: 10px;
-      background: #e5e7eb;
-      object-fit: cover;
-      margin-bottom: 12px;
-      display: block;
+    /* =========================
+       BUTTONS
+    ========================== */
+
+    .btn {
+      border: none;
+      border-radius: 9px;
+
+      padding: 11px 16px;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      transition: 0.2s;
     }
 
-    .file-input {
-      width: 100%;
-      margin-bottom: 12px;
+    .btn-primary {
+      background: var(--gold);
+      color: white;
     }
 
-    .logo-box {
-      max-width: 400px;
+    .btn-primary:hover {
+      background: var(--gold-dark);
     }
 
-    .logo-preview {
-      width: 220px;
-      height: 140px;
-      object-fit: contain;
-      background: #f3f4f6;
-      border-radius: 10px;
-      margin: 15px 0;
-      display: block;
+    .btn-danger {
+      background: #fff0ef;
+      color: var(--danger);
+      border: 1px solid #ffd6d2;
     }
 
-    .gallery-form {
+    .btn-danger:hover {
+      background: #ffe3df;
+    }
+
+    .btn-secondary {
+      background: #f5f1e9;
+      color: #4c463d;
+      border: 1px solid var(--border);
+    }
+
+    /* =========================
+       GALLERY UPLOAD
+    ========================== */
+
+    .upload-form {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 15px;
+      gap: 16px;
     }
 
-    .full {
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
       grid-column: 1 / -1;
     }
 
-    input,
-    select,
-    textarea {
+    .field label {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
+
+      border: 1px solid #dcd3c5;
+      border-radius: 9px;
+
+      padding: 12px 13px;
+
+      background: #fffdf9;
+      color: var(--text);
+
       outline: none;
-      background: white;
     }
 
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: #2563eb;
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--gold);
     }
 
-    .gallery-preview {
-      width: 180px;
-      height: 130px;
-      object-fit: cover;
-      border-radius: 8px;
-      display: none;
-      margin-top: 10px;
+    .field textarea {
+      min-height: 100px;
+      resize: vertical;
     }
+
+    .file-info {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .upload-actions {
+      grid-column: 1 / -1;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* =========================
+       GALLERY GRID
+    ========================== */
 
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-      margin-top: 20px;
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 16px;
     }
 
-    .gallery-item {
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      overflow: hidden;
+    .gallery-card {
       background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+
+      overflow: hidden;
+
+      box-shadow: 0 7px 20px rgba(40,30,15,0.05);
     }
 
-    .gallery-item img {
+    .gallery-image {
       width: 100%;
-      height: 180px;
+      height: 190px;
+
       object-fit: cover;
       display: block;
+
+      background: #eee;
     }
 
-    .gallery-info {
-      padding: 12px;
+    .gallery-content {
+      padding: 14px;
     }
 
-    .gallery-info h4 {
-      margin-bottom: 5px;
+    .gallery-title {
+      font-weight: 700;
+      font-size: 14px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .gallery-info p {
-      font-size: 13px;
-      color: #6b7280;
-      margin-bottom: 10px;
+    .gallery-category {
+      color: var(--gold-dark);
+      font-size: 12px;
+      margin-top: 5px;
     }
+
+    .gallery-date {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .gallery-actions {
+      margin-top: 12px;
+    }
+
+    .gallery-actions button {
+      width: 100%;
+    }
+
+    /* =========================
+       ENQUIRIES
+    ========================== */
 
     .table-wrap {
+      width: 100%;
       overflow-x: auto;
     }
 
@@ -271,161 +471,248 @@
       min-width: 850px;
     }
 
-    th,
-    td {
-      padding: 13px;
-      border-bottom: 1px solid #e5e7eb;
-      text-align: left;
-      vertical-align: middle;
-    }
-
     th {
-      background: #f9fafb;
-    }
+      text-align: left;
+      padding: 13px 10px;
 
-    .status {
-      padding: 5px 9px;
-      border-radius: 20px;
+      background: #f7f3ec;
+
       font-size: 12px;
-      font-weight: bold;
-      display: inline-block;
+      color: #665e54;
+
+      border-bottom: 1px solid var(--border);
     }
 
-    .status-new {
-      background: #dbeafe;
-      color: #1d4ed8;
-    }
+    td {
+      padding: 14px 10px;
 
-    .status-contacted {
-      background: #fef3c7;
-      color: #92400e;
-    }
+      border-bottom: 1px solid #eee7dd;
 
-    .status-completed {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .small-btn {
-      padding: 7px 10px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .message {
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 8px;
-      display: none;
-    }
-
-    .message.success {
-      background: #dcfce7;
-      color: #166534;
-      display: block;
-    }
-
-    .message.error {
-      background: #fee2e2;
-      color: #991b1b;
-      display: block;
-    }
-
-    .message.info {
-      background: #dbeafe;
-      color: #1d4ed8;
-      display: block;
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 1000;
-    }
-
-    .modal-content {
-      width: min(600px, 100%);
-      background: white;
-      border-radius: 14px;
-      padding: 25px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .close {
-      border: none;
-      background: #ef4444;
-      color: white;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    .detail-row {
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .detail-row strong {
-      display: block;
-      color: #6b7280;
       font-size: 13px;
-      margin-bottom: 4px;
+      vertical-align: top;
     }
 
-    @media (max-width: 900px) {
-      .stats,
-      .upload-grid {
+    .customer-name {
+      font-weight: 700;
+    }
+
+    .mobile {
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .message-cell {
+      max-width: 220px;
+      color: var(--muted);
+    }
+
+    .status-select {
+      padding: 8px 9px;
+
+      border: 1px solid var(--border);
+      border-radius: 8px;
+
+      background: white;
+
+      font-size: 12px;
+    }
+
+    .delete-small {
+      border: none;
+
+      background: #fff0ef;
+      color: var(--danger);
+
+      padding: 8px 10px;
+      border-radius: 7px;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* =========================
+       EMPTY
+    ========================== */
+
+    .empty {
+      text-align: center;
+      padding: 45px 20px;
+      color: var(--muted);
+    }
+
+    .empty-icon {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    /* =========================
+       TOAST
+    ========================== */
+
+    .toast {
+      position: fixed;
+
+      right: 25px;
+      bottom: 25px;
+
+      max-width: 360px;
+
+      background: #211f1b;
+      color: white;
+
+      padding: 14px 18px;
+
+      border-radius: 10px;
+
+      box-shadow: 0 15px 40px rgba(0,0,0,0.18);
+
+      font-size: 13px;
+
+      opacity: 0;
+      pointer-events: none;
+
+      transform: translateY(15px);
+
+      transition: 0.25s;
+
+      z-index: 999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast.error {
+      background: #9f261c;
+    }
+
+    .toast.success {
+      background: #176b47;
+    }
+
+    /* =========================
+       LOADING
+    ========================== */
+
+    .loading {
+      text-align: center;
+      padding: 35px;
+      color: var(--muted);
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    .mobile-header {
+      display: none;
+    }
+
+    @media (max-width: 1100px) {
+
+      .stats {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .gallery-grid {
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 800px) {
+
+      .sidebar {
+        transform: translateX(-100%);
+        transition: 0.25s;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        width: 100%;
+        margin-left: 0;
+        padding: 20px;
+        padding-top: 78px;
+      }
+
+      .mobile-header {
+        display: flex;
+
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+
+        height: 62px;
+
+        background: #211f1b;
+        color: white;
+
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 16px;
+
+        z-index: 90;
+      }
+
+      .mobile-header button {
+        border: none;
+        background: transparent;
+        color: white;
+        font-size: 24px;
+      }
+
+      .mobile-header strong {
+        font-family: Georgia, serif;
+        font-size: 18px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .admin-info {
+        width: 100%;
+      }
+
+      .upload-form {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full,
+      .upload-actions {
+        grid-column: auto;
+      }
+
+      .gallery-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 500px) {
+
+      .stats {
         grid-template-columns: 1fr;
       }
 
       .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 15px;
-      }
-
-      .header {
-        padding: 15px;
-      }
-
-      .gallery-form {
         grid-template-columns: 1fr;
       }
 
-      .gallery-grid {
-        grid-template-columns: 1fr;
+      .card {
+        padding: 17px;
       }
 
-      .section {
-        padding: 18px;
+      .topbar h1 {
+        font-size: 27px;
       }
     }
   </style>
@@ -433,509 +720,541 @@
 
 <body>
 
-  <header class="header">
+  <!-- =========================
+       MOBILE HEADER
+  ========================== -->
 
-    <h1>Shree Photo Studio</h1>
+  <header class="mobile-header">
 
-    <div class="header-actions">
+    <button
+      type="button"
+      id="menuBtn"
+      aria-label="Open menu"
+    >
+      ☰
+    </button>
 
-      <button
-        class="btn btn-primary"
-        onclick="viewWebsite()"
-      >
-        View Website
-      </button>
+    <strong>
+      श्री फोटो स्टुडिओ
+    </strong>
 
-      <button
-        class="btn btn-danger"
-        onclick="logout()"
-      >
-        Logout
-      </button>
-
-    </div>
+    <span></span>
 
   </header>
 
 
-  <main class="container">
+  <div class="app">
 
     <!-- =========================
-         STATS
+         SIDEBAR
     ========================== -->
 
-    <div class="stats">
+    <aside class="sidebar" id="sidebar">
 
-      <div class="stat-card">
-        <h3>Total Enquiries</h3>
-        <strong id="totalEnquiries">0</strong>
-      </div>
-
-      <div class="stat-card">
-        <h3>New</h3>
-        <strong id="newEnquiries">0</strong>
-      </div>
-
-      <div class="stat-card">
-        <h3>Completed</h3>
-        <strong id="completedEnquiries">0</strong>
-      </div>
-
-    </div>
-
-
-    <!-- =========================
-         LOGO
-    ========================== -->
-
-    <section class="section">
-
-      <h2>Website Logo</h2>
-
-      <p class="section-description">
-        Upload the logo/photo that will be used for Shree Photo Studio.
-      </p>
-
-      <div class="logo-box">
+      <div class="brand">
 
         <img
-          id="logoPreview"
-          class="logo-preview"
-          src=""
-          alt="Logo Preview"
+          src="./assets/images/shree_photos_logo_transparent.png"
+          alt="Shree Photo Studio"
         />
 
-        <input
-          type="file"
-          id="logoInput"
-          class="file-input"
-          accept="image/jpeg,image/png,image/webp"
-        />
+        <p>
+          Admin Dashboard
+        </p>
+
+      </div>
+
+
+      <nav class="nav">
 
         <button
-          id="logoUploadButton"
-          class="btn btn-primary"
-          onclick="uploadLogo()"
+          class="nav-btn active"
+          data-section="dashboard"
         >
-          Upload Logo
+          ◉ &nbsp; Dashboard
         </button>
 
-        <div
-          id="logoMessage"
-          class="message"
-        ></div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         WEBSITE IMAGES
-    ========================== -->
-
-    <section class="section">
-
-      <h2>Website Backgrounds & Images</h2>
-
-      <p class="section-description">
-        Yahan se website ke main photos change kar sakte ho.
-        Photo select karne ke baad preview dikhega.
-        Upload ke baad website refresh karo.
-      </p>
-
-
-      <div class="upload-grid">
-
-
-        <!-- =========================
-             HERO
-        ========================== -->
-
-        <div class="upload-card">
-
-          <h3>Hero Background</h3>
-
-          <p>
-            Website ke top/hero section ki background photo.
-          </p>
-
-          <img
-            id="heroPreview"
-            class="preview"
-            src=""
-            alt="Hero Background"
-          />
-
-          <input
-            type="file"
-            id="heroInput"
-            class="file-input"
-            accept="image/jpeg,image/png,image/webp"
-          />
-
-          <button
-            id="heroUploadButton"
-            class="btn btn-primary"
-            onclick="uploadSiteImage('hero')"
-          >
-            Upload Hero
-          </button>
-
-          <div
-            id="heroMessage"
-            class="message"
-          ></div>
-
-        </div>
-
-
-        <!-- =========================
-             FEATURE
-        ========================== -->
-
-        <div class="upload-card">
-
-          <h3>Why Choose Us Image</h3>
-
-          <p>
-            Why Choose Us / feature section ki photo.
-          </p>
-
-          <img
-            id="featurePreview"
-            class="preview"
-            src=""
-            alt="Feature Image"
-          />
-
-          <input
-            type="file"
-            id="featureInput"
-            class="file-input"
-            accept="image/jpeg,image/png,image/webp"
-          />
-
-          <button
-            id="featureUploadButton"
-            class="btn btn-primary"
-            onclick="uploadSiteImage('feature')"
-          >
-            Upload Feature
-          </button>
-
-          <div
-            id="featureMessage"
-            class="message"
-          ></div>
-
-        </div>
-
-
-        <!-- =========================
-             ABOUT
-        ========================== -->
-
-        <div class="upload-card">
-
-          <h3>About Section Image</h3>
-
-          <p>
-            About section mein dikhne wali photo.
-          </p>
-
-          <img
-            id="aboutPreview"
-            class="preview"
-            src=""
-            alt="About Image"
-          />
-
-          <input
-            type="file"
-            id="aboutInput"
-            class="file-input"
-            accept="image/jpeg,image/png,image/webp"
-          />
-
-          <button
-            id="aboutUploadButton"
-            class="btn btn-primary"
-            onclick="uploadSiteImage('about')"
-          >
-            Upload About
-          </button>
-
-          <div
-            id="aboutMessage"
-            class="message"
-          ></div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         GALLERY
-    ========================== -->
-
-    <section class="section">
-
-      <h2>Gallery Management</h2>
-
-      <p class="section-description">
-        Website gallery mein new photos add karo.
-      </p>
-
-      <div class="gallery-form">
-
-        <input
-          type="text"
-          id="galleryTitle"
-          placeholder="Photo title"
-        />
-
-        <select id="galleryCategory">
-
-          <option value="">
-            Select Category
-          </option>
-
-        </select>
-
-        <input
-          type="file"
-          id="galleryImage"
-          class="full"
-          accept="image/jpeg,image/png,image/webp"
-        />
-
-        <div class="full">
-
-          <img
-            id="galleryPreview"
-            class="gallery-preview"
-            src=""
-            alt="Gallery Preview"
-          />
-
-        </div>
+        <button
+          class="nav-btn"
+          data-section="gallery"
+        >
+          ▣ &nbsp; Gallery
+        </button>
 
         <button
-          class="btn btn-success full"
-          onclick="uploadGallery()"
+          class="nav-btn"
+          data-section="enquiries"
         >
-          Upload Gallery Photo
+          ✉ &nbsp; Enquiries
+        </button>
+
+      </nav>
+
+
+      <div class="sidebar-bottom">
+
+        <button
+          class="logout-btn"
+          id="logoutBtn"
+        >
+          Logout
         </button>
 
       </div>
 
-      <div
-        id="galleryMessage"
-        class="message"
-      ></div>
-
-      <div
-        id="galleryGrid"
-        class="gallery-grid"
-      ></div>
-
-    </section>
+    </aside>
 
 
     <!-- =========================
-         ENQUIRIES
+         MAIN
     ========================== -->
 
-    <section class="section">
+    <main class="main">
 
-      <h2>Customer Enquiries</h2>
+      <!-- =========================
+           TOPBAR
+      ========================== -->
 
-      <p class="section-description">
-        Manage customer enquiries and their current status.
-      </p>
+      <div class="topbar">
+
+        <div>
+
+          <h1 id="pageTitle">
+            Dashboard
+          </h1>
+
+          <p id="pageSubtitle">
+            Manage your photography website.
+          </p>
+
+        </div>
+
+        <div class="admin-info">
+          Logged in as
+          <strong id="adminUsername">
+            Admin
+          </strong>
+        </div>
+
+      </div>
 
 
-      <div
-        style="
-          display:flex;
-          gap:10px;
-          margin-bottom:18px;
-          flex-wrap:wrap;
-        "
+      <!-- =========================
+           DASHBOARD
+      ========================== -->
+
+      <section
+        class="section active"
+        id="dashboard"
       >
 
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="Search name, mobile or service..."
-          style="max-width:350px;"
-          oninput="renderEnquiries()"
-        />
+        <div class="stats">
 
-        <select
-          id="statusFilter"
-          style="max-width:180px;"
-          onchange="renderEnquiries()"
-        >
+          <div class="stat-card">
 
-          <option value="All">
-            All Status
-          </option>
+            <div class="stat-label">
+              Total Gallery Photos
+            </div>
 
-          <option value="New">
-            New
-          </option>
+            <div
+              class="stat-value"
+              id="totalGallery"
+            >
+              0
+            </div>
 
-          <option value="Contacted">
-            Contacted
-          </option>
-
-          <option value="Completed">
-            Completed
-          </option>
-
-        </select>
-
-        <button
-          class="btn btn-dark"
-          onclick="loadEnquiries()"
-        >
-          Refresh
-        </button>
-
-      </div>
+          </div>
 
 
-      <div
-        id="enquiryMessage"
-        class="message"
-      ></div>
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Total Enquiries
+            </div>
+
+            <div
+              class="stat-value"
+              id="totalEnquiries"
+            >
+              0
+            </div>
+
+          </div>
 
 
-      <div class="table-wrap">
+          <div class="stat-card">
 
-        <table>
+            <div class="stat-label">
+              New Enquiries
+            </div>
 
-          <thead>
+            <div
+              class="stat-value"
+              id="newEnquiries"
+            >
+              0
+            </div>
 
-            <tr>
-
-              <th>ID</th>
-              <th>Name</th>
-              <th>Mobile</th>
-              <th>Service</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Actions</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody id="enquiryTableBody"></tbody>
-
-        </table>
-
-      </div>
-
-    </section>
-
-  </main>
+          </div>
 
 
-  <!-- =========================
-       DETAILS MODAL
-  ========================== -->
+          <div class="stat-card">
 
-  <div
-    id="detailsModal"
-    class="modal"
-    onclick="closeModal(event)"
-  >
+            <div class="stat-label">
+              Completed
+            </div>
 
-    <div
-      class="modal-content"
-      onclick="event.stopPropagation()"
-    >
+            <div
+              class="stat-value"
+              id="completedEnquiries"
+            >
+              0
+            </div>
 
-      <div class="modal-header">
+          </div>
 
-        <h2>Enquiry Details</h2>
+        </div>
 
-        <button
-          class="close"
-          onclick="closeDetailsModal()"
-        >
-          ×
-        </button>
 
-      </div>
+        <div class="card">
 
-      <div id="detailsContent"></div>
+          <div class="card-header">
 
-    </div>
+            <div>
+
+              <h2>
+                Recent Enquiries
+              </h2>
+
+              <p>
+                Latest customer enquiries.
+              </p>
+
+            </div>
+
+            <button
+              class="btn btn-secondary"
+              id="viewAllEnquiriesBtn"
+            >
+              View All
+            </button>
+
+          </div>
+
+          <div id="recentEnquiries">
+            <div class="loading">
+              Loading enquiries...
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <div>
+
+              <h2>
+                Recent Gallery
+              </h2>
+
+              <p>
+                Latest uploaded photographs.
+              </p>
+
+            </div>
+
+            <button
+              class="btn btn-secondary"
+              id="viewGalleryBtn"
+            >
+              Manage Gallery
+            </button>
+
+          </div>
+
+          <div
+            class="gallery-grid"
+            id="recentGallery"
+          >
+            <div class="loading">
+              Loading gallery...
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           GALLERY
+      ========================== -->
+
+      <section
+        class="section"
+        id="gallery"
+      >
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <div>
+
+              <h2>
+                Upload Gallery Photo
+              </h2>
+
+              <p>
+                Add a new photograph to the website gallery.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <form
+            class="upload-form"
+            id="galleryForm"
+          >
+
+            <div class="field">
+
+              <label for="galleryTitle">
+                Photo Title
+              </label>
+
+              <input
+                type="text"
+                id="galleryTitle"
+                placeholder="Example: Wedding Moments"
+                required
+              />
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="galleryCategory">
+                Category
+              </label>
+
+              <select
+                id="galleryCategory"
+                required
+              >
+
+                <option value="">
+                  Select category
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field full">
+
+              <label for="galleryImage">
+                Photograph
+              </label>
+
+              <input
+                type="file"
+                id="galleryImage"
+                accept="image/jpeg,image/png,image/webp"
+                required
+              />
+
+              <div class="file-info">
+                JPG, PNG or WEBP
+              </div>
+
+            </div>
+
+
+            <div class="upload-actions">
+
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="uploadBtn"
+              >
+                Upload Photo
+              </button>
+
+              <button
+                type="reset"
+                class="btn btn-secondary"
+              >
+                Clear
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <div>
+
+              <h2>
+                Gallery
+              </h2>
+
+              <p>
+                Manage all photographs currently displayed on the website.
+              </p>
+
+            </div>
+
+            <button
+              class="btn btn-secondary"
+              id="refreshGalleryBtn"
+            >
+              Refresh
+            </button>
+
+          </div>
+
+
+          <div
+            class="gallery-grid"
+            id="galleryGrid"
+          >
+            <div class="loading">
+              Loading gallery...
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           ENQUIRIES
+      ========================== -->
+
+      <section
+        class="section"
+        id="enquiries"
+      >
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <div>
+
+              <h2>
+                Customer Enquiries
+              </h2>
+
+              <p>
+                Manage enquiries received from the website.
+              </p>
+
+            </div>
+
+            <button
+              class="btn btn-secondary"
+              id="refreshEnquiriesBtn"
+            >
+              Refresh
+            </button>
+
+          </div>
+
+
+          <div
+            class="table-wrap"
+            id="enquiriesTable"
+          >
+
+            <div class="loading">
+              Loading enquiries...
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
 
   </div>
 
 
+  <!-- =========================
+       TOAST
+  ========================== -->
+
+  <div
+    class="toast"
+    id="toast"
+  ></div>
+
+
   <script>
+
+    /* =========================
+       CONFIG
+    ========================== */
 
     const API_BASE =
       "https://shree-photo-studio-backend.onrender.com";
 
 
-    const adminToken =
+    /* =========================
+       ELEMENTS
+    ========================== */
+
+    const sidebar =
+      document.getElementById("sidebar");
+
+    const menuBtn =
+      document.getElementById("menuBtn");
+
+    const navButtons =
+      document.querySelectorAll(".nav-btn");
+
+    const sections =
+      document.querySelectorAll(".section");
+
+    const pageTitle =
+      document.getElementById("pageTitle");
+
+    const pageSubtitle =
+      document.getElementById("pageSubtitle");
+
+    const adminUsername =
+      document.getElementById("adminUsername");
+
+    const toast =
+      document.getElementById("toast");
+
+
+    /* =========================
+       AUTH
+    ========================== */
+
+    const token =
       localStorage.getItem("adminToken");
 
 
-    let enquiries = [];
-
-
-    /* =========================
-       AUTH CHECK
-    ========================== */
-
-    if (!adminToken) {
-
-      window.location.href =
-        "admin-login.html";
-
-    }
-
-
-    const authHeaders = {
-      "Authorization":
-        `Bearer ${adminToken}`
-    };
-
-
-    /* =========================
-       WEBSITE
-    ========================== */
-
-    function viewWebsite() {
-
-      window.open(
-        "index.html",
-        "_blank"
-      );
-
-    }
-
-
-    function logout() {
-
-      localStorage.removeItem(
-        "adminToken"
-      );
-
-      localStorage.removeItem(
-        "adminUser"
-      );
+    if (!token) {
 
       window.location.href =
         "admin-login.html";
@@ -944,327 +1263,212 @@
 
 
     /* =========================
-       MESSAGE
+       API HELPER
     ========================== */
 
-    function showMessage(
-      elementId,
+    async function apiFetch(
+      endpoint,
+      options = {}
+    ) {
+
+      const headers =
+        options.headers || {};
+
+      headers["Authorization"] =
+        `Bearer ${token}`;
+
+      options.headers = headers;
+
+      const response =
+        await fetch(
+          API_BASE + endpoint,
+          options
+        );
+
+      let data = {};
+
+      try {
+
+        data =
+          await response.json();
+
+      } catch {
+
+        data = {};
+
+      }
+
+      if (
+        response.status === 401 ||
+        response.status === 403
+      ) {
+
+        localStorage.removeItem(
+          "adminToken"
+        );
+
+        localStorage.removeItem(
+          "adminUser"
+        );
+
+        window.location.href =
+          "admin-login.html";
+
+        throw new Error(
+          "Session expired."
+        );
+
+      }
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Request failed."
+        );
+
+      }
+
+      return data;
+
+    }
+
+
+    /* =========================
+       TOAST
+    ========================== */
+
+    let toastTimer;
+
+    function showToast(
       message,
       type = "success"
     ) {
 
-      const element =
-        document.getElementById(
-          elementId
-        );
-
-
-      element.textContent =
+      toast.textContent =
         message;
 
+      toast.className =
+        "toast show " + type;
 
-      element.className =
-        `message ${type}`;
+      clearTimeout(toastTimer);
 
+      toastTimer =
+        setTimeout(
+          () => {
 
-      setTimeout(() => {
+            toast.className =
+              "toast";
 
-        element.className =
-          "message";
-
-      }, 5000);
+          },
+          3000
+        );
 
     }
 
 
     /* =========================
-       LOGO
+       NAVIGATION
     ========================== */
 
-    async function loadLogo() {
+    const sectionInfo = {
 
-      try {
+      dashboard: {
+        title: "Dashboard",
+        subtitle:
+          "Manage your photography website."
+      },
 
-        const response =
-          await fetch(
-            `${API_BASE}/api/admin/logo`
+      gallery: {
+        title: "Gallery",
+        subtitle:
+          "Upload and manage your photography gallery."
+      },
+
+      enquiries: {
+        title: "Enquiries",
+        subtitle:
+          "Manage customer enquiries and their status."
+      }
+
+    };
+
+
+    function openSection(
+      sectionName
+    ) {
+
+      sections.forEach(
+        section => {
+
+          section.classList.toggle(
+            "active",
+            section.id === sectionName
           );
 
-
-        const data =
-          await response.json();
-
-
-        if (
-          data.success &&
-          data.logo
-        ) {
-
-          document.getElementById(
-            "logoPreview"
-          ).src =
-            `${data.logo}?t=${Date.now()}`;
-
         }
-
-      } catch (error) {
-
-        console.error(
-          "Logo load error:",
-          error
-        );
-
-      }
-
-    }
-
-
-    async function uploadLogo() {
-
-      const input =
-        document.getElementById(
-          "logoInput"
-        );
-
-
-      const button =
-        document.getElementById(
-          "logoUploadButton"
-        );
-
-
-      if (!input.files.length) {
-
-        showMessage(
-          "logoMessage",
-          "Please select a logo.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      const formData =
-        new FormData();
-
-
-      formData.append(
-        "logo",
-        input.files[0]
       );
 
 
-      button.disabled = true;
-      button.textContent =
-        "Uploading...";
+      navButtons.forEach(
+        button => {
 
+          button.classList.toggle(
+            "active",
+            button.dataset.section ===
+              sectionName
+          );
 
-      showMessage(
-        "logoMessage",
-        "Uploading logo...",
-        "info"
+        }
       );
 
 
-      try {
+      pageTitle.textContent =
+        sectionInfo[
+          sectionName
+        ].title;
 
-        const response =
-          await fetch(
-            `${API_BASE}/api/admin/upload-logo`,
-            {
-              method: "POST",
-              headers: authHeaders,
-              body: formData
-            }
-          );
+      pageSubtitle.textContent =
+        sectionInfo[
+          sectionName
+        ].subtitle;
 
 
-        const data =
-          await response.json();
+      sidebar.classList.remove(
+        "open"
+      );
 
 
-        if (!response.ok) {
+      if (
+        sectionName ===
+        "gallery"
+      ) {
 
-          throw new Error(
-            data.message ||
-            "Logo upload failed."
-          );
+        loadGallery();
 
-        }
+      }
 
+      if (
+        sectionName ===
+        "enquiries"
+      ) {
 
-        document.getElementById(
-          "logoPreview"
-        ).src =
-          `${data.image_url}?t=${Date.now()}`;
-
-
-        input.value = "";
-
-
-        showMessage(
-          "logoMessage",
-          "Logo uploaded successfully.",
-          "success"
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "Logo upload error:",
-          error
-        );
-
-
-        showMessage(
-          "logoMessage",
-          error.message ||
-          "Logo upload failed.",
-          "error"
-        );
-
-
-      } finally {
-
-        button.disabled = false;
-        button.textContent =
-          "Upload Logo";
+        loadEnquiries();
 
       }
 
     }
 
 
-    /* =========================
-       WEBSITE IMAGES
-    ========================== */
+    navButtons.forEach(
+      button => {
 
-    async function loadSiteImages() {
+        button.addEventListener(
+          "click",
+          () => {
 
-      try {
-
-        const response =
-          await fetch(
-            `${API_BASE}/api/site-images`
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (
-          !data.success ||
-          !data.images
-        ) {
-
-          return;
-
-        }
-
-
-        if (data.images.hero) {
-
-          document.getElementById(
-            "heroPreview"
-          ).src =
-            `${data.images.hero}?t=${Date.now()}`;
-
-        }
-
-
-        if (data.images.feature) {
-
-          document.getElementById(
-            "featurePreview"
-          ).src =
-            `${data.images.feature}?t=${Date.now()}`;
-
-        }
-
-
-        if (data.images.about) {
-
-          document.getElementById(
-            "aboutPreview"
-          ).src =
-            `${data.images.about}?t=${Date.now()}`;
-
-        }
-
-
-      } catch (error) {
-
-        console.error(
-          "Site images error:",
-          error
-        );
-
-      }
-
-    }
-
-
-    /* =========================
-       SELECTED IMAGE PREVIEW
-    ========================== */
-
-    ["hero", "feature", "about"].forEach(
-      type => {
-
-        const input =
-          document.getElementById(
-            `${type}Input`
-          );
-
-
-        const preview =
-          document.getElementById(
-            `${type}Preview`
-          );
-
-
-        input.addEventListener(
-          "change",
-          function () {
-
-            const file =
-              this.files[0];
-
-
-            if (!file) {
-
-              return;
-
-            }
-
-
-            if (!file.type.startsWith("image/")) {
-
-              showMessage(
-                `${type}Message`,
-                "Please select a valid image file.",
-                "error"
-              );
-
-              this.value = "";
-
-              return;
-
-            }
-
-
-            preview.src =
-              URL.createObjectURL(file);
-
-
-            showMessage(
-              `${type}Message`,
-              `Selected: ${file.name}`,
-              "info"
+            openSection(
+              button.dataset.section
             );
 
           }
@@ -1274,195 +1478,47 @@
     );
 
 
+    menuBtn.addEventListener(
+      "click",
+      () => {
+
+        sidebar.classList.toggle(
+          "open"
+        );
+
+      }
+    );
+
+
     /* =========================
-       WEBSITE IMAGE UPLOAD
+       ADMIN PROFILE
     ========================== */
 
-    async function uploadSiteImage(
-      type
-    ) {
-
-      const input =
-        document.getElementById(
-          `${type}Input`
-        );
-
-
-      const button =
-        document.getElementById(
-          `${type}UploadButton`
-        );
-
-
-      if (!input.files.length) {
-
-        showMessage(
-          `${type}Message`,
-          "Please select an image first.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      const file =
-        input.files[0];
-
-
-      if (!file.type.startsWith("image/")) {
-
-        showMessage(
-          `${type}Message`,
-          "Please select a valid image file.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      const formData =
-        new FormData();
-
-
-      formData.append(
-        "image",
-        file
-      );
-
-
-      button.disabled = true;
-      button.textContent =
-        "Uploading...";
-
-
-      showMessage(
-        `${type}Message`,
-        `Uploading ${file.name}...`,
-        "info"
-      );
-
+    async function loadAdmin() {
 
       try {
 
-        const response =
-          await fetch(
-            `${API_BASE}/api/admin/site-images/${type}`,
-            {
-              method: "POST",
-              headers: authHeaders,
-              body: formData
-            }
+        const data =
+          await apiFetch(
+            "/api/admin/me"
           );
-
-
-        let data = {};
-
-
-        try {
-
-          data =
-            await response.json();
-
-        } catch (jsonError) {
-
-          throw new Error(
-            `Server returned HTTP ${response.status}.`
-          );
-
-        }
-
-
-        if (!response.ok) {
-
-          if (response.status === 401) {
-
-            throw new Error(
-              "Admin session expired. Please login again."
-            );
-
-          }
-
-
-          throw new Error(
-            data.message ||
-            `Image upload failed. HTTP ${response.status}`
-          );
-
-        }
-
 
         if (
-          !data.image_url
+          data.success &&
+          data.admin
         ) {
 
-          throw new Error(
-            "Upload completed but server did not return image URL."
-          );
+          adminUsername.textContent =
+            data.admin.username;
 
         }
-
-
-        const preview =
-          document.getElementById(
-            `${type}Preview`
-          );
-
-
-        preview.src =
-          `${data.image_url}?t=${Date.now()}`;
-
-
-        input.value = "";
-
-
-        showMessage(
-          `${type}Message`,
-          `${type.charAt(0).toUpperCase() + type.slice(1)} image uploaded successfully.`,
-          "success"
-        );
-
 
       } catch (error) {
 
         console.error(
-          `${type} upload error:`,
+          "Admin profile error:",
           error
         );
-
-
-        showMessage(
-          `${type}Message`,
-          error.message ||
-          "Image upload failed.",
-          "error"
-        );
-
-
-      } finally {
-
-        button.disabled = false;
-
-
-        if (type === "hero") {
-
-          button.textContent =
-            "Upload Hero";
-
-        } else if (type === "feature") {
-
-          button.textContent =
-            "Upload Feature";
-
-        } else {
-
-          button.textContent =
-            "Upload About";
-
-        }
 
       }
 
@@ -1473,6 +1529,9 @@
        CATEGORIES
     ========================== */
 
+    let categories = [];
+
+
     async function loadCategories() {
 
       try {
@@ -1482,9 +1541,23 @@
             `${API_BASE}/api/categories`
           );
 
-
         const data =
           await response.json();
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.message ||
+            "Failed to load categories."
+          );
+
+        }
+
+        categories =
+          data.categories || [];
 
 
         const select =
@@ -1494,40 +1567,60 @@
 
 
         select.innerHTML =
-          `<option value="">Select Category</option>`;
+          `<option value="">Select category</option>`;
 
 
-        if (
-          data.success &&
-          data.categories
-        ) {
+        categories.forEach(
+          category => {
 
-          data.categories.forEach(
-            category => {
+            /*
+              Supports common API shapes:
+              string
+              { name: "Wedding" }
+              { category: "Wedding" }
+            */
 
-              const option =
-                document.createElement(
-                  "option"
-                );
+            let value = "";
 
+            if (
+              typeof category ===
+              "string"
+            ) {
 
-              option.value =
-                category.name;
+              value =
+                category;
 
+            } else {
 
-              option.textContent =
-                category.name;
-
-
-              select.appendChild(
-                option
-              );
+              value =
+                category.name ||
+                category.category ||
+                category.title ||
+                "";
 
             }
-          );
 
-        }
+            if (!value) {
+              return;
+            }
 
+            const option =
+              document.createElement(
+                "option"
+              );
+
+            option.value =
+              value;
+
+            option.textContent =
+              value;
+
+            select.appendChild(
+              option
+            );
+
+          }
+        );
 
       } catch (error) {
 
@@ -1536,212 +1629,106 @@
           error
         );
 
+        showToast(
+          "Categories load nahi ho paye.",
+          "error"
+        );
+
       }
 
     }
 
 
     /* =========================
-       GALLERY PREVIEW
+       GALLERY
     ========================== */
 
-    document
-      .getElementById("galleryImage")
-      .addEventListener(
-        "change",
-        function () {
-
-          const file =
-            this.files[0];
+    let galleryData = [];
 
 
-          const preview =
-            document.getElementById(
-              "galleryPreview"
-            );
+    function resolveImageUrl(
+      imageUrl
+    ) {
+
+      if (!imageUrl) {
+        return "";
+      }
+
+      if (
+        imageUrl.startsWith(
+          "http://"
+        ) ||
+        imageUrl.startsWith(
+          "https://"
+        )
+      ) {
+
+        return imageUrl;
+
+      }
+
+      return API_BASE +
+        imageUrl;
+
+    }
 
 
-          if (!file) {
+    function escapeHtml(
+      value
+    ) {
 
-            preview.style.display =
-              "none";
+      return String(
+        value ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
 
-            return;
+    }
+
+
+    async function loadGallery() {
+
+      const containers = [
+        document.getElementById(
+          "galleryGrid"
+        ),
+        document.getElementById(
+          "recentGallery"
+        )
+      ];
+
+
+      containers.forEach(
+        container => {
+
+          if (container) {
+
+            container.innerHTML =
+              `<div class="loading">Loading gallery...</div>`;
 
           }
 
-
-          preview.src =
-            URL.createObjectURL(file);
-
-
-          preview.style.display =
-            "block";
-
         }
       );
 
-
-    /* =========================
-       GALLERY UPLOAD
-    ========================== */
-
-    async function uploadGallery() {
-
-      const title =
-        document.getElementById(
-          "galleryTitle"
-        ).value.trim();
-
-
-      const category =
-        document.getElementById(
-          "galleryCategory"
-        ).value;
-
-
-      const image =
-        document.getElementById(
-          "galleryImage"
-        ).files[0];
-
-
-      if (!title) {
-
-        showMessage(
-          "galleryMessage",
-          "Please enter photo title.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      if (!category) {
-
-        showMessage(
-          "galleryMessage",
-          "Please select category.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      if (!image) {
-
-        showMessage(
-          "galleryMessage",
-          "Please select an image.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      const formData =
-        new FormData();
-
-
-      formData.append(
-        "title",
-        title
-      );
-
-
-      formData.append(
-        "category",
-        category
-      );
-
-
-      formData.append(
-        "image",
-        image
-      );
-
-
-      try {
-
-        const response =
-          await fetch(
-            `${API_BASE}/api/admin/gallery`,
-            {
-              method: "POST",
-              headers: authHeaders,
-              body: formData
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            data.message ||
-            "Gallery upload failed."
-          );
-
-        }
-
-
-        document.getElementById(
-          "galleryTitle"
-        ).value = "";
-
-
-        document.getElementById(
-          "galleryCategory"
-        ).value = "";
-
-
-        document.getElementById(
-          "galleryImage"
-        ).value = "";
-
-
-        document.getElementById(
-          "galleryPreview"
-        ).style.display =
-          "none";
-
-
-        showMessage(
-          "galleryMessage",
-          "Gallery photo uploaded successfully."
-        );
-
-
-        loadGallery();
-
-
-      } catch (error) {
-
-        showMessage(
-          "galleryMessage",
-          error.message,
-          "error"
-        );
-
-      }
-
-    }
-
-
-    /* =========================
-       LOAD GALLERY
-    ========================== */
-
-    async function loadGallery() {
 
       try {
 
@@ -1750,150 +1737,356 @@
             `${API_BASE}/api/gallery`
           );
 
-
         const data =
           await response.json();
 
 
-        const grid =
-          document.getElementById(
-            "galleryGrid"
-          );
-
-
-        grid.innerHTML = "";
-
-
         if (
-          !data.success ||
-          !data.gallery.length
+          !response.ok ||
+          !data.success
         ) {
 
-          grid.innerHTML =
-            `<p>No gallery photos yet.</p>`;
-
-          return;
+          throw new Error(
+            data.message ||
+            "Failed to load gallery."
+          );
 
         }
 
 
-        data.gallery.forEach(
-          item => {
-
-            const imageUrl =
-              item.image_url.startsWith(
-                "http"
-              )
-                ? item.image_url
-                : API_BASE +
-                  item.image_url;
+        galleryData =
+          data.gallery || [];
 
 
-            const card =
-              document.createElement(
-                "div"
-              );
+        document.getElementById(
+          "totalGallery"
+        ).textContent =
+          galleryData.length;
 
 
-            card.className =
-              "gallery-item";
+        renderGallery(
+          document.getElementById(
+            "galleryGrid"
+          ),
+          galleryData
+        );
 
 
-            card.innerHTML = `
-
-              <img
-                src="${imageUrl}"
-                alt="${escapeHtml(item.title)}"
-              />
-
-              <div class="gallery-info">
-
-                <h4>
-                  ${escapeHtml(item.title)}
-                </h4>
-
-                <p>
-                  ${escapeHtml(item.category)}
-                </p>
-
-                <button
-                  class="btn btn-danger"
-                  onclick="deleteGallery(${item.id})"
-                >
-                  Delete
-                </button>
-
-              </div>
-
-            `;
-
-
-            grid.appendChild(
-              card
-            );
-
-          }
+        renderGallery(
+          document.getElementById(
+            "recentGallery"
+          ),
+          galleryData.slice(
+            0,
+            4
+          )
         );
 
 
       } catch (error) {
 
         console.error(
-          "Gallery load error:",
+          "Gallery error:",
           error
         );
+
+
+        document.getElementById(
+          "galleryGrid"
+        ).innerHTML =
+          `<div class="empty">
+             Unable to load gallery.
+           </div>`;
+
+
+        document.getElementById(
+          "recentGallery"
+        ).innerHTML =
+          `<div class="empty">
+             Unable to load gallery.
+           </div>`;
 
       }
 
     }
 
 
-    async function deleteGallery(id) {
+    function renderGallery(
+      container,
+      items
+    ) {
 
-      if (
-        !confirm(
-          "Delete this gallery photo?"
-        )
-      ) {
+      if (!container) {
+        return;
+      }
+
+
+      if (!items.length) {
+
+        container.innerHTML =
+          `<div class="empty">
+             <div class="empty-icon">▣</div>
+             <div>No gallery photos yet.</div>
+           </div>`;
 
         return;
 
       }
 
 
-      try {
+      container.innerHTML =
+        items.map(
+          item => {
 
-        const response =
-          await fetch(
-            `${API_BASE}/api/admin/gallery/${id}`,
-            {
-              method: "DELETE",
-              headers: authHeaders
-            }
+            const image =
+              resolveImageUrl(
+                item.image_url
+              );
+
+
+            const date =
+              item.created_at
+                ? new Date(
+                    item.created_at
+                  ).toLocaleDateString(
+                    "en-IN"
+                  )
+                : "";
+
+
+            return `
+              <article class="gallery-card">
+
+                <img
+                  class="gallery-image"
+                  src="${escapeHtml(image)}"
+                  alt="${escapeHtml(item.title)}"
+                  loading="lazy"
+                />
+
+                <div class="gallery-content">
+
+                  <div class="gallery-title">
+                    ${escapeHtml(item.title)}
+                  </div>
+
+                  <div class="gallery-category">
+                    ${escapeHtml(item.category)}
+                  </div>
+
+                  ${
+                    date
+                      ? `
+                        <div class="gallery-date">
+                          ${date}
+                        </div>
+                      `
+                      : ""
+                  }
+
+                  <div class="gallery-actions">
+
+                    <button
+                      class="btn btn-danger"
+                      onclick="deleteGallery(${Number(item.id)})"
+                    >
+                      Delete Photo
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </article>
+            `;
+
+          }
+        ).join("");
+
+    }
+
+
+    /* =========================
+       GALLERY UPLOAD
+    ========================== */
+
+    const galleryForm =
+      document.getElementById(
+        "galleryForm"
+      );
+
+    const uploadBtn =
+      document.getElementById(
+        "uploadBtn"
+      );
+
+
+    galleryForm.addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+
+        const title =
+          document.getElementById(
+            "galleryTitle"
+          ).value.trim();
+
+
+        const category =
+          document.getElementById(
+            "galleryCategory"
+          ).value;
+
+
+        const image =
+          document.getElementById(
+            "galleryImage"
+          ).files[0];
+
+
+        if (
+          !title ||
+          !category ||
+          !image
+        ) {
+
+          showToast(
+            "Title, category aur image required hai.",
+            "error"
           );
 
-
-        const data =
-          await response.json();
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            data.message ||
-            "Delete failed."
-          );
+          return;
 
         }
 
 
-        loadGallery();
+        const formData =
+          new FormData();
+
+
+        formData.append(
+          "title",
+          title
+        );
+
+        formData.append(
+          "category",
+          category
+        );
+
+        formData.append(
+          "image",
+          image
+        );
+
+
+        uploadBtn.disabled =
+          true;
+
+        uploadBtn.textContent =
+          "Uploading...";
+
+
+        try {
+
+          await apiFetch(
+            "/api/admin/gallery",
+            {
+              method: "POST",
+              body: formData
+            }
+          );
+
+
+          showToast(
+            "Photo successfully uploaded."
+          );
+
+
+          galleryForm.reset();
+
+          await loadGallery();
+
+
+        } catch (error) {
+
+          console.error(
+            "Upload error:",
+            error
+          );
+
+
+          showToast(
+            error.message ||
+            "Upload failed.",
+            "error"
+          );
+
+        } finally {
+
+          uploadBtn.disabled =
+            false;
+
+          uploadBtn.textContent =
+            "Upload Photo";
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       DELETE GALLERY
+    ========================== */
+
+    async function deleteGallery(
+      id
+    ) {
+
+      const confirmed =
+        confirm(
+          "Are you sure you want to delete this photo?"
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      try {
+
+        await apiFetch(
+          `/api/admin/gallery/${id}`,
+          {
+            method: "DELETE"
+          }
+        );
+
+
+        showToast(
+          "Gallery photo deleted."
+        );
+
+
+        await loadGallery();
 
 
       } catch (error) {
 
-        alert(
-          error.message
+        console.error(
+          "Delete gallery error:",
+          error
+        );
+
+
+        showToast(
+          error.message ||
+          "Unable to delete photo.",
+          "error"
         );
 
       }
@@ -1905,59 +2098,59 @@
        ENQUIRIES
     ========================== */
 
+    let enquiriesData = [];
+
+
     async function loadEnquiries() {
+
+      const container =
+        document.getElementById(
+          "enquiriesTable"
+        );
+
+
+      container.innerHTML =
+        `<div class="loading">
+           Loading enquiries...
+         </div>`;
+
 
       try {
 
-        const response =
-          await fetch(
-            `${API_BASE}/api/enquiries`,
-            {
-              headers: authHeaders
-            }
-          );
-
-
         const data =
-          await response.json();
-
-
-        if (
-          response.status === 401
-        ) {
-
-          logout();
-
-          return;
-
-        }
-
-
-        if (!data.success) {
-
-          throw new Error(
-            data.message ||
-            "Failed to load enquiries."
+          await apiFetch(
+            "/api/enquiries"
           );
 
-        }
 
-
-        enquiries =
+        enquiriesData =
           data.enquiries || [];
 
 
         updateStats();
-        renderEnquiries();
+
+
+        renderEnquiries(
+          container,
+          enquiriesData
+        );
+
+
+        renderRecentEnquiries();
 
 
       } catch (error) {
 
-        showMessage(
-          "enquiryMessage",
-          error.message,
-          "error"
+        console.error(
+          "Enquiries error:",
+          error
         );
+
+
+        container.innerHTML =
+          `<div class="empty">
+             Unable to load enquiries.
+           </div>`;
 
       }
 
@@ -1966,279 +2159,360 @@
 
     function updateStats() {
 
-      const total =
-        enquiries.length;
-
-
-      const newCount =
-        enquiries.filter(
-          item =>
-            item.status === "New"
-        ).length;
-
-
-      const completedCount =
-        enquiries.filter(
-          item =>
-            item.status === "Completed"
-        ).length;
-
-
       document.getElementById(
         "totalEnquiries"
       ).textContent =
-        total;
+        enquiriesData.length;
 
 
       document.getElementById(
         "newEnquiries"
       ).textContent =
-        newCount;
+        enquiriesData.filter(
+          item =>
+            item.status === "New"
+        ).length;
 
 
       document.getElementById(
         "completedEnquiries"
       ).textContent =
-        completedCount;
+        enquiriesData.filter(
+          item =>
+            item.status === "Completed"
+        ).length;
 
     }
 
 
-    function renderEnquiries() {
+    function renderEnquiries(
+      container,
+      items
+    ) {
 
-      const tbody =
-        document.getElementById(
-          "enquiryTableBody"
-        );
+      if (!items.length) {
 
-
-      const search =
-        document.getElementById(
-          "searchInput"
-        ).value
-          .toLowerCase()
-          .trim();
-
-
-      const status =
-        document.getElementById(
-          "statusFilter"
-        ).value;
-
-
-      const filtered =
-        enquiries.filter(
-          item => {
-
-            const matchesSearch =
-              !search ||
-              String(item.name || "")
-                .toLowerCase()
-                .includes(search) ||
-              String(item.mobile || "")
-                .toLowerCase()
-                .includes(search) ||
-              String(item.service || "")
-                .toLowerCase()
-                .includes(search);
-
-
-            const matchesStatus =
-              status === "All" ||
-              item.status === status;
-
-
-            return (
-              matchesSearch &&
-              matchesStatus
-            );
-
-          }
-        );
-
-
-      tbody.innerHTML = "";
-
-
-      if (!filtered.length) {
-
-        tbody.innerHTML = `
-
-          <tr>
-
-            <td colspan="7">
-              No enquiries found.
-            </td>
-
-          </tr>
-
-        `;
+        container.innerHTML =
+          `<div class="empty">
+             <div class="empty-icon">✉</div>
+             <div>No enquiries found.</div>
+           </div>`;
 
         return;
 
       }
 
 
-      filtered.forEach(
-        item => {
+      container.innerHTML = `
+        <table>
 
-          const tr =
-            document.createElement(
-              "tr"
-            );
+          <thead>
 
+            <tr>
 
-          const statusClass =
-            item.status === "New"
-              ? "status-new"
-              : item.status === "Contacted"
-              ? "status-contacted"
-              : "status-completed";
+              <th>
+                Customer
+              </th>
 
+              <th>
+                Service
+              </th>
 
-          tr.innerHTML = `
+              <th>
+                Preferred Date
+              </th>
 
-            <td>${item.id}</td>
+              <th>
+                Requirement
+              </th>
 
-            <td>
-              ${escapeHtml(item.name)}
-            </td>
+              <th>
+                Message
+              </th>
 
-            <td>
-              ${escapeHtml(item.mobile)}
-            </td>
+              <th>
+                Status
+              </th>
 
-            <td>
-              ${escapeHtml(item.service || "-")}
-            </td>
+              <th>
+                Action
+              </th>
 
-            <td>
-              ${item.preferred_date || "-"}
-            </td>
+            </tr>
 
-            <td>
+          </thead>
 
-              <span
-                class="status ${statusClass}"
-              >
-                ${escapeHtml(item.status)}
-              </span>
+          <tbody>
 
-            </td>
+            ${items.map(
+              item => {
 
-            <td>
-
-              <div class="action-buttons">
-
-                <button
-                  class="small-btn btn-primary"
-                  onclick="viewEnquiry(${item.id})"
-                >
-                  View
-                </button>
-
-                <button
-                  class="small-btn btn-success"
-                  onclick="callCustomer('${escapeAttr(item.mobile)}')"
-                >
-                  Call
-                </button>
-
-                <button
-                  class="small-btn btn-success"
-                  onclick="whatsappCustomer('${escapeAttr(item.mobile)}')"
-                >
-                  WhatsApp
-                </button>
-
-                <select
-                  class="small-btn"
-                  onchange="updateStatus(${item.id}, this.value)"
-                >
-
-                  <option
-                    value="New"
-                    ${item.status === "New" ? "selected" : ""}
-                  >
-                    New
-                  </option>
-
-                  <option
-                    value="Contacted"
-                    ${item.status === "Contacted" ? "selected" : ""}
-                  >
-                    Contacted
-                  </option>
-
-                  <option
-                    value="Completed"
-                    ${item.status === "Completed" ? "selected" : ""}
-                  >
-                    Completed
-                  </option>
-
-                </select>
-
-                <button
-                  class="small-btn btn-danger"
-                  onclick="deleteEnquiry(${item.id})"
-                >
-                  Delete
-                </button>
-
-              </div>
-
-            </td>
-
-          `;
+                const preferredDate =
+                  item.preferred_date
+                    ? new Date(
+                        item.preferred_date
+                      ).toLocaleDateString(
+                        "en-IN"
+                      )
+                    : "-";
 
 
-          tbody.appendChild(
-            tr
-          );
+                return `
+                  <tr>
 
-        }
-      );
+                    <td>
+
+                      <div class="customer-name">
+                        ${escapeHtml(item.name)}
+                      </div>
+
+                      <div class="mobile">
+                        ${escapeHtml(item.mobile)}
+                      </div>
+
+                    </td>
+
+
+                    <td>
+                      ${escapeHtml(item.service)}
+                    </td>
+
+
+                    <td>
+                      ${preferredDate}
+                    </td>
+
+
+                    <td>
+                      ${escapeHtml(item.requirement || "-")}
+                    </td>
+
+
+                    <td class="message-cell">
+                      ${escapeHtml(item.message || "-")}
+                    </td>
+
+
+                    <td>
+
+                      <select
+                        class="status-select"
+                        onchange="updateEnquiryStatus(
+                          ${Number(item.id)},
+                          this.value
+                        )"
+                      >
+
+                        <option
+                          value="New"
+                          ${
+                            item.status === "New"
+                              ? "selected"
+                              : ""
+                          }
+                        >
+                          New
+                        </option>
+
+                        <option
+                          value="Contacted"
+                          ${
+                            item.status === "Contacted"
+                              ? "selected"
+                              : ""
+                          }
+                        >
+                          Contacted
+                        </option>
+
+                        <option
+                          value="Completed"
+                          ${
+                            item.status === "Completed"
+                              ? "selected"
+                              : ""
+                          }
+                        >
+                          Completed
+                        </option>
+
+                      </select>
+
+                    </td>
+
+
+                    <td>
+
+                      <button
+                        class="delete-small"
+                        onclick="deleteEnquiry(
+                          ${Number(item.id)}
+                        )"
+                      >
+                        Delete
+                      </button>
+
+                    </td>
+
+                  </tr>
+                `;
+
+              }
+            ).join("")}
+
+          </tbody>
+
+        </table>
+      `;
 
     }
 
 
-    async function updateStatus(
+    function renderRecentEnquiries() {
+
+      const container =
+        document.getElementById(
+          "recentEnquiries"
+        );
+
+
+      const items =
+        enquiriesData.slice(
+          0,
+          5
+        );
+
+
+      if (!items.length) {
+
+        container.innerHTML =
+          `<div class="empty">
+             <div class="empty-icon">✉</div>
+             <div>No enquiries yet.</div>
+           </div>`;
+
+        return;
+
+      }
+
+
+      container.innerHTML = `
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Customer
+                </th>
+
+                <th>
+                  Service
+                </th>
+
+                <th>
+                  Date
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              ${items.map(
+                item => {
+
+                  const date =
+                    item.created_at
+                      ? new Date(
+                          item.created_at
+                        ).toLocaleDateString(
+                          "en-IN"
+                        )
+                      : "-";
+
+
+                  return `
+                    <tr>
+
+                      <td>
+                        <div class="customer-name">
+                          ${escapeHtml(item.name)}
+                        </div>
+
+                        <div class="mobile">
+                          ${escapeHtml(item.mobile)}
+                        </div>
+                      </td>
+
+                      <td>
+                        ${escapeHtml(item.service)}
+                      </td>
+
+                      <td>
+                        ${date}
+                      </td>
+
+                      <td>
+                        ${escapeHtml(item.status || "New")}
+                      </td>
+
+                    </tr>
+                  `;
+
+                }
+              ).join("")}
+
+            </tbody>
+
+          </table>
+
+        </div>
+      `;
+
+    }
+
+
+    /* =========================
+       UPDATE STATUS
+    ========================== */
+
+    async function updateEnquiryStatus(
       id,
       status
     ) {
 
       try {
 
-        const response =
-          await fetch(
-            `${API_BASE}/api/enquiries/${id}/status`,
-            {
-              method: "PATCH",
-              headers: {
-                ...authHeaders,
-                "Content-Type":
-                  "application/json"
-              },
-              body: JSON.stringify({
-                status
-              })
-            }
-          );
+        await apiFetch(
+          `/api/enquiries/${id}/status`,
+          {
+            method: "PATCH",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+              status
+            })
+
+          }
+        );
 
 
-        const data =
-          await response.json();
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            data.message ||
-            "Status update failed."
-          );
-
-        }
+        showToast(
+          "Enquiry status updated."
+        );
 
 
         await loadEnquiries();
@@ -2246,63 +2520,72 @@
 
       } catch (error) {
 
-        alert(
-          error.message
+        console.error(
+          "Status update error:",
+          error
+        );
+
+
+        showToast(
+          error.message ||
+          "Status update failed.",
+          "error"
         );
 
       }
 
     }
 
+
+    /* =========================
+       DELETE ENQUIRY
+    ========================== */
 
     async function deleteEnquiry(
       id
     ) {
 
-      if (
-        !confirm(
-          "Delete this enquiry?"
-        )
-      ) {
+      const confirmed =
+        confirm(
+          "Are you sure you want to delete this enquiry?"
+        );
 
+
+      if (!confirmed) {
         return;
-
       }
 
 
       try {
 
-        const response =
-          await fetch(
-            `${API_BASE}/api/enquiries/${id}`,
-            {
-              method: "DELETE",
-              headers: authHeaders
-            }
-          );
+        await apiFetch(
+          `/api/enquiries/${id}`,
+          {
+            method: "DELETE"
+          }
+        );
 
 
-        const data =
-          await response.json();
+        showToast(
+          "Enquiry deleted."
+        );
 
 
-        if (!response.ok) {
-
-          throw new Error(
-            data.message ||
-            "Delete failed."
-          );
-
-        }
-
-
-        loadEnquiries();
+        await loadEnquiries();
 
 
       } catch (error) {
 
-        alert(
-          error.message
+        console.error(
+          "Delete enquiry error:",
+          error
+        );
+
+
+        showToast(
+          error.message ||
+          "Unable to delete enquiry.",
+          "error"
         );
 
       }
@@ -2311,198 +2594,118 @@
 
 
     /* =========================
-       ENQUIRY DETAILS
+       BUTTON ACTIONS
     ========================== */
 
-    function viewEnquiry(id) {
-
-      const item =
-        enquiries.find(
-          enquiry =>
-            enquiry.id === id
-        );
-
-
-      if (!item) {
-
-        return;
-
-      }
-
-
-      document.getElementById(
-        "detailsContent"
-      ).innerHTML = `
-
-        <div class="detail-row">
-
-          <strong>Name</strong>
-
-          ${escapeHtml(item.name)}
-
-        </div>
-
-
-        <div class="detail-row">
-
-          <strong>Mobile</strong>
-
-          ${escapeHtml(item.mobile)}
-
-        </div>
-
-
-        <div class="detail-row">
-
-          <strong>Service</strong>
-
-          ${escapeHtml(item.service || "-")}
-
-        </div>
-
-
-        <div class="detail-row">
-
-          <strong>Preferred Date</strong>
-
-          ${escapeHtml(item.preferred_date || "-")}
-
-        </div>
-
-
-        <div class="detail-row">
-
-          <strong>Requirement</strong>
-
-          ${escapeHtml(item.requirement || "-")}
-
-        </div>
-
-
-        <div class="detail-row">
-
-          <strong>Message</strong>
-
-          ${escapeHtml(item.message || "-")}
-
-        </div>
-
-
-        <div class="detail-row">
-
-          <strong>Status</strong>
-
-          ${escapeHtml(item.status)}
-
-        </div>
-
-      `;
-
-
-      document.getElementById(
-        "detailsModal"
-      ).style.display =
-        "flex";
-
-    }
-
-
-    function closeDetailsModal() {
-
-      document.getElementById(
-        "detailsModal"
-      ).style.display =
-        "none";
-
-    }
-
-
-    function closeModal(event) {
-
-      if (
-        event.target.id ===
-        "detailsModal"
-      ) {
-
-        closeDetailsModal();
-
-      }
-
-    }
-
-
-    /* =========================
-       CALL / WHATSAPP
-    ========================== */
-
-    function callCustomer(
-      mobile
-    ) {
-
-      window.location.href =
-        `tel:${mobile}`;
-
-    }
-
-
-    function whatsappCustomer(
-      mobile
-    ) {
-
-      const clean =
-        String(mobile)
-          .replace(/\D/g, "");
-
-
-      window.open(
-        `https://wa.me/91${clean}`,
-        "_blank"
+    document
+      .getElementById(
+        "refreshGalleryBtn"
+      )
+      .addEventListener(
+        "click",
+        loadGallery
       );
 
-    }
+
+    document
+      .getElementById(
+        "refreshEnquiriesBtn"
+      )
+      .addEventListener(
+        "click",
+        loadEnquiries
+      );
+
+
+    document
+      .getElementById(
+        "viewAllEnquiriesBtn"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          openSection(
+            "enquiries"
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "viewGalleryBtn"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          openSection(
+            "gallery"
+          );
+
+        }
+      );
 
 
     /* =========================
-       SECURITY HELPERS
+       LOGOUT
     ========================== */
 
-    function escapeHtml(
-      value
-    ) {
+    document
+      .getElementById(
+        "logoutBtn"
+      )
+      .addEventListener(
+        "click",
+        () => {
 
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-    }
+          const confirmed =
+            confirm(
+              "Logout from admin dashboard?"
+            );
 
 
-    function escapeAttr(
-      value
-    ) {
+          if (!confirmed) {
+            return;
+          }
 
-      return String(value ?? "")
-        .replace(/'/g, "\\'");
 
-    }
+          localStorage.removeItem(
+            "adminToken"
+          );
+
+          localStorage.removeItem(
+            "adminUser"
+          );
+
+
+          window.location.href =
+            "admin-login.html";
+
+        }
+      );
 
 
     /* =========================
        INITIAL LOAD
     ========================== */
 
-    loadLogo();
+    async function initialize() {
 
-    loadSiteImages();
+      await loadAdmin();
 
-    loadCategories();
+      await loadCategories();
 
-    loadGallery();
+      await loadGallery();
 
-    loadEnquiries();
+      await loadEnquiries();
+
+    }
+
+
+    initialize();
 
   </script>
 
